@@ -6,11 +6,20 @@
     <title>Document</title>
 </head>
 <body>
+    {% if is_login_page %}
     <form action="{% url 'login_user' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="send">
     </form>
+    {% else %}
+    <form action="{% url 'create_user' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="send">
+    </form>
+    {% endif %}
     <a href="{% url 'logout_user' %}">Log out</a>
+    <a href="{% url 'create_user' %}">Sign up</a>
 </body>
 </html>
