@@ -6,9 +6,17 @@
     <title>Profile</title>
 </head>
 <body>
+    <a href="{% url 'profile_edit' user.username user.id %}">edit</a>
+    <!-- TODO rename -->
+
+    <p>{{ user.first_name }} ({{user.username}})</p>
+
+    <p>Login: {{ user.username }}</p>
     <p>Forum name: {{ user.first_name }}</p>
     <p>Forum title: {{ user.last_name }}</p>
     <p>e-mail: {{ user.email }}</p>
     <p>Joined: {{ user.date_joined|date:"d/m/Y" }}</p>
+
+    <a href="{% url 'logout_user' %}">Log out</a>
 </body>
 </html>
