@@ -8,13 +8,17 @@ def login_user(request):
     #     return HttpResponse("current user is already authenticated")
     
     if request.method == "POST":
+        #? request and request.POST???
         form = AuthenticationForm(request, request.POST)
+        # is_valid to check AF if 
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            # return to page where user came from (after login)
             next_page = request.GET.get('next')
             if next_page:
                 return redirect(next_page)
+            #TODO later
             return redirect('login_user')
     else:
         form = AuthenticationForm()
@@ -27,6 +31,7 @@ def logout_user(request):
 
 def create_user(request):
     if request.method == 'POST':
+        # SignupUserForm -> forms.py
         form = SignupUserForm(request.POST)
         if form.is_valid():
             form.save()
