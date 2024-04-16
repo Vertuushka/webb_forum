@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    {% if request.user.id == account_id %}
+    <a href="{% url 'profile_edit' user.id %}">edit</a>
+    <!-- TODO rename -->
+    {% endif %}
+    <p>{{ profile.user.first_name }} ({{profile.user.username}})</p>
+
+    <p>Login: {{ profile.user.username }}</p>
+    <p>Forum name: {{ profile.user.first_name }}</p>
+    <p>Forum title: {{ profile.user.last_name }}</p>
+    <p>e-mail: {{ profile.user.email }}</p>
+    <p>Joined: {{ profile.user.date_joined|date:"d/m/Y" }}</p>
+    <img src="{{ media_url }}{{ profile.profile_picture }}" alt="">
+    <a href="{% url 'logout_user' %}">Log out</a>
+</body>
+</html>
