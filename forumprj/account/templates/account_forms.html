@@ -1,25 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% if is_login_page %}
-    <form action="{% url 'login_user' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="send">
-    </form>
-    {% else %}
-    <form action="{% url 'create_user' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="send">
-    </form>
-    {% endif %}
-    <a href="{% url 'logout_user' %}">Log out</a>
-    <a href="{% url 'create_user' %}">Sign up</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'account.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="container content">
+        {% if is_login_page %}
+            <h2 class="title">Login</h2>
+            <div class="container card">
+                <form action="{% url 'login_user' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div>
+                        {{ field.errors }}
+                        {{ field }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" value="Login">
+                </form>
+        
+                <a href="{% url 'create_user' %}">Sign up</a>
+            </div>
+        {% else %}
+            <h2 class="title">Sign up</h2>
+            <div class="container card">
+                <form action="{% url 'create_user' %}" method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div>
+                        {{ field.errors }}
+                        {{ field }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" value="Sign up">
+                </form>
+        
+                <a href="{% url 'login_user' %}">Login</a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
