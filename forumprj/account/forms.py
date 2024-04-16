@@ -10,7 +10,7 @@
 #         fields = ['username', 'password1', 'password2', 'email']
 #         help_texts = {'username': None, 'email': None}
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # Customize a UserCreationForm - use placeholders and hide labels
 class SignupUserForm(UserCreationForm):
@@ -27,4 +27,12 @@ class SignupUserForm(UserCreationForm):
         help_texts = {
             'username': None,
             'email': None
+        }
+
+class LoginUserForm(AuthenticationForm):
+    class Meta(AuthenticationForm.Meta):
+        fields = ['username', 'password']
+        help_tests = {
+            'username': None,
+            'password': None
         }
