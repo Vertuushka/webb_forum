@@ -9,7 +9,7 @@ def login_user(request):
     
     if request.method == "POST":
         #? request and request.POST???
-        form = LoginUserForm(request, request.POST)
+        form = AuthenticationForm(request, request.POST)
         # is_valid to check AF if 
         if form.is_valid():
             user = form.get_user()
@@ -21,7 +21,7 @@ def login_user(request):
             # When user logged in, redirect to APP:forum to profile_view
             return redirect('profile_view', user.id)
     else:
-        form = LoginUserForm()
+        form = AuthenticationForm()
     context = {'form':form, 'is_login_page':True}
     return render(request, "account_forms.html", context)
 
