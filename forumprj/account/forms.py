@@ -28,11 +28,3 @@ class SignupUserForm(UserCreationForm):
             'username': None,
             'email': None
         }
-
-class LoginUserForm(AuthenticationForm):
-    class Meta(AuthenticationForm.Meta):
-        fields = ['username', 'password']
-        help_tests = {
-            'username': None,
-            'password': None
-        }
