@@ -6,7 +6,7 @@
     <title>Edit Profile</title>
 </head>
 <body>
-    <form action="{% url 'profile_edit' user.username user.id %}" method="post">
+    <form action="{% url 'profile_edit' user.id %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save">

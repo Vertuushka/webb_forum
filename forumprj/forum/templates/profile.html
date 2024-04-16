@@ -6,9 +6,10 @@
     <title>Profile</title>
 </head>
 <body>
-    <a href="{% url 'profile_edit' user.username user.id %}">edit</a>
+    {% if request.user.id == account_id %}
+    <a href="{% url 'profile_edit' user.id %}">edit</a>
     <!-- TODO rename -->
-
+    {% endif %}
     <p>{{ user.first_name }} ({{user.username}})</p>
 
     <p>Login: {{ user.username }}</p>
