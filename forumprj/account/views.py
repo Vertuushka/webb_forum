@@ -19,7 +19,7 @@ def login_user(request):
             if next_page:
                 return redirect(next_page)
             # When user logged in, redirect to APP:forum to profile_view
-            return redirect('profile_view', user.username, user.id)
+            return redirect('profile_view', user.id)
     else:
         form = AuthenticationForm()
     context = {'form':form, 'is_login_page':True}

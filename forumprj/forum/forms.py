@@ -7,4 +7,8 @@ class UpdateUserInfo(UserChangeForm):
         self.fields.pop('password')
     class Meta(UserChangeForm.Meta):
         fields = ['first_name', 'last_name', 'email']
+        labels = {
+            'first_name': 'forum name',
+            'last_name': 'forum title'
+            }
         help_texts = {'username': None, 'email': None,}

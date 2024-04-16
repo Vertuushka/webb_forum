@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.conf import settings
 from . forms import *
+from . models import *
 
 # Create your views here.
 
 def profile_view(request, id):
     # All info from DB about user
     user = User.objects.get(id=id)
+    profile = Profile.objects.get(user=user)
     dictionary = {
-        "user": user,
+        "media_url": settings.MEDIA_URL,
+        "profile": profile,
         "account_id": id
     }
+    print(settings.MEDIA_URL + profile.profile_picture)
     return render(request, "profile.html", dictionary)
 
 def profile_edit(request, id):

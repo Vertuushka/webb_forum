@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +11,14 @@
     <a href="{% url 'profile_edit' user.id %}">edit</a>
     <!-- TODO rename -->
     {% endif %}
-    <p>{{ user.first_name }} ({{user.username}})</p>
+    <p>{{ profile.user.first_name }} ({{profile.user.username}})</p>
 
-    <p>Login: {{ user.username }}</p>
-    <p>Forum name: {{ user.first_name }}</p>
-    <p>Forum title: {{ user.last_name }}</p>
-    <p>e-mail: {{ user.email }}</p>
-    <p>Joined: {{ user.date_joined|date:"d/m/Y" }}</p>
-
+    <p>Login: {{ profile.user.username }}</p>
+    <p>Forum name: {{ profile.user.first_name }}</p>
+    <p>Forum title: {{ profile.user.last_name }}</p>
+    <p>e-mail: {{ profile.user.email }}</p>
+    <p>Joined: {{ profile.user.date_joined|date:"d/m/Y" }}</p>
+    <img src="{{ media_url }}{{ profile.profile_picture }}" alt="">
     <a href="{% url 'logout_user' %}">Log out</a>
 </body>
 </html>
