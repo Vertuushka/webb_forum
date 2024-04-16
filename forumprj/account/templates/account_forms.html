@@ -17,10 +17,10 @@
                         {{ field }}
                         </div>
                     {% endfor %}
-                    <input type="submit" value="Login">
+                    <input class="actionBtn" type="submit" value="Login">
                 </form>
         
-                <a href="{% url 'create_user' %}">Sign up</a>
+                <a class="otherBtn" href="{% url 'create_user' %}">Sign up</a>
             </div>
         {% else %}
             <h2 class="title">Sign up</h2>
@@ -34,10 +34,10 @@
                         {{ field }}
                         </div>
                     {% endfor %}
-                    <input type="submit" value="Sign up">
+                    <input class="actionBtn" type="submit" value="Sign up">
                 </form>
         
-                <a href="{% url 'login_user' %}">Login</a>
+                <a class="otherBtn" href="{% url 'login_user' %}">Login</a>
             </div>
         {% endif %}
     </div>

@@ -30,7 +30,15 @@ class SignupUserForm(UserCreationForm):
         }
 
 class LoginUserForm(AuthenticationForm):
-    class Meta(AuthenticationForm.Meta):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set placeholders and remove labels
+        for fieldname in ['username', 'password']:
+            self.fields[fieldname].widget.attrs['placeholder'] = fieldname.capitalize()
+            self.fields[fieldname].label = False
+            self.fields[fieldname].help_text = None
+
+    class Meta():
         fields = ['username', 'password']
         help_tests = {
             'username': None,

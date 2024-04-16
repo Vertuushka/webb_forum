@@ -10,6 +10,7 @@
     --border: hsl(227, 7%, 27%);
     --input: hsl(225, 7%, 24%);
     --active: hsl(220, 7%, 18%);
+    --action: hsl(80, 100%, 56%);
 }
 
 * {
@@ -21,6 +22,11 @@
     text-decoration: none;
 
     font-family: "Roboto", sans-serif;
+}
+
+body {
+    display: grid;
+    grid-template-columns: minmax(max-content, 300px) 1fr;
 }
 
 .container {
@@ -37,3 +43,34 @@
     font-size: 24px;
     font-weight: 600;
 }
+
+nav {
+    background-color: var(--primary);
+}
+
+.navBtn {
+    padding: 12px 24px;
+    align-items: center;
+    gap: 16px;
+}
+
+.navBtn:nth-child(odd) {
+    background-color: var(--secondary);
+}
+
+.navBtnIcon {
+    aspect-ratio: 1/1;
+    width: 24px;
+}
+
+.navBtnMeta {
+    color: var(--text);
+}
+
+.navUserCon {
+    padding: 24px;
+    color: var(--text);
+    align-items: center;
+    gap: 16px;
+}
+
