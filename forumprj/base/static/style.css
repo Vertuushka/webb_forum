@@ -1,0 +1,39 @@
+:root {
+    --text: hsl(0, 0%, 100%);
+    --text-muted: hsl(229, 5%, 45%);
+
+    --bg: hsl(223, 7%, 21%);
+
+    --primary: hsl(225, 6%, 13%);
+    --secondary: hsl(220, 7%, 18%);
+
+    --border: hsl(227, 7%, 27%);
+    --input: hsl(225, 7%, 24%);
+    --active: hsl(220, 7%, 18%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    border: none;
+
+    text-decoration: none;
+
+    font-family: "Roboto", sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.title {
+    color: var(--text);
+    font-size: 24px;
+    font-weight: 600;
+}

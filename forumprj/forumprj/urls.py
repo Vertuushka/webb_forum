@@ -21,9 +21,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #TODO redo it account to ' ' path
     path('account/', include('account.urls')),
-    path('profile/', include('forum.urls'))
+    path('profile/', include('forum.urls')),
+    path('base/', include('base.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
