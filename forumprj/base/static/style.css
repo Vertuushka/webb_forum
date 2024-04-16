@@ -16,15 +16,13 @@
 * {
     margin: 0;
     padding: 0;
-
     border: none;
-
     text-decoration: none;
-
     font-family: "Roboto", sans-serif;
 }
 
 body {
+    height: 100vh;
     display: grid;
     grid-template-columns: minmax(max-content, 300px) 1fr;
 }
@@ -42,6 +40,11 @@ body {
     color: var(--text);
     font-size: 24px;
     font-weight: 600;
+}
+
+.text {
+    color: var(--text);
+    font-size: 14px;
 }
 
 nav {
@@ -70,7 +73,13 @@ nav {
 .navUserCon {
     padding: 24px;
     color: var(--text);
+
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.navProfileCon {
     align-items: center;
     gap: 16px;
 }
-

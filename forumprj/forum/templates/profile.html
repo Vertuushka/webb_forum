@@ -1,24 +1,54 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-</head>
-<body>
-    {% if request.user.id == account_id %}
-    <a href="{% url 'profile_edit' user.id %}">edit</a>
-    <!-- TODO rename -->
-    {% endif %}
-    <p>{{ profile.user.first_name }} ({{profile.user.username}})</p>
+{% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container content">
 
-    <p>Login: {{ profile.user.username }}</p>
-    <p>Forum name: {{ profile.user.first_name }}</p>
-    <p>Forum title: {{ profile.user.last_name }}</p>
-    <p>e-mail: {{ profile.user.email }}</p>
-    <p>Joined: {{ profile.user.date_joined|date:"d/m/Y" }}</p>
-    <img src="{{ media_url }}{{ profile.profile_picture }}" alt="">
-    <a href="{% url 'logout_user' %}">Log out</a>
-</body>
-</html>
+    <h2 class="title">Profile</h2>
+
+    <div class="container card">
+        <div class="wrapper profileCon">
+            <img class="profilePicture" src="{{ media_url }}{{ profile.profile_picture }}" alt="">
+            <div class="container profileMetaCon">
+                <div class="wrapper">
+                    <h2 class="title">{{ profile.user.first_name }} ({{profile.user.username}})</h2>
+                    {% if request.user.id == account_id %}
+                    <a href="{% url 'profile_edit' user.id %}">edit</a>
+                    <!-- TODO rename -->
+                    {% endif %}
+                </div>
+                <p class="text">{{ profile.user.last_name }}</p>
+            </div>
+        </div>
+
+        <div class="container" style="max-width: 256px; gap: 8px;">
+            <div class="wrapper">
+                <p class="text" style="flex: 1;">Forum name:</p>
+                <p class="text" style="flex: 1;">{{ profile.user.first_name }}</p>
+            </div>
+
+            <div class="wrapper">
+                <p class="text" style="flex: 1;">Forum title:</p>
+                <p class="text" style="flex: 1;">{{ profile.user.last_name }}</p>
+            </div>
+
+            <div class="wrapper">
+                <p class="text" style="flex: 1;">Login:</p>
+                <p class="text" style="flex: 1;">{{ profile.user.username }}</p>
+            </div>
+
+            <div class="wrapper">
+                <p class="text" style="flex: 1;">e-mail:</p>
+                <p class="text" style="flex: 1;">{{ profile.user.email }}</p>
+            </div>
+
+            <div class="wrapper">
+                <p class="text" style="flex: 1;">Joined:</p>
+                <p class="text" style="flex: 1;">{{ profile.user.date_joined|date:"d/m/Y" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
