@@ -1,0 +1,41 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 6px 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 6px;
+    border: 1px solid var(--border);
+
+    font-size: 12px;
+
+    color: var(--text);
+    background-color: var(--input);
+}
+
+.otherBtn {
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text);
+}
+
+.otherBtn:hover {
+    cursor: pointer;
+}
+
+.actionBtn {
+    color: var(--bg);
+    background-color: var(--action);
+}
+
+.actionBtn:hover {
+    cursor: pointer;
+}

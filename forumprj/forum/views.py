@@ -19,6 +19,8 @@ def profile_view(request, id):
     return render(request, "profile.html", dictionary)
 
 def profile_edit(request, id):
+    user = User.objects.get(id=id)
+    profile = Profile.objects.get(user=user)
     if request.method == "POST":
         # built-in form in django to update user information 
         form = UpdateUserInfo(request.POST, instance=request.user)
@@ -29,7 +31,9 @@ def profile_edit(request, id):
         form = UpdateUserInfo(instance=request.user)
 
     dictionary = {
-        "form": form
+        "form": form,
+        "profile": profile,
+        "media_url": settings.MEDIA_URL
     }
     
     return render(request, "profile_edit.html", dictionary)

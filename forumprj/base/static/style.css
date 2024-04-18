@@ -23,6 +23,9 @@
 
 body {
     height: 100vh;
+
+    background-color: var(--bg);
+
     display: grid;
     grid-template-columns: minmax(max-content, 300px) 1fr;
 }
