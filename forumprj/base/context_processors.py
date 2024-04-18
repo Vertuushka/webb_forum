@@ -1,5 +1,5 @@
 from django.conf import settings
-from forum.models import Profile
+from users.models import Profile
 
 def menuProcessor(request):
     if request.user.is_authenticated:
