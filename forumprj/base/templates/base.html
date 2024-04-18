@@ -19,9 +19,9 @@
     <title>Document</title>
 </head>
 <body>
-    <nav class="container">
+    <nav>
         {% if request.user.is_authenticated %}
-            <div class="container navBtnContainer mainNavBtnContainer">
+            <div class="container navBtnContainer navBtnContainerProfile">
                 <a class="wrapper navBtn" href="">
                     {%  if avatar_path %}
                         <img class="navBtnAvatar" src="{{ avatar_path }}" alt="">
@@ -30,7 +30,9 @@
                     {% endif %}
                     <span class="text">{{ request.user.first_name }}</span> 
                 </a>
+            </div>
 
+            <div class="container navBtnContainer mainNavBtnContainer">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_forum.svg' %}" alt="">
                     <span class="text">Forum</span>
@@ -49,7 +51,7 @@
                 </a>
             </div>
 
-            <div class="container navBtnContainer">
+            <div class="container navBtnContainer navBtnContainerOptions">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_settings.svg' %}" alt="">
                     <span class="text">Settings</span>
@@ -72,10 +74,10 @@
             </div>
         {% endif %}
 
-        <div class="container navBtnContainer">
+        <div class="container navBtnContainer navBtnContainerControll">
             <button class="wrapper navBtn">
                 <img class="navBtnIcon" src="{% static 'assets/icon_minimize.svg' %}" alt="">
-                <span class="text">Minimize</span>
+                <span class="text navBtnContainerControllText">Minimize</span>
             </button>
         </div>
     </nav>
