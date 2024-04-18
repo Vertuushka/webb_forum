@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
-{% block style %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'error.css' %}">
-{% endblock %}
 {% block content %}
-<div class="content">
-    <h2 class="title">Something has gone wrong</h2>
-</div>
+<header class="container">
+    <h2 class="title">Something has gone wrong!</h2>
+    <p class="meta">Please try again or navigate to somewhere else.</p>
+</header>
 {% endblock %}
