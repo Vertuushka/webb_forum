@@ -34,3 +34,21 @@
     object-fit: cover;
     object-position: center;
 }
+
+form {
+    display: grid;
+    grid-template-columns: minmax(256px , 400px);
+}
+
+.formDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.formMetaTag {
+    color: var(--text);
+}
+
+.actionBtn {
+    width: max-content;
+}
