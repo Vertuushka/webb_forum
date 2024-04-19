@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
@@ -24,13 +25,14 @@
             </div>
         </div>
 
-        <form action="{% url 'profile_edit' user.id %}" method="post">
+        <form action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
                 <div class="wrapper formDiv">
                     <p class="formMetaTag">{{ field.label }}</p>
                     {{ field.errors }}
                     {{ field }}
+                    <input type="submit" value="Save">
                 </div>
             {% endfor %}
             <input class="actionBtn" type="submit" value="Save">
