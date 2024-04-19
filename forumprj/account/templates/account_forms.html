@@ -1,45 +1,63 @@
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'account.css' %}">
+    <link rel="stylesheet" href="{% static 'form.css' %}">
 {% endblock %}
 {% block content %}
-
-    <div class="container content">
-        {% if is_login_page %}
-            <h2 class="title">Login</h2>
-            <div class="container card">
-                <form action="{% url 'login_user' %}" method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div>
-                        {{ field.errors }}
-                        {{ field }}
-                        </div>
-                    {% endfor %}
-                    <input class="actionBtn" type="submit" value="Login">
-                </form>
-        
-                <a class="otherBtn" href="{% url 'create_user' %}">Sign up</a>
+    {% if is_login_page %}
+        <header class="container">
+            <h2 class="title">Welcome, please login</h2>
+            <div class="wrapper miniNav">
+                <p class="meta">Dont have an account?</p>
+                <a class="activeLink" href="{% url 'create_user' %}">Create one here!</a>
             </div>
-        {% else %}
-            <h2 class="title">Sign up</h2>
-            <div class="container card">
-                <form action="{% url 'create_user' %}" method="post">
-                    {% csrf_token %}
+        </header>
 
-                    {% for field in form %}
-                        <div>
-                        {{ field.errors }}
-                        {{ field }}
-                        </div>
-                    {% endfor %}
-                    <input class="actionBtn" type="submit" value="Sign up">
-                </form>
+        <div class="container canvas center">
+            <form class="center" action="{% url 'login_user' %}" method="post">
+                {% csrf_token %}
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_person.svg' %}" alt="">
+                    {{form.username}}
+                </div>
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
+                    {{form.password}}
+                </div>
+                <button class="btn actionBtn" type="submit">Login</button>
+            </form>
+        </div>
         
-                <a class="otherBtn" href="{% url 'login_user' %}">Login</a>
+    {% else %}
+        <header class="container">
+            <h2 class="title">Welcome, create a new account here!</h2>
+            <div class="wrapper miniNav">
+                <p class="meta">Already have an account?</p>
+                <a class="activeLink" href="{% url 'login_user' %}">Login here!</a>
             </div>
-        {% endif %}
-    </div>
+        </header>
 
+        <div class="container canvas center">
+            <form class="center" action="{% url 'login_user' %}" method="post">
+                {% csrf_token %}
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_person.svg' %}" alt="">
+                    {{form.username}}
+                </div>
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_email.svg' %}" alt="">
+                    {{form.email}}
+                </div>
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
+                    {{form.password1}}
+                </div>
+                <div class="wrapper">
+                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
+                    {{form.password2}}
+                </div>
+                <button class="btn actionBtn" type="submit">Create account</button>
+            </form>
+        </div>
+    {% endif %}
 {% endblock %}

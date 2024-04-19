@@ -6,23 +6,31 @@
     <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
 {% block content %}
-<div class="container content">
+<header class="container">
+    <h2 class="title">Edit profile</h2>
 
-    <h2 class="title">Edit Profile</h2>
+    <div class="wrapper miniNav">
+        <a class="miniNavBtn" href="">Content</a>
+        <a class="miniNavBtn" href="">Ban history</a>
+        <a class="miniNavBtn" href="">Ban</a>
+        <a class="miniNavBtn" href="">Start chat</a>
+    </div>
+</header>
 
-    <div class="container card">
-        <div class="wrapper profileCon">
-            <img class="profilePicture" src="{{ media_url }}{{ profile.profile_picture }}" alt="">
-            <div class="container profileMetaCon">
-                <div class="wrapper">
-                    <h2 class="title">{{ profile.user.first_name }} ({{profile.user.username}})</h2>
-                    {% if request.user.id == account_id %}
-                    <a href="{% url 'profile_edit' user.id %}">edit</a>
-                    <!-- TODO rename -->
-                    {% endif %}
-                </div>
-                <p class="text">{{ profile.user.last_name }}</p>
-            </div>
+<form class="container canvas" action="{% url 'profile_edit' user.id %}" method="post">
+    <div class="wrapper profileContainer">
+        <img class="avatar" src="{{ media_url }}{{ profile.profile_picture }}" alt="">
+        <div class="container">
+            <h2 class="title">{{ profile.user.first_name }} ({{profile.user.username}})</h2>
+            <p class="meta">{{ profile.user.last_name }}</p>
+        </div>
+    </div>
+
+    <div class="wrapper profileInfoContainer">
+        {% csrf_token %}
+        <div class="container profileInfoContainerItem">
+            <p class="meta">Forum name:</p>
+            <p class="text">{{ form.first_name }}</p>
         </div>
 
         <form action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">

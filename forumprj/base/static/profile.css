@@ -1,54 +1,48 @@
-.content {
-    height: 100%;
-    padding: 24px;
-    box-sizing: border-box;
+.canvas {
+    gap: 24px;
+}
 
+.avatar {
+    aspect-ratio: 1/1;
+    width: 96px;
+    border-radius: 96px;
+    border: 1px solid var(--border);
+
+    background-color: var(--action);
+}
+
+.profileContainer {
+    align-items: center;
+    gap: 12px;
+}
+
+.profileInfoContainer {
+    padding: 1px;
     background-color: var(--bg);
 
-    gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
 }
 
-.card {
-    height: 100%;
-    padding: 24px;
-    box-sizing: border-box;
-    border-radius: 12px;
+.profileInfoContainerItem {
+    padding: 12px;
     background-color: var(--secondary);
-
-    gap: 24px;
+    gap: 6px;
 }
 
-.profileCon {
-    align-items: center;
-    gap: 24px;
+.profileInfoContainerEmail {
+    grid-row: 2;
+    grid-column: 2 /span 2;
 }
 
-.profileMetaCon {
-    gap: 8px;
-}
+@media only screen and (max-width: 512px) {
+    .profileInfoContainer {
+        grid-template-columns: 1fr;
+    }
 
-.profilePicture {
-    width: 100px;
-    border-radius: 100px;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    object-position: center;
-}
-
-form {
-    display: grid;
-    grid-template-columns: minmax(256px , 400px);
-}
-
-.formDiv {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.formMetaTag {
-    color: var(--text);
-}
-
-.actionBtn {
-    width: max-content;
+    .profileInfoContainerEmail {
+        grid-row: 5;
+        grid-column: 1;
+    }
 }
