@@ -6,9 +6,10 @@
     <title>Edit Profile</title>
 </head>
 <body>
-    <form action="{% url 'profile_edit' user.id %}" method="post">
+    <form action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        <input type="file" name="image" id="">
         <input type="submit" value="Save">
     </form>
  </body>
