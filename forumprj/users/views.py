@@ -19,6 +19,9 @@ def profile_view(request, id):
     return render(request, "profile.html", dictionary)
 
 def profile_edit(request, id):
+    if request.user.id != id:
+            return render(request, 'error.html')
+
     if request.method == "POST":
         # built-in form in django to update user information 
         form = UpdateUserInfo(request.POST, instance=request.user)
