@@ -17,35 +17,30 @@
     </div>
 </header>
 
-<form class="container canvas" action="{% url 'profile_edit' user.id %}" method="post">
-    <div class="wrapper profileContainer">
-        <img class="avatar" src="{{ media_url }}{{ profile.profile_picture }}" alt="">
-        <div class="container">
-            <h2 class="title">{{ profile.user.first_name }} ({{profile.user.username}})</h2>
-            <p class="meta">{{ profile.user.last_name }}</p>
-        </div>
-    </div>
-
+<form class="container canvas" action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="wrapper profileInfoContainer">
-        {% csrf_token %}
         <div class="container profileInfoContainerItem">
             <p class="meta">Forum name:</p>
             <p class="text">{{ form.first_name }}</p>
         </div>
 
-        <form action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="wrapper formDiv">
-                    <p class="formMetaTag">{{ field.label }}</p>
-                    {{ field.errors }}
-                    {{ field }}
-                    <input type="file" name="image">
-                    <input type="submit" value="Save">
-                </div>
-            {% endfor %}
-            <input class="actionBtn" type="submit" value="Save">
-        </form>
+        <div class="container profileInfoContainerItem">
+            <p class="meta">Forum title:</p>
+            <p class="text">{{ form.last_name }}</p>
+        </div>
+
+        <div class="container profileInfoContainerItem">
+            <p class="meta">e-mail:</p>
+            <p class="text">{{ form.email }}</p>
+        </div>
+
+        <div class="container profileInfoContainerItem">
+            <p class="meta">Profile picture</p>
+            <input type="file" name="image">
+        </div>
     </div>
-</div>
+
+    <button class="btn actionBtn" type="submit">Save</button>
+</form>
 {% endblock %}
