@@ -7,5 +7,17 @@
 </head>
 <body>
     forum main page
+    <ul>
+        {% for item in tree %}
+          <li>{{ item.node.name }}</li>
+          {% if item.children %}
+            <ul>
+              {% for child in item.children %}
+                <li>{{ child.node.name }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </ul>
 </body>
 </html>
