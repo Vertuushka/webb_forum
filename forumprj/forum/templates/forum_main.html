@@ -10,10 +10,20 @@
     <ul>
         {% for item in tree %}
           <li>{{ item.node.name }}</li>
+          {% for thread in last_threads %}
+            {% if thread.node == item.node %}
+              {{ thread }}
+            {% endif %}
+          {% endfor %}
           {% if item.children %}
             <ul>
               {% for child in item.children %}
                 <li>{{ child.node.name }}</li>
+                {% for thread in last_threads %}
+                  {% if thread.node == child.node %}
+                    {{ thread }}
+                  {% endif %}
+                {% endfor %}
               {% endfor %}
             </ul>
           {% endif %}

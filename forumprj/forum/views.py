@@ -1,12 +1,24 @@
 from django.shortcuts import render, redirect
+from django.db.models import Max, Min
 from . models import *
 
 def forum_main(request):
     nodes = Node.objects.all()
+    threads = Thread.objects.all()
     tree = build_nodes_tree(nodes)
+
+    last_threads = []
+    for node in nodes:
+        thread = Thread.objects.filter(node=node, is_visible=True).order_by('-time_created')
+        if thread:
+            last_threads.append(thread[0])
+    print(last_threads[0].node)
     context = {
-        'tree':tree
+        'tree':tree,
+        'threads':threads,
+        'last_threads': last_threads
     }
+    # print(tree)
     return render(request, "forum_main.html", context)
 
 def build_nodes_tree(nodes, parent=None):
