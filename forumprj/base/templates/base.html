@@ -21,7 +21,7 @@
 <body>
     <nav>
         {% if request.user.is_authenticated %}
-            <div class="container navBtnContainer navConProfile" id="navConProfile">
+            <div class="container navBtnContainer" id="navConProfile">
                 <a class="wrapper navBtn" href="">
                     {%  if avatar_path %}
                         <img class="navBtnAvatar" src="{{ avatar_path }}" alt="">
@@ -32,7 +32,7 @@
                 </a>
             </div>
 
-            <div class="container navBtnContainer navConMain" id="navConMain">
+            <div class="container navBtnContainer" id="navConMain">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_forum.svg' %}" alt="">
                     <span class="text">Forum</span>
@@ -51,7 +51,7 @@
                 </a>
             </div>
 
-            <div class="container navBtnContainer navConOptions" id="navConOptions">
+            <div class="container navBtnContainer" id="navConOptions">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_settings.svg' %}" alt="">
                     <span class="text">Settings</span>
@@ -62,7 +62,7 @@
                 </a>
             </div>
         {% else %}
-            <div class="container navBtnContainer navConMain" id="navConMain">
+            <div class="container navBtnContainer" id="navConMain">
                 <a class="wrapper navBtn" href="{% url 'login_user' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_person.svg' %}" alt="">
                     <span class="text">Login</span>
