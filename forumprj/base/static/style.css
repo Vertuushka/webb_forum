@@ -70,33 +70,41 @@ body {
     color: var(--action);
 }
 
-
-
 nav {
     height: 100%;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: max-content 1fr repeat(2, max-content);
+    display: flex;
+    flex-direction: column;
     gap: 1px;
 }
 
-.navBtnContainerProfile {
-    border-radius: 0px 12px 0px 0px;
+.navConProfile {
+    grid-row: 1;
+    grid-column: 1;
 }
 
-.navBtnContainerControll {
-    border-radius: 0px 0px 12px 0px;
+.navConMain {
+    height: 100%;
+
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.navConOptions {
+    grid-row: 3;
+    grid-column: 1;
+}
+
+.navConControll {
+    grid-row: 4;
+    grid-column: 1;
 }
 
 .navBtnContainer {
     padding: 12px;
+    box-sizing: border-box;
     background-color: var(--primary);
     gap: 8px;
-}
-
-.mainNavBtnContainer {
-    flex-grow: 1;
 }
 
 .navBtn {
@@ -161,6 +169,24 @@ header {
     border-radius: 8px;
 }
 
+@media only screen and (min-width: 513px) {
+    #navConOptions {
+        border-radius: 0px 0px 12px 0px;
+    }
+
+    #navConControll {
+        display: none;
+    }
+
+    .navBtnContainer:first-child {
+        border-radius: 0px 12px 0px 0px;
+    }
+    
+    .navBtnContainer:last-child {
+        border-radius: 0px 0px 12px 0px;
+    }
+}
+
 @media only screen and (max-width: 512px) {
     body {
         padding: 12px 12px 0px 12px;
@@ -170,35 +196,39 @@ header {
     }
 
     nav {
+        grid-row: 2;
         bottom: 0px;
         position: sticky;
 
         border-radius: 12px 12px 0px 0px;
         background-color: var(--bg);
 
-        grid-row: 2;
+        display: grid;
         grid-template-columns: 1fr max-content;
-        grid-template-rows: max-content 1fr;
+        grid-template-rows: repeat(3, max-content);
+        gap: 1px;
     }
-
-    .navBtnContainerProfile {
+    
+    .navConProfile {
         grid-row: 1;
         grid-column: 1;
 
         border-radius: 12px 0px 0px 0px;
     }
-
-    .mainNavBtnContainer {
+    
+    .navConMain {
+        height: 100%;
+    
         grid-row: 2;
         grid-column: 1 /span 2;
     }
     
-    .navBtnContainerOptions {
+    .navConOptions {
         grid-row: 3;
         grid-column: 1 /span 2;
     }
     
-    .navBtnContainerControll {
+    .navConControll {
         grid-row: 1;
         grid-column: 2;
 
@@ -207,5 +237,9 @@ header {
 
     .navBtnContainerControllText {
         display: none;
+    }
+    
+    #minimizeBtn {
+        height: 100%;
     }
 }
