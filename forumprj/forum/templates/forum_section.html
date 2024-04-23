@@ -6,6 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    forum section template
+    <h1>{{node.name}}</h1>
+
+    {% for thread in threads %}
+        <p>Title: {{thread}}</p>
+        <p>User: {{thread.user.first_name}}</p>
+        <p style="color: gray;">{{thread.time_created|date:"H:i - d/m/Y" }}</p>
+    {% endfor %}
 </body>
 </html>

@@ -43,3 +43,13 @@ def build_nodes_tree(nodes, parent=None):
             children = build_nodes_tree(nodes, parent=node)
             tree.append({'node': node, 'children': children})
     return tree
+
+def section(request, section):
+    node = Node.objects.get(name = section)
+    threads = Thread.objects.filter(node=node).order_by('-time_created')
+    context = {
+        "node": node,
+        "threads": threads,
+    }
+    return render(request, "forum_section.html", context)
+    
