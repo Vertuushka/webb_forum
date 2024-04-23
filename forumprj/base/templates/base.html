@@ -21,7 +21,7 @@
 <body>
     <nav>
         {% if request.user.is_authenticated %}
-            <div class="container navBtnContainer navBtnContainerProfile">
+            <div class="container navBtnContainer" id="navConProfile">
                 <a class="wrapper navBtn" href="">
                     {%  if avatar_path %}
                         <img class="navBtnAvatar" src="{{ avatar_path }}" alt="">
@@ -32,7 +32,7 @@
                 </a>
             </div>
 
-            <div class="container navBtnContainer mainNavBtnContainer">
+            <div class="container navBtnContainer" id="navConMain">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_forum.svg' %}" alt="">
                     <span class="text">Forum</span>
@@ -51,7 +51,7 @@
                 </a>
             </div>
 
-            <div class="container navBtnContainer navBtnContainerOptions">
+            <div class="container navBtnContainer" id="navConOptions">
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_settings.svg' %}" alt="">
                     <span class="text">Settings</span>
@@ -62,7 +62,7 @@
                 </a>
             </div>
         {% else %}
-            <div class="container navBtnContainer mainNavBtnContainer">
+            <div class="container navBtnContainer" id="navConMain">
                 <a class="wrapper navBtn" href="{% url 'login_user' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_person.svg' %}" alt="">
                     <span class="text">Login</span>
@@ -74,8 +74,8 @@
             </div>
         {% endif %}
 
-        <div class="container navBtnContainer navBtnContainerControll">
-            <button class="wrapper navBtn">
+        <div class="container navBtnContainer navConControll" id="navConControll">
+            <button class="wrapper navBtn" id="minimizeBtn">
                 <img class="navBtnIcon" src="{% static 'assets/icon_minimize.svg' %}" alt="">
                 <span class="text navBtnContainerControllText">Minimize</span>
             </button>
@@ -85,5 +85,8 @@
     <div class="container content">
         {% block content %}{% endblock %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-4.0.0-beta.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
