@@ -7,6 +7,17 @@
 </head>
 <body>
     forum main page
+    <form action="{% url 'forum_main' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="search" id="">
+      <input type="checkbox" name="content_type" id="" value="threads">
+      <input type="checkbox" name="content_type" id="" value="members">
+    </form>
+    {% if forum_search %}
+      {% for result in results %}
+      {{ result }}
+      {% endfor %}
+    {% endif %}
     <ul>
         {% for item in tree %}
           <li>{{ item.node.name }}</li>
