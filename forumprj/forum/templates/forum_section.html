@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{node.name}}</h1>
+
+    {% for thread in threads %}
+        <p>Title: {{thread}}</p>
+        <p>User: {{thread.user.first_name}}</p>
+        <p style="color: gray;">{{thread.time_created|date:"H:i - d/m/Y" }}</p>
+    {% endfor %}
+</body>
+</html>
