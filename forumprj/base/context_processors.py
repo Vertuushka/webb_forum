@@ -9,5 +9,5 @@ def menuProcessor(request):
             avatar_path = settings.MEDIA_URL + profile.profile_picture
         else:
             avatar_path = None
-        return {'avatar_path': avatar_path, 'currentUser':user}
+        return {'avatar_path': avatar_path, 'currentUser':user, "media_url": settings.MEDIA_URL,}
     return {'avatar_path': None, "currentUser":None}

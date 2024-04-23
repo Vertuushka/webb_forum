@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Max, Min
 from . models import *
+from users.models import Profile
 
 def forum_main(request):
     nodes = Node.objects.all()
@@ -12,7 +13,7 @@ def forum_main(request):
         thread = Thread.objects.filter(node=node, is_visible=True).order_by('-time_created')
         if thread:
             last_threads.append(thread[0])
-    print(last_threads[0].node)
+
     context = {
         'tree':tree,
         'threads':threads,

@@ -12,7 +12,9 @@
           <li>{{ item.node.name }}</li>
           {% for thread in last_threads %}
             {% if thread.node == item.node %}
-              {{ thread }}
+            <p>{{ thread }}</p>
+            <p>{{ thread.user.first_name }}</p>
+            <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
             {% endif %}
           {% endfor %}
           {% if item.children %}
@@ -21,7 +23,9 @@
                 <li>{{ child.node.name }}</li>
                 {% for thread in last_threads %}
                   {% if thread.node == child.node %}
-                    {{ thread }}
+                    <p>{{ thread }}</p>
+                    <p>{{ thread.user.first_name }}</p>
+                    <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
                   {% endif %}
                 {% endfor %}
               {% endfor %}
