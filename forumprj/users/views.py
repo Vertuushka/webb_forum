@@ -8,20 +8,19 @@ from . models import *
 
 def profile_view(request, id):
     # All info from DB about user
-    user = User.objects.get(id=id)
-    profile = Profile.objects.get(user=user)
+    account = User.objects.get(id=id)
+    # profile = Profile.objects.get(user=user)
     dictionary = {
-        "media_url": settings.MEDIA_URL,
-        "profile": profile,
-        "account_id": id
+        # "media_url": settings.MEDIA_URL,
+        # "profile": profile,
+        "account": account
     }
     # print(settings.MEDIA_URL + profile.profile_picture)
     return render(request, "profile.html", dictionary)
 
 def profile_edit(request, id):
     if request.user.id != id:
-            return render(request, 'error.html')
-
+        return render(request, 'error.html')
     if request.method == "POST":
         # built-in form in django to update user information 
         form = UpdateUserInfo(request.POST, instance=request.user)
@@ -29,13 +28,12 @@ def profile_edit(request, id):
             image_file = request.FILES.get('image')
             if image_file:
                 eUser = User.objects.get(id=id)
-                file_extension = os.path.splitext(image_file.name)[1]
-                new_filename = slugify(f'{eUser.username}_avatar') + file_extension
+                new_filename = slugify(f'{eUser.id}') + '.png'
                 image_file.name = new_filename
                 file_path = os.path.join(settings.MEDIA_ROOT, new_filename)
-                e_user = Profile.objects.get(user=eUser)
-                e_user.profile_picture = image_file.name
-                e_user.save()
+                # e_user = Profile.objects.get(user=eUser)
+                # e_user.profile_picture = image_file.name
+                # e_user.save()
                 with open(file_path, 'wb+') as destination:
                     for chunk in image_file.chunks():
                         destination.write(chunk)

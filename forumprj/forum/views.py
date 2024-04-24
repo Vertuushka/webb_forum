@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Max, Min
 from . models import *
-from users.models import Profile
+# from users.models import Profile
 
 def forum_main(request):
     context = {}
