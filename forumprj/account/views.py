@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 # from users.models import Profile
 
 def login_user(request):
-    # if request.user.is_authenticated:
-    #     return HttpResponse("current user is already authenticated")
+    if request.user.is_authenticated:
+        return redirect('profile_view', request.user.id)
     
     if request.method == "POST":
         #? request and request.POST???
@@ -32,15 +32,17 @@ def logout_user(request):
     return redirect('login_user')
 
 def create_user(request):
+    if request.user.is_authenticated:
+        return redirect('profile_view', request.user.id)
     if request.method == 'POST':
         # SignupUserForm -> forms.py
         form = SignupUserForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
-            newuser = User.objects.get(username=username)
-            newuser.first_name = username
-            newuser.save()
+            # username = form.cleaned_data['username']
+            # newuser = User.objects.get(username=username)
+            # newuser.first_name = username
+            # newuser.save()
             # newProfile = Profile.objects.create(user=newuser, profile_picture="")
             # newProfile.save()
             return redirect('login_user')

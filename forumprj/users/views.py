@@ -28,9 +28,12 @@ def profile_edit(request, id):
             image_file = request.FILES.get('image')
             if image_file:
                 eUser = User.objects.get(id=id)
-                new_filename = slugify(f'{eUser.id}') + '.png'
+                file_extension = os.path.splitext(image_file.name)[1]
+                new_filename = slugify(f'{eUser.id}') + file_extension
                 image_file.name = new_filename
                 file_path = os.path.join(settings.MEDIA_ROOT, new_filename)
+                eUser.first_name = new_filename
+                eUser.save()
                 # e_user = Profile.objects.get(user=eUser)
                 # e_user.profile_picture = image_file.name
                 # e_user.save()

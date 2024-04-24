@@ -19,19 +19,14 @@
     <div class="wrapper profileContainer">
         <img class="avatar" src="{{ media_url }}{{ account.id }}.png" alt="">
         <div class="container">
-            <h2 class="title">{{ account.first_name }} ({{ account.username }})</h2>
+            <h2 class="title">{{ account.username }} ({{ account.first_name }})</h2>
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
 
     <div class="wrapper profileInfoContainer">
         <div class="container profileInfoContainerItem">
-            <p class="meta">Forum name:</p>
-            <p class="text">{{ account.first_name }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Login:</p>
+            <p class="meta">Username:</p>
             <p class="text">{{ account.username }}</p>
         </div>
 

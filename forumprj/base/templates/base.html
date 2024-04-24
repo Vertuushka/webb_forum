@@ -22,13 +22,13 @@
     <nav>
         {% if request.user.is_authenticated %}
             <div class="container navBtnContainer" id="navConProfile">
-                <a class="wrapper navBtn" href="">
+                <a class="wrapper navBtn" href="{% url 'profile_view' request.user.id %}">
                     {%  if avatar_path %}
                         <img class="navBtnAvatar" src="{{ avatar_path }}" alt="">
                     {% else %}
                         <img src="{% static 'assets/missing_avatar.svg' %}" alt="">
                     {% endif %}
-                    <span class="text">{{ request.user.first_name }}</span> 
+                    <span class="text">{{ request.user.username }}</span> 
                 </a>
             </div>
 
