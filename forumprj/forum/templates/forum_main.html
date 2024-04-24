@@ -41,12 +41,12 @@
             {% for thread in last_threads %}
                 {% if thread.node == item.node %}   
                     <div class="wrapper themeCard">
-                        <a href="{% url 'section' item.node.name %}" class="container themeCardSection">
+                        <a href="{% url 'thread' thread.node thread.title %}" class="container themeCardSection">
                             <p class="meta">Theme</p>
                             <p class="text">{{ thread }}</p>
                         </a>
                         
-                        <a href="{% url 'section' item.node.name %}" class="container themeCardSection"">
+                        <a href="{% url 'thread' thread.node thread.title %}" class="container themeCardSection"">
                             <p class="meta">Messages</p>
                             <p class="text">{{ thread.msg_amount }}</p>
                         </a>

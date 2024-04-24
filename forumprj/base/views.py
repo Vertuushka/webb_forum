@@ -7,5 +7,5 @@ def index(request):
     
     return render(request, 'base.html')
 
-def error(request):
+def error_page(request):
     return render(request, 'error.html')

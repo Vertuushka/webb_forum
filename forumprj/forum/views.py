@@ -64,4 +64,23 @@ def section(request, section):
         "threads": zip(threads, last_msgs)
     }
     return render(request, "forum_section.html", context)
-    
+
+def thread(request, section, thread):
+    try:
+        _section = Node.objects.get(name=section)
+        _thread = Thread.objects.get(title=thread, node=_section)
+    except:
+        try:
+            _thread = Thread.objects.get(title=thread)
+        except:
+            return redirect('error_page')
+        else:
+            return redirect('thread', _thread.node.name, _thread.title)
+    else:
+        msgs = Message.objects.filter(thread=_thread).order_by('time_created')
+        print(msgs)
+        context = {
+            'thread':_thread,
+            'messages': msgs
+        }
+        return render(request, 'forum_thread.html', context)
