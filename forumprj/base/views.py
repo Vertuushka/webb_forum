@@ -9,3 +9,6 @@ def index(request):
 
 def error_page(request):
     return render(request, 'error.html')
+
+def custom_404_page(request, exception):
+    return render(request, 'error.html')
