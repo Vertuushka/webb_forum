@@ -51,7 +51,7 @@
                             <p class="text">{{ thread.msg_amount }}</p>
                         </a>
 
-                        <a href="" class="container themeCardSection">
+                        <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
                             <p class="meta">Created by</p>
                             <p class="text">{{ thread.user.username }}</p>
                         </a>
