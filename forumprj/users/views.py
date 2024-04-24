@@ -5,6 +5,7 @@ from django.utils.text import slugify
 import os
 from . forms import *
 from . models import *
+from forum.models import *
 
 def profile_view(request, id):
     account = User.objects.get(id=id)
@@ -41,3 +42,13 @@ def profile_edit(request, id):
     }
     
     return render(request, "profile_edit.html", dictionary)
+
+def profile_content(request, id):
+    account = User.objects.get(id=id)
+    content = Message.objects.filter(user=account)
+    context = {
+        'account':account,
+        'profile_content': True,
+        'content': content
+    }
+    return render(request, 'profile.html', context)

@@ -8,7 +8,11 @@
     <h2 class="title">Profile</h2>
 
     <div class="wrapper miniNav">
-        <a class="miniNavBtn" href="">Content</a>
+        {% if profile_content %}
+        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+        {% else %}
+        <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+        {% endif %}
         <a class="miniNavBtn" href="">Ban history</a>
         <a class="miniNavBtn" href="">Ban</a>
         <a class="miniNavBtn" href="">Start chat</a>
@@ -23,7 +27,12 @@
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
-
+    {% if profile_content %}
+        {% for msg in content %}
+        <p>Thread: {{ msg.thread }}</p>
+        <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}">Go to this thread</a>
+        {% endfor %}
+    {% else %}
     <div class="wrapper profileInfoContainer">
         <div class="container profileInfoContainerItem">
             <p class="meta">Username:</p>
@@ -48,5 +57,6 @@
         <a href="{% url 'profile_edit' account.id %}">edit</a>
         {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
