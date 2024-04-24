@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from forum.models import Message
+from django.conf import settings
 
 # Create your models here.
 # class Profile(models.Model):
@@ -21,3 +23,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class cWarning(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.ForeignKey(Message, on_delete=models.CASCADE, limit_choices_to={'user':models.OuterRef('user')})
+    warned_by = models.ForeignKey(User, on_delete=models.SET_NULL, editable=False, related_name='moderator', null=True)
+    details = models.TextField()
+
+    def __str__(self):
+        return f'{self.warned_by.username} warning to {self.user.username}'

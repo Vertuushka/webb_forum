@@ -45,10 +45,13 @@ def profile_edit(request, id):
 
 def profile_content(request, id):
     account = User.objects.get(id=id)
-    content = Message.objects.filter(user=account)
+    content = Message.objects.filter(user=account).order_by('-time_created')
     context = {
         'account':account,
         'profile_content': True,
         'content': content
     }
     return render(request, 'profile.html', context)
+
+def warnings_history(request, id):
+    pass
