@@ -13,7 +13,7 @@ def forum_main(request):
             if content_type == "threads":
                 results = Thread.objects.filter(title__icontains=searched)
             if content_type == "members":
-                results = User.objects.filter(first_name__icontains=searched)
+                results = User.objects.filter(username__icontains=searched)
         else:
             results = Message.objects.filter(content__icontains=searched)
         context['results'] = results
@@ -36,7 +36,7 @@ def forum_main(request):
         context = {
             'tree':tree,
             'threads':threads,
-            'last_threads': zip(last_threads, last_msgs)
+            'last_threads': last_threads
         }
     return render(request, "forum_main.html", context)
 

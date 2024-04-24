@@ -47,13 +47,13 @@
                         </a>
                         
                         <a href="{% url 'section' item.node.name %}" class="container themeCardSection"">
-                            <p class="meta">Date</p>
-                            <p class="text">{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
+                            <p class="meta">Messages</p>
+                            <p class="text">{{ thread.msg_amount }}</p>
                         </a>
 
                         <a href="" class="container themeCardSection">
                             <p class="meta">Created by</p>
-                            <p class="text">{{ thread.user.first_name }}</p>
+                            <p class="text">{{ thread.user.username }}</p>
                         </a>
                     </div>
                 {% endif %}

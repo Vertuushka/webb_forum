@@ -18,6 +18,7 @@ class Thread(models.Model):
     is_closed = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
     is_pinned = models.BooleanField(default=False)
+    msg_amount = models.IntegerField(blank=True, null=True)
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
