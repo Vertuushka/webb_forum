@@ -27,12 +27,12 @@
 
         <div class="container forumCard">
             <div class="container forumCardHeader">
-                <a href="{% url 'section' item.node.name %}" class="title">{{ item.node.name }}</a>
+                <a href="{% url 'section' item.node.name|slugify %}" class="title">{{ item.node.name }}</a>
 
                 {% if item.children %}
                     <ul>
                         {% for child in item.children %}
-                            <a href="{% url 'section' child.node.name %}" class="activeLink">{{ child.node.name }}</a>
+                            <a href="{% url 'section' child.node.name|slugify %}" class="activeLink">{{ child.node.name }}</a>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -41,12 +41,12 @@
             {% for thread in last_threads %}
                 {% if thread.node == item.node %}   
                     <div class="wrapper themeCard">
-                        <a href="{% url 'thread' thread.node thread.title %}" class="container themeCardSection">
+                        <a href="{% url 'thread' thread.node|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
                             <p class="meta">Theme</p>
                             <p class="text">{{ thread }}</p>
                         </a>
                         
-                        <a href="{% url 'thread' thread.node thread.title %}" class="container themeCardSection"">
+                        <a href="{% url 'thread' thread.node|slugify thread.title|slugify thread.id %}" class="container themeCardSection"">
                             <p class="meta">Messages</p>
                             <p class="text">{{ thread.msg_amount }}</p>
                         </a>

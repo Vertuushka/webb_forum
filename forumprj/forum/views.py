@@ -1,3 +1,4 @@
+from django.utils.text import slugify
 from django.shortcuts import render, redirect
 from django.db.models import Max, Min, Count
 from . models import *
@@ -41,7 +42,9 @@ def build_nodes_tree(nodes, parent=None):
     return tree
 
 def section(request, section):
-    node = Node.objects.get(name = section)
+    section = section.replace('-', ' ')
+    # print(section)
+    node = Node.objects.get(name__iexact = section)
     threads_in_node = Thread.objects.filter(node=node)
     threads = []
     for thread in threads_in_node:
@@ -54,22 +57,26 @@ def section(request, section):
     }
     return render(request, "forum_section.html", context)
 
-def thread(request, section, thread):
-    try:
-        _section = Node.objects.get(name=section)
-        _thread = Thread.objects.get(title=thread, node=_section)
+def thread(request, section, thread, thread_id):
+    section = section.replace('-', ' ')
+    thread = thread.replace('-', ' ')
+    _thread = Thread.objects.get(id=thread_id)
+    try: 
+        _section = Node.objects.get(name__iexact=section)
+        _magic = Thread.objects.get(title__iexact=thread)
     except:
-        try:
-            _thread = Thread.objects.get(title=thread)
-        except:
-            return redirect('error_page')
-        else:
-            return redirect('thread', _thread.node.name, _thread.title)
+        return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
     else:
-        msgs = Message.objects.filter(thread=_thread).order_by('time_created')
-        print(msgs)
-        context = {
-            'thread':_thread,
-            'messages': msgs
-        }
-        return render(request, 'forum_thread.html', context)
+        if _thread.node != _section or not _magic:
+            return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+
+    msgs = Message.objects.filter(thread=_thread).order_by('time_created')
+    # print(msgs)
+    context = {
+        'thread':_thread,
+        'messages': msgs
+    }
+    return render(request, 'forum_thread.html', context)
+
+def main_redirecter(request):
+    return redirect('forum_main')
