@@ -21,19 +21,23 @@ def forum_main(request):
         nodes = Node.objects.all()
         threads = Thread.objects.all()
         tree = build_nodes_tree(nodes)
-
         last_threads = []
+        last_msgs_unsorted = []
         for node in nodes:
-            thread = Thread.objects.filter(node=node, is_visible=True).order_by('-time_created')
-            if thread:
-                last_threads.append(thread[0])
-
+            threads_in_node = Thread.objects.filter(node=node, is_visible=True)
+            if threads_in_node:
+                for thread in threads_in_node:
+                    msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created')[0]
+                    last_msgs_unsorted.append(msg)
+        last_msgs = sorted(last_msgs_unsorted, key=lambda x: x.time_created, reverse=True)
+        for msg in last_msgs:
+            last_threads.append(msg.thread)
+        
         context = {
             'tree':tree,
             'threads':threads,
-            'last_threads': last_threads
+            'last_threads': zip(last_threads, last_msgs)
         }
-        # print(tree)
     return render(request, "forum_main.html", context)
 
 def build_nodes_tree(nodes, parent=None):
@@ -46,10 +50,18 @@ def build_nodes_tree(nodes, parent=None):
 
 def section(request, section):
     node = Node.objects.get(name = section)
-    threads = Thread.objects.filter(node=node).order_by('-time_created')
+    threads_in_node = Thread.objects.filter(node=node)
+    last_msgs_unordered = []
+    threads = []
+    for thread in threads_in_node:
+        msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created')[0]
+        last_msgs_unordered.append(msg)
+    last_msgs = sorted(last_msgs_unordered, key=lambda x: x.time_created, reverse=True)
+    for msg in last_msgs:
+        threads.append(msg.thread)
     context = {
         "node": node,
-        "threads": threads,
+        "threads": zip(threads, last_msgs)
     }
     return render(request, "forum_section.html", context)
     

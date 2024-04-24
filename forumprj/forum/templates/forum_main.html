@@ -51,49 +51,13 @@
                             <p class="text">{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
                         </a>
 
-                        <a href="" class="container themeCardSection"">
+                        <a href="" class="container themeCardSection">
                             <p class="meta">Created by</p>
                             <p class="text">{{ thread.user.first_name }}</p>
                         </a>
-
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
-
     {% endfor %}
-
-    <ul>
-        {% for item in tree %}
-            <li> 
-            <a href="{% url 'section' item.node.name %}">{{ item.node.name }}</a>
-            </li>
-    
-            {% for thread in last_threads %}
-                {% if thread.node == item.node %}
-                    <p>{{ thread }}</p>
-                    <p>{{ thread.user.first_name }}</p>
-                    <!-- TODO sorting by last massage, not by post was created -->
-                    <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
-                {% endif %}
-            {% endfor %}
-    
-            {% if item.children %}
-                <ul>
-                    {% for child in item.children %}
-                        <li>
-                            <a href="{% url 'section' child.node.name %}">{{ child.node.name }}</a>
-                        </li>
-                        {% for thread in last_threads %}
-                            {% if thread.node == child.node %}
-                                <p>{{ thread }}</p>
-                                <p>{{ thread.user.first_name }}</p>
-                                <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endfor %}
-    </ul>
 {% endblock %}
