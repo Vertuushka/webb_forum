@@ -26,7 +26,7 @@
                     {%  if avatar_path %}
                         <img class="navBtnAvatar" src="{{ avatar_path }}" alt="">
                     {% else %}
-                        <img src="{% static 'assets/missing_avatar.svg' %}" alt="">
+                        <img src="{% static 'assets/missing_avatar.svg' %}" alt=""> 
                     {% endif %}
                     <span class="text">{{ request.user.username }}</span> 
                 </a>

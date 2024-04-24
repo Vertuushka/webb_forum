@@ -17,9 +17,9 @@
 
 <div class="container canvas">
     <div class="wrapper profileContainer">
-        <img class="avatar" src="{{ media_url }}{{ account.id }}.png" alt="">
+        <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
         <div class="container">
-            <h2 class="title">{{ account.username }} ({{ account.first_name }})</h2>
+            <h2 class="title">{{ account.username }} ({{ account.profile.warnings }} warnings)</h2>
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
