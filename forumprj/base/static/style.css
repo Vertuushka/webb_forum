@@ -6,6 +6,7 @@
 
     --primary: hsl(225, 6%, 13%);
     --secondary: hsl(223, 7%, 22%);
+    --section: #383A40;
 
     --border: hsl(227, 7%, 32%);
     --input: hsl(225, 7%, 28%);
@@ -61,7 +62,7 @@ body {
 
 .meta {
     color: var(--text-muted);
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .activeLink {

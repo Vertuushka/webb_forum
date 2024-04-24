@@ -1,53 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    forum main page
-    <form action="{% url 'forum_main' %}" method="post">
-      {% csrf_token %}
-      <input type="text" name="search" id="">
-      <input type="checkbox" name="content_type" id="" value="threads">
-      <input type="checkbox" name="content_type" id="" value="members">
-    </form>
+{% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
+{% endblock %}
+{% block content %}
+    <header>
+        <div class="wrapper">
+            <h2 class="title">Forum</h2>
+
+            <form action="{% url 'forum_main' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="search" id="">
+                <input type="checkbox" name="content_type" id="" value="threads">
+                <input type="checkbox" name="content_type" id="" value="members">
+            </form>
+        </div>
+    </header>
+
     {% if forum_search %}
-      {% for result in results %}
-      {{ result }}
-      {% endfor %}
+        {% for result in results %}
+        {{ result }}
+        {% endfor %}
     {% endif %}
+
+    {% for item in tree %}
+
+        <div class="container forumCard">
+            <div class="container forumCardHeader">
+                <a href="{% url 'section' item.node.name %}" class="title">{{ item.node.name }}</a>
+
+                {% if item.children %}
+                    <ul>
+                        {% for child in item.children %}
+                            <a href="{% url 'section' child.node.name %}" class="activeLink">{{ child.node.name }}</a>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            {% for thread in last_threads %}
+                {% if thread.node == item.node %}   
+                    <div class="wrapper themeCard">
+                        <a href="{% url 'section' item.node.name %}" class="container themeCardSection">
+                            <p class="meta">Theme</p>
+                            <p class="text">{{ thread }}</p>
+                        </a>
+                        
+                        <a href="{% url 'section' item.node.name %}" class="container themeCardSection"">
+                            <p class="meta">Date</p>
+                            <p class="text">{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
+                        </a>
+
+                        <a href="" class="container themeCardSection"">
+                            <p class="meta">Created by</p>
+                            <p class="text">{{ thread.user.first_name }}</p>
+                        </a>
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    {% endfor %}
+
     <ul>
         {% for item in tree %}
-          <li> 
+            <li> 
             <a href="{% url 'section' item.node.name %}">{{ item.node.name }}</a>
-          </li>
-          {% for thread in last_threads %}
-            {% if thread.node == item.node %}
-            <p>{{ thread }}</p>
-            <p>{{ thread.user.first_name }}</p>
-            <!-- TODO sorting by last massage, not by post was created -->
-            <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
-            {% endif %}
-          {% endfor %}
-          {% if item.children %}
-            <ul>
-              {% for child in item.children %}
-                <li>
-                  <a href="{% url 'section' child.node.name %}">{{ child.node.name }}</a>
-                </li>
-                {% for thread in last_threads %}
-                  {% if thread.node == child.node %}
+            </li>
+    
+            {% for thread in last_threads %}
+                {% if thread.node == item.node %}
                     <p>{{ thread }}</p>
                     <p>{{ thread.user.first_name }}</p>
+                    <!-- TODO sorting by last massage, not by post was created -->
                     <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
-                  {% endif %}
-                {% endfor %}
-              {% endfor %}
-            </ul>
-          {% endif %}
+                {% endif %}
+            {% endfor %}
+    
+            {% if item.children %}
+                <ul>
+                    {% for child in item.children %}
+                        <li>
+                            <a href="{% url 'section' child.node.name %}">{{ child.node.name }}</a>
+                        </li>
+                        {% for thread in last_threads %}
+                            {% if thread.node == child.node %}
+                                <p>{{ thread }}</p>
+                                <p>{{ thread.user.first_name }}</p>
+                                <p>{{ thread.time_created|date:"Y/m/d - H:i" }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
         {% endfor %}
-      </ul>
-</body>
-</html>
+    </ul>
+{% endblock %}
