@@ -1,13 +1,9 @@
 from django.conf import settings
-from users.models import Profile
+from django.contrib.auth.models import User
 
 def menuProcessor(request):
     if request.user.is_authenticated:
-        user = request.user
-        profile = Profile.objects.get(user=user)
-        if profile.profile_picture:
-            avatar_path = settings.MEDIA_URL + profile.profile_picture
-        else:
-            avatar_path = None
-        return {'avatar_path': avatar_path, 'currentUser':user, "media_url": settings.MEDIA_URL,}
-    return {'avatar_path': None, "currentUser":None}
+        # profile = Profile.objects.get(user=user)
+        avatar_path = settings.MEDIA_URL + str(request.user.first_name) 
+        return {'avatar_path': avatar_path, 'currentUser':request.user, "media_url": settings.MEDIA_URL,}
+    return {'avatar_path': None, "currentUser":None, "media_url": settings.MEDIA_URL,}

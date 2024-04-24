@@ -17,40 +17,35 @@
 
 <div class="container canvas">
     <div class="wrapper profileContainer">
-        <img class="avatar" src="{{ media_url }}{{ profile.profile_picture }}" alt="">
+        <img class="avatar" src="{{ media_url }}{{ account.id }}.png" alt="">
         <div class="container">
-            <h2 class="title">{{ profile.user.first_name }} ({{profile.user.username}})</h2>
-            <p class="meta">{{ profile.user.last_name }}</p>
+            <h2 class="title">{{ account.username }} ({{ account.first_name }})</h2>
+            <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
 
     <div class="wrapper profileInfoContainer">
         <div class="container profileInfoContainerItem">
-            <p class="meta">Forum name:</p>
-            <p class="text">{{ profile.user.first_name }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Login:</p>
-            <p class="text">{{ profile.user.username }}</p>
+            <p class="meta">Username:</p>
+            <p class="text">{{ account.username }}</p>
         </div>
 
         <div class="container profileInfoContainerItem">
             <p class="meta">Forum title:</p>
-            <p class="text">{{ profile.user.last_name }}</p>
+            <p class="text">{{ account.last_name }}</p>
         </div>
 
         <div class="container profileInfoContainerItem">
             <p class="meta">Joined:</p>
-            <p class="text">{{ profile.user.date_joined|date:"d/m/Y" }}</p>
+            <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
         </div>
 
         <div class="container profileInfoContainerItem profileInfoContainerEmail">
             <p class="meta">e-mail:</p>
-            <p class="text">{{ profile.user.email }}</p>
+            <p class="text">{{ account.email }}</p>
         </div>
-        {% if request.user.id == account_id %}
-        <a href="{% url 'profile_edit' user.id %}">edit</a>
+        {% if request.user.id == account.id %}
+        <a href="{% url 'profile_edit' account.id %}">edit</a>
         {% endif %}
     </div>
 </div>
