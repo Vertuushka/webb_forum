@@ -9,3 +9,5 @@ from django.contrib.auth.models import User
 
 #     def __str__(self):
 #         return self.user.first_name
+
+# class Warning(models.Model):
