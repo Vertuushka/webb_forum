@@ -9,14 +9,14 @@
 
     <div class="wrapper miniNav">
         {% if profile_content %}
-        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+            <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
         {% else %}
-        <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+            <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
         {% endif %}
         {% if warnings_history %}
-        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+            <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
         {% else %}
-        <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+            <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
         {% endif %}
         
         <a class="miniNavBtn" href="">Ban</a>
@@ -24,7 +24,8 @@
     </div>
 </header>
 
-<div class="container canvas">
+<div class="container">
+
     <div class="wrapper profileContainer">
         <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
         <div class="container">
@@ -32,44 +33,54 @@
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
+
     {% if profile_content %}
         {% for msg in content %}
-        <p>Thread: {{ msg.thread }}</p>
-        <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}">Go to this thread</a>
+            <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}" class="container profileItemCard">
+                <p class="meta">Theme</p>
+                <p class="text">{{ msg.thread }}</p>
+            </a>
         {% endfor %}
+
     {% else %}
         {% if warnings_history %}
             {% for warn in warnings %}
-                <p>Warned by: {{ warn.warned_by }}</p>
-                <p>{{ warn.details }}</p>
-                <p>{{ warn.time_warned }}</p>
-                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}">Message in {{ warn.content.thread.title }}</a>
+                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}" class="container profileItemCard">
+                    <div class="wrapper profileItemCardHeader">
+                        <p class="meta">Warned by: {{ warn.warned_by }}</p>
+                        <p class="meta">{{ warn.time_warned }}</p>
+                    </div>
+
+                    <p class="text">{{ warn.content.thread.title }}</p>
+                </a>
+
             {% endfor %}
         {% else %}
-        <div class="wrapper profileInfoContainer">
-            <div class="container profileInfoContainerItem">
-                <p class="meta">Username:</p>
-                <p class="text">{{ account.username }}</p>
+            <div class="wrapper profileInfoContainer">
+                <div class="container profileInfoContainerItem">
+                    <p class="meta">Username:</p>
+                    <p class="text">{{ account.username }}</p>
+                </div>
+        
+                <div class="container profileInfoContainerItem">
+                    <p class="meta">Forum title:</p>
+                    <p class="text">{{ account.last_name }}</p>
+                </div>
+        
+                <div class="container profileInfoContainerItem">
+                    <p class="meta">Joined:</p>
+                    <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
+                </div>
+        
+                <div class="container profileInfoContainerItem profileInfoContainerEmail">
+                    <p class="meta">e-mail:</p>
+                    <p class="text">{{ account.email }}</p>
+                </div>
             </div>
-    
-            <div class="container profileInfoContainerItem">
-                <p class="meta">Forum title:</p>
-                <p class="text">{{ account.last_name }}</p>
-            </div>
-    
-            <div class="container profileInfoContainerItem">
-                <p class="meta">Joined:</p>
-                <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
-            </div>
-    
-            <div class="container profileInfoContainerItem profileInfoContainerEmail">
-                <p class="meta">e-mail:</p>
-                <p class="text">{{ account.email }}</p>
-            </div>
+
             {% if request.user.id == account.id %}
-            <a href="{% url 'profile_edit' account.id %}">edit</a>
+                <a href="{% url 'profile_edit' account.id %}" class="profileActionBtn">Edit</a>
             {% endif %}
-        </div>
         {% endif %}
     {% endif %}
 </div>
