@@ -13,7 +13,12 @@
         {% else %}
         <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
         {% endif %}
-        <a class="miniNavBtn" href="">Ban history</a>
+        {% if warnings_history %}
+        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+        {% else %}
+        <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+        {% endif %}
+        
         <a class="miniNavBtn" href="">Ban</a>
         <a class="miniNavBtn" href="">Start chat</a>
     </div>
@@ -33,30 +38,39 @@
         <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}">Go to this thread</a>
         {% endfor %}
     {% else %}
-    <div class="wrapper profileInfoContainer">
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Username:</p>
-            <p class="text">{{ account.username }}</p>
+        {% if warnings_history %}
+            {% for warn in warnings %}
+                <p>Warned by: {{ warn.warned_by }}</p>
+                <p>{{ warn.details }}</p>
+                <p>{{ warn.time_warned }}</p>
+                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}">Message in {{ warn.content.thread.title }}</a>
+            {% endfor %}
+        {% else %}
+        <div class="wrapper profileInfoContainer">
+            <div class="container profileInfoContainerItem">
+                <p class="meta">Username:</p>
+                <p class="text">{{ account.username }}</p>
+            </div>
+    
+            <div class="container profileInfoContainerItem">
+                <p class="meta">Forum title:</p>
+                <p class="text">{{ account.last_name }}</p>
+            </div>
+    
+            <div class="container profileInfoContainerItem">
+                <p class="meta">Joined:</p>
+                <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
+            </div>
+    
+            <div class="container profileInfoContainerItem profileInfoContainerEmail">
+                <p class="meta">e-mail:</p>
+                <p class="text">{{ account.email }}</p>
+            </div>
+            {% if request.user.id == account.id %}
+            <a href="{% url 'profile_edit' account.id %}">edit</a>
+            {% endif %}
         </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Forum title:</p>
-            <p class="text">{{ account.last_name }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Joined:</p>
-            <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem profileInfoContainerEmail">
-            <p class="meta">e-mail:</p>
-            <p class="text">{{ account.email }}</p>
-        </div>
-        {% if request.user.id == account.id %}
-        <a href="{% url 'profile_edit' account.id %}">edit</a>
         {% endif %}
-    </div>
     {% endif %}
 </div>
 {% endblock %}

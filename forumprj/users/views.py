@@ -53,5 +53,14 @@ def profile_content(request, id):
     }
     return render(request, 'profile.html', context)
 
-def warnings_history(request, id):
-    pass
+def profile_warnings(request, id):
+    account = User.objects.get(id=id)
+    warnings = Warnings_history.objects.filter(user=account).order_by('-time_warned')
+    context = {
+        'account': account,
+        'warnings_history': True,
+        'warnings': warnings  
+    }
+    return render(request, 'profile.html', context)
+
+
