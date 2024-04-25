@@ -15,6 +15,7 @@ urlpatterns = [
     path('base/', include('base.urls')),
     path('forum/', include('forum.urls')),
     path('error/', baseviews.error_page, name='error_page'),
+    path('moderation/', include('moderation.urls')),
     path('admin/', admin.site.urls),
 ]
 
