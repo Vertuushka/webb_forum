@@ -6,8 +6,6 @@ from django.conf import settings
 from forum import views
 from base import views as baseviews
 
-handler404 = 'base.views.custom_404_page'
-
 urlpatterns = [
     path('', views.forum_main, name='forum_main'),
     path('', include('account.urls')),

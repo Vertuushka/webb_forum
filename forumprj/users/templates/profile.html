@@ -66,7 +66,7 @@
                 <p class="meta">e-mail:</p>
                 <p class="text">{{ account.email }}</p>
             </div>
-            {% if request.user.id == account.id %}
+            {% if request.user.id == account.id or perms.users.change_profile %}
             <a href="{% url 'profile_edit' account.id %}">edit</a>
             {% endif %}
         </div>

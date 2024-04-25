@@ -49,7 +49,7 @@
                     <img class="navBtnIcon" src="{% static 'assets/icon_bookmarks.svg' %}" alt="">
                     <span class="text">Bookmarks</span>
                 </a>
-                {% if request.user|has_group: "Moderators" %}
+                {% if perms.moderation.view_report %}
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
                     <span class="text">Tools</span>
