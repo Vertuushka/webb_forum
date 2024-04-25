@@ -9,6 +9,7 @@ class Profile(models.Model):
     profile_picture = models.CharField(max_length=225, null=True, blank=True    )
     warnings = models.SmallIntegerField(default=0)
     is_banned = models.BooleanField(default=False)
+    theme = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return self.user.username

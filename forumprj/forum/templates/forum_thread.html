@@ -8,7 +8,10 @@
 <body>
     {{ thread.title }}
     {% for msg in messages %}
+        <p>{{ msg.user.username }}</p>
+        <img src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
         <p>{{ msg.message }}</p>
+        <p>Time: {{ msg.time_created }}</p>
     {% endfor %}
 </body>
 </html>
