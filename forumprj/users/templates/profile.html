@@ -5,22 +5,57 @@
 {% endblock %}
 {% block content %}
 <header class="container">
+    
     <h2 class="title">Profile</h2>
 
     <div class="wrapper miniNav">
         {% if profile_content %}
-        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+            <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+            {% if account.id == request.user.id or perms.users.view_cwarning %}
+                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+            {% endif %}
+            {% if perms.users.change_profile and not account.id == request.user.id %}
+                {% if account.profile.is_banned %}
+                    <a class="miniNavBtn" href="{% url 'profile_unban' account.id %}">Unban</a>
+                {% else %}
+                    <a class="miniNavBtn" href="{% url 'profile_ban' account.id %}">Ban</a>
+                {% endif %}
+            {% endif %}
+            {% if not request.user.id == account.id %}
+                <a class="miniNavBtn" href="">Start chat</a>
+            {% endif %}
         {% else %}
-        <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
-        {% endif %}
-        {% if warnings_history %}
-        <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
-        {% else %}
-        <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
-        {% endif %}
+            {% if warnings_history %}
+                <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                {% if perms.users.change_profile and not account.id == request.user.id %}
+                    {% if account.profile.is_banned %}
+                        <a class="miniNavBtn" href="{% url 'profile_unban' account.id %}">Unban</a>
+                    {% else %}
+                        <a class="miniNavBtn" href="{% url 'profile_ban' account.id %}">Ban</a>
+                    {% endif %}
+                {% endif %}
+                {% if not request.user.id == account.id %}
+                    <a class="miniNavBtn" href="">Start chat</a>
+                {% endif %}
+            {% else %}
+                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                {% if account.id == request.user.id or perms.users.view_cwarning %}
+                    <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+                {% endif %}
+                {% if perms.users.change_profile and not account.id == request.user.id %}
+                    {% if account.profile.is_banned %}
+                        <a class="miniNavBtn" href="{% url 'profile_unban' account.id %}">Unban</a>
+                    {% else %}
+                        <a class="miniNavBtn" href="{% url 'profile_ban' account.id %}">Ban</a>
+                    {% endif %}
+                {% endif %}
+                {% if not request.user.id == account.id %}
+                    <a class="miniNavBtn" href="">Start chat</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}       
         
-        <a class="miniNavBtn" href="">Ban</a>
-        <a class="miniNavBtn" href="">Start chat</a>
     </div>
 </header>
 
@@ -28,7 +63,15 @@
     <div class="wrapper profileContainer">
         <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
         <div class="container">
-            <h2 class="title">{{ account.username }} ({{ account.profile.warnings }} warnings)</h2>
+            {% if perms.users.view_profile %}
+                {% if account.profile.is_banned %}
+                <h2 class="title"><s>{{ account.username }} ({{ account.profile.warnings }} warnings)</s></h2>
+                {% else %}
+                    <h2 class="title">{{ account.username }} ({{ account.profile.warnings }} warnings)</h2>
+                {% endif %}
+            {% else %}
+                <h2 class="title">{{ account.username }}</h2>
+            {% endif %}
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>

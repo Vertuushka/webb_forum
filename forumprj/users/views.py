@@ -70,4 +70,18 @@ def profile_warnings(request, id):
     }
     return render(request, 'profile.html', context)
 
+def profile_ban(request, id):
+    account = User.objects.get(id=id)
+    if request.user.has_perm('users.can_change_profile'):
+        account.profile.is_banned = True
+        account.profile.save()
+    return redirect('profile_view', account.id)
+
+def profile_unban(request, id):
+    account = User.objects.get(id=id)
+    if request.user.has_perm('users.can_change_profile'):
+        account.profile.is_banned = False
+        account.profile.save()
+    return redirect('profile_view', account.id)
+
 

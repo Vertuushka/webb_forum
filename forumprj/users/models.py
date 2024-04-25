@@ -9,7 +9,7 @@ class Profile(models.Model):
     profile_picture = models.CharField(max_length=225, null=True, blank=True    )
     warnings = models.SmallIntegerField(default=0)
     is_banned = models.BooleanField(default=False)
-    theme = models.SmallIntegerField(default=0)
+    
 
     def __str__(self):
         return self.user.username
@@ -23,3 +23,10 @@ class Warnings_history(models.Model):
 
     def __str__(self):
         return f'{self.warned_by.username} warning to {self.user.username}'
+    
+    
+class Settings(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    view_account = models.BooleanField(default=True)
+    allow_messages = models.BooleanField(default=True)
+    theme = models.SmallIntegerField(default=0)
