@@ -50,7 +50,7 @@
                     <span class="text">Bookmarks</span>
                 </a>
                 {% if perms.moderation.view_report %}
-                <a class="wrapper navBtn" href="">
+                <a class="wrapper navBtn" href="{% url 'moderation_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
                     <span class="text">Tools</span>
                 </a>

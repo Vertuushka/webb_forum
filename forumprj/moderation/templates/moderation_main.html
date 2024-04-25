@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>active reports:</p>
+    {% for report in active_reports %}
+    <p>Reported by: {{ report.reporter }}</p>
+    <p>Reported for message in: 
+        <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">{{ report.content.thread.title }}</a>
+    </p>
+    {% if report.assigned %}
+        <p>Assigned to: {{report.assigned}}</p>
+    {% endif %}
+    <p>{{ report.time_created|date:"d/m/Y H:i" }}</p>
+    {% endfor %}
+    <p>closed reports (only last 50 available):</p>
+    {% for report in closed_reports %}
+    <p>Reported by: {{ report.reporter }}</p>
+    <p>Reported for message in: 
+        <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">{{ report.content.thread.title }}</a>
+    </p>
+    {% if report.assigned %}
+        <p>Assigned to: {{report.assigned}}</p>
+    {% endif %}
+    <p>{{ report.time_created|date:"d/m/Y H:i" }}</p>
+    {% if report.is_declined %}
+    <p>declined by {{ report.closed_by }}</p>
+    {% else %}
+    <p>resolved by {{ report.closed_by }}</p>
+    {% endif %}
+    <p>{{ report.time_changed|date:"d/m/Y H:i" }}</p>
+    {% endfor %}
+</body>
+</html>
