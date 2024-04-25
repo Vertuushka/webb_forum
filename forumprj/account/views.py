@@ -3,7 +3,7 @@ from . forms import *
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-# from users.models import Profile
+from users.models import Profile
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -39,12 +39,12 @@ def create_user(request):
         form = SignupUserForm(request.POST)
         if form.is_valid():
             form.save()
-            # username = form.cleaned_data['username']
-            # newuser = User.objects.get(username=username)
+            username = form.cleaned_data['username']
+            newuser = User.objects.get(username=username)
             # newuser.first_name = username
             # newuser.save()
-            # newProfile = Profile.objects.create(user=newuser, profile_picture="")
-            # newProfile.save()
+            newProfile = Profile.objects.create(user=newuser)
+            newProfile.save()
             return redirect('login_user')
     else:
         form = SignupUserForm()

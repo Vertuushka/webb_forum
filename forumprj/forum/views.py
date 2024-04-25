@@ -1,5 +1,6 @@
+from django.utils.text import slugify
 from django.shortcuts import render, redirect
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Count
 from . models import *
 # from users.models import Profile
 
@@ -19,20 +20,12 @@ def forum_main(request):
         context['results'] = results
     else:
         nodes = Node.objects.all()
-        threads = Thread.objects.all()
         tree = build_nodes_tree(nodes)
         last_threads = []
-        last_msgs_unsorted = []
         for node in nodes:
-            threads_in_node = Thread.objects.filter(node=node, is_visible=True)
-            if threads_in_node:
-                for thread in threads_in_node:
-                    msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created')[0]
-                    last_msgs_unsorted.append(msg)
-        last_msgs = sorted(last_msgs_unsorted, key=lambda x: x.time_created, reverse=True)
-        for msg in last_msgs:
-            last_threads.append(msg.thread)
-        
+            threads = Thread.objects.filter(node=node, is_visible=True).annotate(
+            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3]
+            last_threads.extend(threads)
         context = {
             'tree':tree,
             'threads':threads,
@@ -49,38 +42,41 @@ def build_nodes_tree(nodes, parent=None):
     return tree
 
 def section(request, section):
-    node = Node.objects.get(name = section)
+    section = section.replace('-', ' ')
+    # print(section)
+    node = Node.objects.get(name__iexact = section)
     threads_in_node = Thread.objects.filter(node=node)
-    last_msgs_unordered = []
     threads = []
     for thread in threads_in_node:
-        msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created')[0]
-        last_msgs_unordered.append(msg)
-    last_msgs = sorted(last_msgs_unordered, key=lambda x: x.time_created, reverse=True)
-    for msg in last_msgs:
-        threads.append(msg.thread)
+        last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
+        if last_msg:
+            threads.append((thread, last_msg))
     context = {
         "node": node,
-        "threads": zip(threads, last_msgs)
+        "threads": threads
     }
     return render(request, "forum_section.html", context)
 
-def thread(request, section, thread):
-    try:
-        _section = Node.objects.get(name=section)
-        _thread = Thread.objects.get(title=thread, node=_section)
+def thread(request, section, thread, thread_id):
+    section = section.replace('-', ' ')
+    thread = thread.replace('-', ' ')
+    _thread = Thread.objects.get(id=thread_id)
+    try: 
+        _section = Node.objects.get(name__iexact=section)
+        _magic = Thread.objects.get(title__iexact=thread)
     except:
-        try:
-            _thread = Thread.objects.get(title=thread)
-        except:
-            return redirect('error_page')
-        else:
-            return redirect('thread', _thread.node.name, _thread.title)
+        return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
     else:
-        msgs = Message.objects.filter(thread=_thread).order_by('time_created')
-        print(msgs)
-        context = {
-            'thread':_thread,
-            'messages': msgs
-        }
-        return render(request, 'forum_thread.html', context)
+        if _thread.node != _section or not _magic:
+            return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+
+    msgs = Message.objects.filter(thread=_thread).order_by('time_created')
+    # print(msgs)
+    context = {
+        'thread':_thread,
+        'messages': msgs
+    }
+    return render(request, 'forum_thread.html', context)
+
+def main_redirecter(request):
+    return redirect('forum_main')
