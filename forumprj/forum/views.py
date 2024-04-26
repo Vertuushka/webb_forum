@@ -42,19 +42,22 @@ def build_nodes_tree(nodes, parent=None):
     return tree
 
 def section(request, section):
+    context = {}
     section = section.replace('-', ' ')
-    # print(section)
     node = Node.objects.get(name__iexact = section)
+    try:
+        child_nodes = Node.objects.filter(parent=node)
+        context["child_nodes"] = child_nodes
+    except:
+        context["child_nodes"] = False
     threads_in_node = Thread.objects.filter(node=node)
     threads = []
     for thread in threads_in_node:
         last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
         if last_msg:
             threads.append((thread, last_msg))
-    context = {
-        "node": node,
-        "threads": threads
-    }
+    context ["node"] = node
+    context ["threads"] = threads
     return render(request, "forum_section.html", context)
 
 def thread(request, section, thread, thread_id):
