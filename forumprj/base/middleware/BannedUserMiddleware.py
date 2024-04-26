@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import resolve
 
-class RedirectMiddleware:
+class BannedUserMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 

@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'base.custom_middleware.RedirectMiddleware'
+    'base.middleware.BannedUserMiddleware.BannedUserMiddleware'
 ]
 
 ROOT_URLCONF = 'forumprj.urls'

@@ -1,3 +1,4 @@
 *.pyc
 forumprj/db.sqlite3
 *.pyc
+*.pyc
