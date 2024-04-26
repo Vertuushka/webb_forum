@@ -8,6 +8,7 @@
 <body>
     <p>active reports:</p>
     {% for report in active_reports %}
+    <!-- TODO: add links to everything -->
     <p>Reported by: {{ report.reporter }}</p>
     <p>Reported for message in: 
         <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">{{ report.content.thread.title }}</a>

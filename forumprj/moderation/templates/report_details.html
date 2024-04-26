@@ -6,17 +6,22 @@
     <title>Document</title>
 </head>
 <body>
-    <p>{{ report.content.user.username }}'s message in {{ report.content.thread.title }}</p>
+    <p><a href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>'s message in {{ report.content.thread.title }}</p>
     <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
     <p>Content: <br> {{ report.content.message }} </p>
-    <p>Reported by {{ report.reporter.username }} </p>
+    <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">Go to this message</a>
+    <p>Reported by 
+        <a href="{% url 'profile_view' report.reporter.id %}">{{ report.reporter.username }}</a>
+    </p>
     <img src="{{ media_url }}{{ report.reporter.profile.profile_picture }}" alt="">
     <p>{{ report.time_created }}</p>
     {% if report.assigned %}
-        <p>Assigned to {{ report.assigned.username }}</p>
+        <p>Assigned to 
+            <a href="{% url 'profile_view' report.assigned.id %}">{{ report.assigned.username }}</a></p>
     {% endif %}
     {% if report.is_closed %}
-        <p>Closed by {{ report.closed_by.username }}
+        <p>Closed by 
+            <a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>
             {% if report.is_declined %}
                 (declined)
             {% else %}
