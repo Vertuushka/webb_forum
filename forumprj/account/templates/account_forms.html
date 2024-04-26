@@ -38,7 +38,7 @@
         </header>
 
         <div class="container canvas center">
-            <form class="center" action="{% url 'create_user' %}" method="post">
+            <form class="center" action="{% url 'login_user' %}" method="post">
                 {% csrf_token %}
                 <div class="wrapper">
                     <img class="formInputIcon" src="{% static 'assets/icon_20_person.svg' %}" alt="">

@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'account',
     'forum',
     'base',
-    'users',
-    'moderation'
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -53,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'base.middleware.BannedUserMiddleware.BannedUserMiddleware'
+    'base.custom_middleware.RedirectMiddleware'
 ]
 
 ROOT_URLCONF = 'forumprj.urls'
