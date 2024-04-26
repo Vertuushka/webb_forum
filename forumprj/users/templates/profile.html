@@ -47,11 +47,11 @@
             {% for warn in warnings %}
                 <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}" class="container profileItemCard">
                     <div class="wrapper profileItemCardHeader">
-                        <p class="meta">Warned by: {{ warn.warned_by }}</p>
+                        <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</span></p>
                         <p class="meta">{{ warn.time_warned }}</p>
                     </div>
 
-                    <p class="text">{{ warn.content.thread.title }}</p>
+                    <p class="text">{{ warn.details }}</p>
                 </a>
 
             {% endfor %}
