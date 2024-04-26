@@ -49,10 +49,12 @@
                     <img class="navBtnIcon" src="{% static 'assets/icon_bookmarks.svg' %}" alt="">
                     <span class="text">Bookmarks</span>
                 </a>
-                <a class="wrapper navBtn" href="">
+                {% if perms.moderation.view_report %}
+                <a class="wrapper navBtn" href="{% url 'moderation_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
                     <span class="text">Tools</span>
                 </a>
+                {% endif %}
             </div>
 
             <div class="container navBtnContainer" id="navConOptions">

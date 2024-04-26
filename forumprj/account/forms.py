@@ -10,7 +10,7 @@ class SignupUserForm(UserCreationForm):
             })
 
     class Meta(UserCreationForm.Meta):
-        fields = ['username', 'password1', 'password2', 'email']
+        fields = ['username', 'email', 'password1', 'password2']
 
 class LoginUserForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

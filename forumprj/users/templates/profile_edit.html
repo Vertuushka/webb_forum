@@ -17,7 +17,7 @@
     </div>
 </header>
 
-<form class="container canvas" action="{% url 'profile_edit' user.id %}" method="post" enctype="multipart/form-data">
+<form class="container canvas" action="{% url 'profile_edit' account.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="wrapper profileInfoContainer">
         <div class="container profileInfoContainerItem">

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>active reports:</p>
+    {% for report in active_reports %}
+    <p>Message in <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">{{ report.content.thread.title }}</a></p>
+    <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+    <p>Reported by: <a href="{% url 'profile_view' report.reporter.id %}">{{ report.reporter }}</a></p>
+    <img src="{{  media_url }}{{ report.reporter.profile.profile_picture }}" alt="">
+    {% if report.assigned %}
+        <p>Assigned to: <a href="{% url 'profile_view' report.assigned.id %}">{{report.assigned}}</a></p>
+    {% endif %}
+    <p>{{ report.time_created|date:"d/m/Y H:i" }}</p>
+    {% endfor %}
+    <p>closed reports (only last 50 available):</p>
+
+    {% for report in closed_reports %}
+    <p>Message in <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">{{ report.content.thread.title }}</a></p>
+    <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+    <p>Reported by: <a href="{% url 'profile_view' report.reporter.id %}">{{ report.reporter }}</a></p>
+    <img src="{{  media_url }}{{ report.reporter.profile.profile_picture }}" alt="">    
+    <p>{{ report.time_created|date:"d/m/Y H:i" }}</p>
+    {% if report.is_declined %}
+    <p>declined by <a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by }}</a> </p>
+    {% else %}
+    <p>resolved by <a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by }}</a></p>
+    {% endif %}
+    <p>{{ report.time_changed|date:"d/m/Y H:i" }}</p>
+    {% endfor %}
+</body>
+</html>

@@ -41,12 +41,11 @@ def create_user(request):
             form.save()
             username = form.cleaned_data['username']
             newuser = User.objects.get(username=username)
-            # newuser.first_name = username
-            # newuser.save()
             newProfile = Profile.objects.create(user=newuser)
-            newProfile.save()
+            newProfile.save()   
             return redirect('login_user')
     else:
         form = SignupUserForm()
     context = {'form':form}
-    return render(request, "account_forms.html", context)
+    return render(request, 'account_forms.html', context)
+
