@@ -35,6 +35,16 @@
     border-left: none;
 }
 
+.themeCardProfileCon {
+    gap: 4px;
+}
+
+.themeCardSectionProfilePicture {
+    width: 20px;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+}
+
 .forumCardProfilePicture {
     width: 48px;
     aspect-ratio: 1/1;
