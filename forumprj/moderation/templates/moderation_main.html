@@ -10,7 +10,7 @@
     <p>Active reports:</p>
     {% if active_reports %}
         {% for report in active_reports %}
-            <p>Post in thread '{{ report.content.thread.title }}'</p>
+            <a href="{% url 'report_details' report.id %}">Post in thread '{{ report.content.thread.title }}'</a>
             <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
             <p>{{ report.content.user.username }}</p>
             <p>{{ report.time_created|date:"d/m/Y - H:i" }}</p>
@@ -26,7 +26,7 @@
     <p>Closed reports:</p>
     {% if closed_reports %}
         {% for report in closed_reports %}
-            <p>Post in thread '{{ report.content.thread.title }}'</p>
+            <a href="{% url 'report_details' report.id %}">Post in thread '{{ report.content.thread.title }}'</a>
             <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
             <p>{{ report.content.user.username }}</p>
             <p>{{ report.time_created|date:"d/m/Y - H:i" }}</p>
@@ -37,10 +37,6 @@
             {% else %}
                 <p>Rejected by {{ report.closed_by }}</p>
             {% endif %}
-            <!-- {% if report.is_notified %}
-                <p>The follow notification was sent:</p>
-                <p>{{ report.notification }}</p>
-            {% endif %} -->
         {% endfor %}
     {% endif %}
 </body>

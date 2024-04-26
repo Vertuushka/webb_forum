@@ -16,3 +16,11 @@ def moderation_main(request):
         "closed_reports":closed_reports
     }
     return render(request, 'moderation_main.html', context)
+
+def report_details(request, id):
+    try:
+        report = Report.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
+    context = {"report":report}
+    return render(request, 'report_details.html', context)

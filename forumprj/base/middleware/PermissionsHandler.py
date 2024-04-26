@@ -1,21 +1,19 @@
-# from django.shortcuts import render
-# from django.urls import reverse
+from django.shortcuts import render
+from django.urls import reverse
 
-# class PermissionMiddleware:
-#     def __init__(self, get_response):
-#         self.get_response = get_response
-#         self.moderator_urls = [
-#             '/protected/url1/',
-#             '/protected/url2/',
-#         ]
+class PermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.moderator_urls = [
+            '/moderation/',
+        ]
 
-#     def __call__(self, request):
-#         response = self.get_response(request)
-#         return response
+    def __call__(self, request):
+        response = self.get_response(request)
+        return response
 
-#     def process_view(self, request, view_func, view_args, view_kwargs):
-#         if request.path in self.protected_urls:
-#             if not request.user.has_perm('app.permission_required'):
-#                 # Если нет, перенаправляем на страницу ошибки
-#                 return HttpResponseRedirect(reverse('error_page'))
-#         return None
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        if any(request.path.startswith(url) for url in self.moderator_urls):
+            if not (request.user.is_staff or request.user.groups.filter(name='Moderators').exists()):
+                return render(request, 'error.html')
+        return None
