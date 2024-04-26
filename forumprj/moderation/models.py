@@ -7,6 +7,7 @@ from datetime import datetime
 class Report(models.Model):
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.ForeignKey(Message, on_delete=models.SET_NULL, null=True)
+    reason = models.TextField()
     is_closed = models.BooleanField(default=False)
     is_declined = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)

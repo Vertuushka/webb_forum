@@ -13,3 +13,13 @@ def moderation_main(request):
         return render(request, 'moderation_main.html', context)
     else:
         return render(request, 'error.html')
+    
+def moderation_report_details(request, id):
+    if request.user.has_perm('user.can_view_reports'):
+        report = Report.objects.get(id=id)
+        context = {
+            "report":report
+        }
+        return render(request, 'report_details.html', context)
+    else:
+        return render(request, 'error.html')

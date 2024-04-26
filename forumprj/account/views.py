@@ -48,3 +48,4 @@ def create_user(request):
         form = SignupUserForm()
     context = {'form':form}
     return render(request, 'account_forms.html', context)
+

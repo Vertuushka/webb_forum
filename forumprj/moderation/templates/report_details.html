@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>{{ report.content.user.username }}'s message in {{ report.content.thread.title }}</p>
+    <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+    <p>Content: <br> {{ report.content.message }} </p>
+    <p>Reported by {{ report.reporter.username }} </p>
+    <img src="{{ media_url }}{{ report.reporter.profile.profile_picture }}" alt="">
+    <p>{{ report.time_created }}</p>
+    {% if report.assigned %}
+        <p>Assigned to {{ report.assigned.username }}</p>
+    {% endif %}
+    {% if report.is_closed %}
+        <p>Closed by {{ report.closed_by.username }}
+            {% if report.is_declined %}
+                (declined)
+            {% else %}
+                (resolved)
+            {% endif %}
+        </p>
+        <img src="{{ media_url }}{{ report.closed_by.profile.profile_picture }}" alt="">
+        <p>{{ report.time_changed }}</p>
+    {% else %}
+        <p>placeholder for form</p>
+    {% endif %}
+</body>
+</html>
