@@ -65,10 +65,6 @@ body {
     font-size: 12px;
 }
 
-.meta_action {
-    text-decoration: underline;
-}
-
 .activeLink {
     text-decoration: underline;
     font-size: 14px;
@@ -134,11 +130,10 @@ nav {
     width: 38px;
     aspect-ratio: 1/1;
 
-    /* border-radius: 48px; */
-    border-radius: 100%;
+    border-radius: 48px;
     border: 1px solid var(--border);
 
-    /* background-color: var(--action); */
+    background-color: var(--action);
 }
 
 /* Canvas */
