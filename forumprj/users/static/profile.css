@@ -82,6 +82,7 @@
     justify-content: space-between;
 }
 
+
 @media only screen and (max-width: 512px) {
     .profileInfoContainer {
         grid-template-columns: 1fr;
