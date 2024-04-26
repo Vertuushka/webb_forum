@@ -1,19 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>{{node.name}}</h1>
+{% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
+{% endblock %}
+{% block content %}
+    <header>
+        <div class="wrapper">
+            <h2 class="title">Forum: {{node.name}}</h2>
+
+            <form action="{% url 'forum_main' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="search" id="">
+                <input type="checkbox" name="content_type" id="" value="threads">
+                <input type="checkbox" name="content_type" id="" value="members">
+            </form>
+        </div>
+    </header>
 
     {% for thread, message in threads %}
-        <img src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
-        <p>Title: {{thread}}</p>
-        <p>Author: {{ thread.user.username }}</p>
-        <p style="color: gray;">{{ message.time_created|date:"H:i - d/m/Y" }}</p>
-        <p>Messages in thread: {{ thread.msg_amount }}</p>
+
+        <div class="container">
+            <div class="wrapper">
+                <div class="wrapper">
+                    <img src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
+                    <p>Author: {{ thread.user.username }}</p>
+                </div>
+                <p>{{ message.time_created|date:"H:i - d/m/Y" }}</p>
+            </div>
+            <p>Title: {{thread}}</p>
+            <p>Messages in thread: {{ thread.msg_amount }}</p>
+        </div>
+
+        <!-- copy  -->
+        <div class="container forumCard">
+            <div class="container forumCardHeader">
+                <a href="" class="title">{{ node.name }}</a>
+            </div>
+
+            {% for thread in last_threads %}
+                {% if thread.node == item.node %}   
+                    <div class="wrapper themeCard">
+                        <a href="" class="container themeCardSection">
+                            <p class="meta">Theme</p>
+                            <p class="text">{{thread}}</p>
+                        </a>
+                        
+                        <a href="" class="container themeCardSection"">
+                            <p class="meta">Messages</p>
+                            <p class="text">{{ thread.msg_amount }}</p>
+                        </a>
+
+                        <a href="" class="container themeCardSection">
+                            <p class="meta">Created by</p>
+                            <p class="text">{{ thread.user.username }}</p>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
     {% endfor %}
-</body>
-</html>
+{% endblock %}

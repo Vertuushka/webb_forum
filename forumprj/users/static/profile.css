@@ -6,9 +6,6 @@
     aspect-ratio: 1/1;
     width: 96px;
     border-radius: 96px;
-    border: 1px solid var(--border);
-
-    background-color: var(--action);
 }
 
 .profileContainer {
@@ -27,7 +24,6 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    /* gap: 1px; */
 }
 
 .profileInfoContainerItem {
