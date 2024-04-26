@@ -1,34 +1,17 @@
-{% extends 'base.html' %}
-{% block style %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'forum.css' %}">
-{% endblock %}
-{% block content %}
-    <header>
-        <div class="wrapper">
-            <h2 class="title">Forum: {{ thread.title }}</h2>
-
-            <form action="{% url 'forum_main' %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="search" id="">
-                <input type="checkbox" name="content_type" id="" value="threads">
-                <input type="checkbox" name="content_type" id="" value="members">
-            </form>
-        </div>
-    </header>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{ thread.title }}
     {% for msg in messages %}
-
-        <div class="container forumThreadCard">
-            <div class="wrapper forumThreadCardHeader">
-                <img class="forumCardProfilePicture" src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
-                <div class="container forumCardProfileMeta">
-                    <p class="text">{{ msg.user.username }}</p>
-                    <p class="meta">{{ msg.time_created }}</p>
-                </div>
-            </div>
-            <p class="forumThreadCardMessage text">{{ msg.message }}</p>
-        </div>
-
+        <p>{{ msg.user.username }}</p>
+        <img src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
+        <p>{{ msg.message }}</p>
+        <p>Time: {{ msg.time_created }}</p>
     {% endfor %}
-{% endblock %}
+</body>
+</html>
