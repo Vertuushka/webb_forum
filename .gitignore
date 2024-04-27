@@ -32,3 +32,8 @@ forumprj/forumprj/__pycache__/settings.cpython-311.pyc
 forumprj/forumprj/__pycache__/urls.cpython-311.pyc
 forumprj/forumprj/__pycache__/wsgi.cpython-311.pyc
 forumprj/forumprj/__pycache__/settings.cpython-311.pyc
+*.pyc
+forumprj/forumprj/__pycache__/settings.cpython-311.pyc
+forumprj/forumprj/__pycache__/urls.cpython-311.pyc
+forumprj/forumprj/__pycache__/settings.cpython-311.pyc
+forumprj/forumprj/__pycache__/urls.cpython-311.pyc

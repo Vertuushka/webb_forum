@@ -9,18 +9,50 @@
 
     <div class="wrapper miniNav">
         {% if profile_content %}
-            <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+                <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+                {% if account.id == request.user.id or perms.users.view_warnings_history %}
+                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+                {% endif %}
+                {% if perms.user.change_user %}
+                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
+                    {% if account.profile.is_banned %}
+                    Unban
+                    {% else %}
+                    Ban
+                    {% endif %}
+                </a>
+                {% endif %}
+                <a class="miniNavBtn" href="">Start chat</a>
         {% else %}
-            <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+            {% if warnings_history %}
+                <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                {% if perms.user.change_user %}
+                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
+                    {% if account.profile.is_banned %}
+                    Unban
+                    {% else %}
+                    Ban
+                    {% endif %}</a>
+                {% endif %}
+                <a class="miniNavBtn" href="">Start chat</a>
+            {% else %}
+                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                {% if account.id == request.user.id or perms.users.view_warnings_history %}
+                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+                {% endif %}
+                {% if perms.user.change_user %}
+                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
+                    {% if account.profile.is_banned %}
+                    Unban
+                    {% else %}
+                    Ban
+                    {% endif %}
+                </a>
+                {% endif %}
+                <a class="miniNavBtn" href="">Start chat</a>
+            {% endif %}
         {% endif %}
-        {% if warnings_history %}
-            <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
-        {% else %}
-            <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
-        {% endif %}
-        
-        <a class="miniNavBtn" href="">Ban</a>
-        <a class="miniNavBtn" href="">Start chat</a>
     </div>
 </header>
 
@@ -29,7 +61,11 @@
     <div class="wrapper profileContainer">
         <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
         <div class="container">
-            <h2 class="title">{{ account.username }} ({{ account.profile.warnings }} warnings)</h2>
+            <h2 class="title">{{ account.username }} 
+                {% if perms.users.view_profile %}
+                ({{ account.profile.warnings }} warnings)
+                {% endif %}
+            </h2>
             <p class="meta">{{ account.last_name }}</p>
         </div>
     </div>
@@ -78,7 +114,7 @@
                 </div>
             </div>
 
-            {% if request.user.id == account.id %}
+            {% if request.user.id == account.id or perms.users.change_profile %}
                 <a href="{% url 'profile_edit' account.id %}" class="profileActionBtn">Edit</a>
             {% endif %}
         {% endif %}

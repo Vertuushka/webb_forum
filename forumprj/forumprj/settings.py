@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'base.middleware.BannedUserMiddleware.BannedUserMiddleware',
-    'base.middleware.PermissionsHandler.PermissionMiddleware'
+    'base.middleware.PermissionsHandler.PermissionsHandler'
 ]
 
 ROOT_URLCONF = 'forumprj.urls'

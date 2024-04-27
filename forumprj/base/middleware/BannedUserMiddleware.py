@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 class BannedUserMiddleware:
@@ -8,6 +8,6 @@ class BannedUserMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         path = request.path_info
-        if request.user.is_authenticated and request.user.profile.is_banned and not path == ('/error/'):
+        if request.user.is_authenticated and request.user.profile.is_banned and not path.startswith('/error'):
             return render(request, 'error.html')
         return response
