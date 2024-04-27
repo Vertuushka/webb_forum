@@ -5,8 +5,9 @@ from datetime import datetime
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, null=True, blank=True)
     info = models.CharField(max_length=200, null=True, blank=True)
-    profile_picture = models.CharField(max_length=225, null=True, blank=True    )
+    profile_picture = models.CharField(max_length=225, null=True, blank=True)
     warnings = models.SmallIntegerField(default=0)
     is_banned = models.BooleanField(default=False)
     theme = models.SmallIntegerField(default=0)
