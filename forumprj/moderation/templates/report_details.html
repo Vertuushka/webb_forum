@@ -14,6 +14,7 @@
     <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
     <p>{{ report.content.message }}</p>
     <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}">Go to content</a>
+    <p>Reason: {{ report.reason }}</p>
     <p>Created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
     <p>Status: 
         {% if report.is_closed %}
@@ -22,18 +23,38 @@
             {% else %}
                 rejected (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
             {% endif %}
-        {% else %}
-            {% if report.assigned_to %}
-                Assigned (<a href="{% url 'profile_view' report.assigned_to.id %}">{{ report.assigned_to.username }}</a>)
-            {% else %}
-                Open
-            {% endif %}
         {% endif %}
     </p>
-    <p>Updated: {{ report.time_changed }}</p>
     {% if report.is_notified %}
         <p>The follow notification was sent:</p>
         <p>{{ report.notification }}</p>
     {% endif %}
+    
+    {% if not report.is_closed %}
+        <form action="{% url 'report_details' report.id %}" method="post">
+        {% csrf_token %}
+        <label for=""><input type="radio" name="status" id="" value="open" checked> Open</label> <br>
+        <label for=""><input type="radio" name="status" id="" value="resolve">Resolve</label> <br>
+        <label for=""><input type="radio" name="status" id="" value="reject">Reject</label> <br>
+        Assign to:
+        <select name="assigned_to" id="">
+            <option value="">---</option>
+            {% for moderator in moderators %}
+            {% if report.assigned_to and report.assigned_to == moderator %}
+                <option value="{{ moderator.username }}" selected>{{ moderator.username }}</option>
+            {% else %}
+                <option value="{{ moderator.username }}">{{ moderator.username }}</option>
+            {% endif %}
+            {% endfor %}
+        </select> <br>
+<!-- if is_notified is checked then notification input should be unlocked by deleting readonly attribute. It means is_notified should toggle readonly attribute for the input below -->
+        <label for=""><input type="checkbox" name="is_notified" id="">Send notification:</label> <br>
+        <label for="">Notification: <input type="text" name="notification" id="" readonly></label>
+            
+        <input type="submit" value="Save">
+        </form>
+    {% endif %}
+
+    <p>Updated: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
 </body>
 </html>
