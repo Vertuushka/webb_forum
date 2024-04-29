@@ -52,7 +52,7 @@
                 {% if perms.moderation.view_reports %}
                 <a class="wrapper navBtn" href="{% url 'moderation_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
-                    <span class="text">Tools</span>
+                    <span class="text">Reports</span>
                 </a>
                 {% endif %}
                 {% if request.user.is_staff %}
@@ -64,7 +64,7 @@
             </div>
 
             <div class="container navBtnContainer" id="navConOptions">
-                <a class="wrapper navBtn" href="">
+                <a class="wrapper navBtn" href="{% url 'profile_settings' request.user.id %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_settings.svg' %}" alt="">
                     <span class="text">Settings</span>
                 </a>

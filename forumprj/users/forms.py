@@ -1,4 +1,7 @@
+from typing import Any
 from django.contrib.auth.forms import UserChangeForm
+from django import forms
+from . models import Preference
 
 # Customize a UserCreationForm - remove unused texts
 class UpdateUserInfo(UserChangeForm):
@@ -11,3 +14,8 @@ class UpdateUserInfo(UserChangeForm):
             'last_name': 'forum title'
             }
         help_texts = {'username': None, 'email': None,}
+
+class UserPreferences(forms.ModelForm):
+    class Meta:
+        model = Preference
+        fields = ['color_theme', 'account_visibility', 'private_messages']

@@ -18,7 +18,10 @@ def profile_view(request, id):
     return render(request, "profile.html", dictionary)
 
 def profile_edit(request, id):
-    eUser = User.objects.get(id=id)
+    try:
+        eUser = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
     if request.method == "POST":
         form = UpdateUserInfo(request.POST, instance=eUser)
         if form.is_valid():
@@ -47,7 +50,10 @@ def profile_edit(request, id):
     return render(request, "profile_edit.html", dictionary)
 
 def profile_content(request, id):
-    account = User.objects.get(id=id)
+    try:
+        account = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
     content = Message.objects.filter(user=account).order_by('-time_created')
     context = {
         'account':account,
@@ -57,7 +63,10 @@ def profile_content(request, id):
     return render(request, 'profile.html', context)
 
 def profile_warnings(request, id):
-    account = User.objects.get(id=id)
+    try:
+        account = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
     warnings = Warnings_history.objects.filter(user=account).order_by('-time_warned')
     context = {
         'account': account,
@@ -67,9 +76,30 @@ def profile_warnings(request, id):
     return render(request, 'profile.html', context)
 
 def profile_toggle_ban(request, id):
-    account = User.objects.get(id=id)
+    try:
+        account = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
     account.profile.is_banned = False if account.profile.is_banned else True
     account.profile.save()
     return redirect('profile_view', account.id)
 
+def profile_settings(request, id):
+    try:
+        account = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
+    if request.user != account:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        form = UserPreferences(request.POST, instance=account.preference)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view', account.id)
+    form = UserPreferences(instance=account.preference)
+    context = {
+        "account": account,
+        "form": form
+    }
+    return render(request, 'profile_settings.html', context)
 
