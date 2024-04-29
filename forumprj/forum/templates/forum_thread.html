@@ -31,7 +31,7 @@
             {% if request.user.is_authenticated %}
                 <p style="color: #B4FF1F;">Report</p>
                 <!-- should not be visible until user clicks report button -->
-                <form action="">
+                <form action="{% url 'report_msg' msg.id %}" method="post">
                     {% csrf_token %}
                     <input type="text" name="reason" id="">
                     <input type="hidden" name="message" id="" value="{{ msg.id }}">

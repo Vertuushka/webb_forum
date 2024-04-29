@@ -2,6 +2,7 @@ from django.utils.text import slugify
 from django.shortcuts import render, redirect
 from django.db.models import Max, Min, Count
 from . models import *
+from moderation.models import Report
 from datetime import datetime
 # from users.models import Profile
 
@@ -139,3 +140,20 @@ def msg_redirect(request, section, thread, thread_id, msg_id):
         'messages': msgs
     }
     return render(request, 'forum_thread.html', context)
+
+def report_msg(request, msg_id):
+    try:
+        msg = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            reason = request.POST.get('reason')
+            new_report = Report.objects.create(
+                content=msg, 
+                user=request.user, 
+                reason=reason,
+                time_changed=datetime.now())
+            new_report.save()
+            return redirect('thread', slugify(msg.thread.node.name), slugify(msg.thread.title), msg.thread.id)
+    return render(request, 'error.html')

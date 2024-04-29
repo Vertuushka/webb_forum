@@ -40,3 +40,6 @@ forumprj/forumprj/__pycache__/urls.cpython-311.pyc
 forumprj/forum/__pycache__/models.cpython-311.pyc
 forumprj/forum/__pycache__/urls.cpython-311.pyc
 forumprj/forum/__pycache__/views.cpython-311.pyc
+*.pyc
+forumprj/forum/__pycache__/urls.cpython-311.pyc
+forumprj/forum/__pycache__/views.cpython-311.pyc
