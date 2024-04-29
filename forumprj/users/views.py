@@ -8,7 +8,10 @@ from . models import *
 from forum.models import *
 
 def profile_view(request, id):
-    account = User.objects.get(id=id)
+    try:
+        account = User.objects.get(id=id)
+    except:
+        return render(request, 'error.html')
     dictionary = {
         "account": account
     }

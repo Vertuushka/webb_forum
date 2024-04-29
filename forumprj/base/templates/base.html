@@ -55,6 +55,12 @@
                     <span class="text">Tools</span>
                 </a>
                 {% endif %}
+                {% if request.user.is_staff %}
+                <a class="wrapper navBtn" href="{% url 'admin:index' %}">
+                    <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
+                    <span class="text">Admin</span>
+                </a>
+                {% endif %}
             </div>
 
             <div class="container navBtnContainer" id="navConOptions">
