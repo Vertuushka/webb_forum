@@ -17,7 +17,7 @@ def forum_main(request):
             if content_type == "members":
                 results = User.objects.filter(username__icontains=searched)
         else:
-            results = Message.objects.filter(content__icontains=searched)
+            results = Message.objects.filter(message__icontains=searched)
         context['results'] = results
     else:
         nodes = Node.objects.all()
@@ -79,7 +79,13 @@ def thread(request, section, thread, thread_id):
     else:
         if _thread.node != _section or not _magic:
             return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
-
+    if request.method == "POST":
+        new_message = request.POST.get('msg')
+        message = Message.objects.create(thread = _thread, user=request.user, message=new_message)
+        message.save()
+        _thread.msg_amount += 1
+        _thread.save()
+        return redirect('msg_redirect', slugify(_thread.node.name), slugify(_thread.title), _thread.id, message.id)
     msgs = Message.objects.filter(thread=_thread).order_by('time_created')
     # print(msgs)
     context = {
@@ -111,3 +117,25 @@ def create_thread(request, section, section_id):
         'node':node
     }
     return render(request, 'new_thread.html', context)
+
+def msg_redirect(request, section, thread, thread_id, msg_id):
+    section = section.replace('-', ' ')
+    thread = thread.replace('-', ' ')
+    try:
+        _thread = Thread.objects.get(id=thread_id)
+    except: 
+        return render(request, 'error.html')
+    try: 
+        _section = Node.objects.get(name__iexact=section)
+        _magic = Thread.objects.get(title__iexact=thread)
+    except:
+        return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+    else:
+        if _thread.node != _section or not _magic:
+            return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+    msgs = Message.objects.filter(thread=_thread).order_by('time_created')
+    context = {
+        'thread':_thread,
+        'messages': msgs
+    }
+    return render(request, 'forum_thread.html', context)

@@ -19,7 +19,7 @@
 
     {% for msg in messages %}
 
-        <div class="container forumThreadCard">
+        <div class="container forumThreadCard" id="{{ msg.id }}">
             <div class="wrapper forumThreadCardHeader">
                 <img class="forumCardProfilePicture" src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
                 <div class="container forumCardProfileMeta">
@@ -74,4 +74,12 @@
         </div>
 
     {% endfor %}
+    {% if not thread.is_closed and request.user.is_authenticated or perms.forum.change_thread %}
+    <!-- I guess we can draw user's profile picture here -->
+    <form action="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="msg" id="" cols="30" rows="10" placeholder="Your message goes here"></textarea>
+        <input type="submit" value="Send">
+    </form>
+    {% endif %}
 {% endblock %}
