@@ -72,7 +72,7 @@
 
     {% if profile_content %}
         {% for msg in content %}
-            <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}" class="container profileItemCard">
+            <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}" class="container profileItemCard">
                 <p class="meta">Theme</p>
                 <p class="text">{{ msg.thread }}</p>
             </a>
@@ -81,7 +81,7 @@
     {% else %}
         {% if warnings_history %}
             {% for warn in warnings %}
-                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}" class="container profileItemCard">
+                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}" class="container profileItemCard">
                     <div class="wrapper profileItemCardHeader">
                         <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</span></p>
                         <p class="meta">{{ warn.time_warned }}</p>

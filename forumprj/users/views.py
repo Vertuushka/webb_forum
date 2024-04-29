@@ -12,10 +12,18 @@ def profile_view(request, id):
         account = User.objects.get(id=id)
     except:
         return render(request, 'error.html')
-    dictionary = {
+    if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0:
+        dictionary = {
         "account": account
-    }
-    return render(request, "profile.html", dictionary)
+        }
+        return render(request, "profile.html", dictionary)
+    else:
+        if account.preference.account_visibility == 1:
+            if not request.user.is_authenticated:
+                return render(request, 'error.html')
+        elif account.preference.account_visibility == 2:
+            return render(request, 'error.html')
+    
 
 def profile_edit(request, id):
     try:
