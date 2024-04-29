@@ -23,11 +23,54 @@
             <div class="wrapper forumThreadCardHeader">
                 <img class="forumCardProfilePicture" src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
                 <div class="container forumCardProfileMeta">
-                    <p class="text">{{ msg.user.username }}</p>
-                    <p class="meta">{{ msg.time_created }}</p>
+                    <a href="{% url 'profile_view' msg.user.id %}" class="text">{{ msg.user.username }}</a>
+                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                 </div>
             </div>
             <p class="forumThreadCardMessage text">{{ msg.message }}</p>
+            {% if request.user.is_authenticated %}
+                <p style="color: #B4FF1F;">Report</p>
+                <!-- should not be visible until user clicks report button -->
+                <form action="">
+                    {% csrf_token %}
+                    <input type="text" name="reason" id="">
+                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
+                    <input type="submit" value="Report">
+                </form>
+            {% endif %}
+            {% if perms.forum.change_message %}
+                <p style="color: #B4FF1F;">Delete</p>
+                <!-- should not be visible until user clicks delete button -->
+                <form action="">
+                    {% csrf_token %}
+                    <input type="text" name="reason" id="">
+                    <input type="checkbox" name="is_notified" id="">
+                    <input type="text" name="notification" id="">
+                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
+                    <input type="submit" value="Delete">
+                </form>
+
+                <p style="color: #B4FF1F;">Edit</p>
+                <!-- should not be visible until user clicks edit button -->
+                <form action="">
+                    {% csrf_token %}
+                    <textarea name="new_msg" id="" cols="30" rows="5">{{ msg.message }}</textarea>
+                    <input type="checkbox" name="is_notified" id="">
+                    <input type="text" name="notification" id="">
+                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
+                    <input type="submit" value="Save">
+                </form>
+            {% endif %}
+            {% if perms.users.create_warnings_history %}
+                <p style="color: #B4FF1F;">Warn</p>
+                <!-- should not be visible until user clicks warn button -->
+                <form action="">
+                    {% csrf_token %}
+                    <input type="text" name="warning (reason/etc)" id="">
+                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
+                    <input type="submit" value="Warn">
+                </form>
+            {% endif %}
         </div>
 
     {% endfor %}

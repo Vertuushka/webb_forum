@@ -44,7 +44,10 @@ def build_nodes_tree(nodes, parent=None):
 def section(request, section):
     context = {}
     section = section.replace('-', ' ')
-    node = Node.objects.get(name__iexact = section)
+    try:
+        node = Node.objects.get(name__iexact = section)
+    except: 
+        return render(request, 'error.html')
     try:
         child_nodes = Node.objects.filter(parent=node)
         context["child_nodes"] = child_nodes
@@ -63,7 +66,10 @@ def section(request, section):
 def thread(request, section, thread, thread_id):
     section = section.replace('-', ' ')
     thread = thread.replace('-', ' ')
-    _thread = Thread.objects.get(id=thread_id)
+    try:
+        _thread = Thread.objects.get(id=thread_id)
+    except: 
+        return render(request, 'error.html')
     try: 
         _section = Node.objects.get(name__iexact=section)
         _magic = Thread.objects.get(title__iexact=thread)
