@@ -6,8 +6,11 @@ class PermissionsHandler:
         self.get_response = get_response
         self.required_permissions = {
             '/moderation/': 'moderation.view_report',
+            r'/moderation/\d+': 'moderation.view_report',
             r'/profile/\d+/warnings': 'moderation.view_warnings_history',
-            r'/profile/\d+/edit': 'users.change_profile'
+            r'/profile/\d+/edit': 'users.change_profile',
+            r'/\d+/ban': 'users.change_warning_history',
+            r'/\d+/close': 'forum.change_thread'
         }
 
     def __call__(self, request):

@@ -167,7 +167,6 @@ def toggle_close_thread(request, thread_id):
         thread = Thread.objects.get(id=thread_id)
     except:
         return render(request, 'error.html')
-    if request.user.has_perm('forum.change_thread'):
-        thread.is_closed = False if thread.is_closed else True
-        thread.save()
+    thread.is_closed = False if thread.is_closed else True
+    thread.save()
     return redirect('thread', slugify(thread.node.name), slugify(thread.title), thread.id)
