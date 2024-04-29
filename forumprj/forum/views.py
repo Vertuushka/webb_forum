@@ -2,6 +2,7 @@ from django.utils.text import slugify
 from django.shortcuts import render, redirect
 from django.db.models import Max, Min, Count
 from . models import *
+from datetime import datetime
 # from users.models import Profile
 
 def forum_main(request):
@@ -89,3 +90,24 @@ def thread(request, section, thread, thread_id):
 
 def main_redirecter(request):
     return redirect('forum_main')
+
+def create_thread(request, section, section_id):
+    try:
+        node = Node.objects.get(id=section_id)
+        if (node.staff_only and not request.user.is_staff) or (not node.staff_only and not request.user.is_authenticated):
+            return render(request, 'error.html')
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        title = request.POST.get('title')
+        text = request.POST.get('msg')
+        author = request.user
+        new_thread = Thread.objects.create(user=author, title=title, node=node)
+        new_thread.save()
+        first_message = Message.objects.create(thread=new_thread, user=author, message=text)
+        first_message.save()
+        return redirect('thread', slugify(new_thread.node.name), slugify(new_thread.title), new_thread.id)
+    context = {
+        'node':node
+    }
+    return render(request, 'new_thread.html', context)

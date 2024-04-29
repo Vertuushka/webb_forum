@@ -20,8 +20,11 @@
     <div class="container forumCard">
         <div class="container forumCardHeader">
             <a href="" class="title">{{ node.name }}</a>
+            <p>{{ node.description }}</p>
         </div>
-
+        {% if node.staff_only and perms.forum.create_thread or not node.staff_only and request.user.is_authenticated %}
+            <a href="{% url 'create_thread' node.name|slugify node.id %}">Start new thread here.</a>
+        {% endif %}
         {% for thread, message in threads %}
             <div class="wrapper themeCard">
                 <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">

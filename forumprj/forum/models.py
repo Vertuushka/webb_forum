@@ -6,6 +6,8 @@ class Node(models.Model):
     name = models.CharField(max_length=225)
     description = models.TextField(blank=True, default=None, null=True)
     type_question = models.BooleanField(default=False)
+    type_private = models.BooleanField(default=False)
+    staff_only = models.BooleanField(default=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
@@ -18,7 +20,7 @@ class Thread(models.Model):
     is_closed = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
     is_pinned = models.BooleanField(default=False)
-    msg_amount = models.IntegerField(blank=True, null=True)
+    msg_amount = models.IntegerField(blank=True, null=True, default=1)
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):

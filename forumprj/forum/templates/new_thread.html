@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Starting new thread in {{ node.name }} </p>
+    <form action="{% url 'create_thread' node.name|slugify node.id %}" method="post">
+        {% csrf_token %}
+        <label for="">Title: <input type="text" name="title" id="" required></label> <br>
+        <label for="">Message:<textarea name="msg" id="" cols="30" rows="10" placeholder="Start writing your message here" required></textarea></label>
+        <input type="submit" value="create">
+    </form>
+</body>
+</html>
