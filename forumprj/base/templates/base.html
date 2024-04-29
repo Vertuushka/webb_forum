@@ -53,6 +53,13 @@
                 <a class="wrapper navBtn" href="{% url 'moderation_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
                     <span class="text">Reports</span>
+                    {% if reports_amount > 0 %}
+                        {% if assigned_reports > 0 %}
+                            <p>{{assigned_reports}}/{{reports_amount}}</p>
+                        {% else %}
+                            <p>{{reports_amount}}</p>
+                        {% endif %}
+                    {% endif %}
                 </a>
                 {% endif %}
                 {% if request.user.is_staff %}
