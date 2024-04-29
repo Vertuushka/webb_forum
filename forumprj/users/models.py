@@ -25,7 +25,7 @@ class Warnings_history(models.Model):
     def __str__(self):
         return f'{self.warned_by.username} warning to {self.user.username}'
     
-class Preferences(models.Model):
+class Preference(models.Model):
     PROFILE_VISIBILITY = (
         (0, 'Everyone can see profile'),
         (1, 'Only forum members can see profile'),
@@ -46,7 +46,7 @@ class Preferences(models.Model):
     def __str__(self):
         return self.user.username
     
-class Notifications(models.Model):
+class Notification(models.Model):
     NOTIFICATIONS_TYPE = (
         (0, 'warning'),
         (1, 'private_message'),
