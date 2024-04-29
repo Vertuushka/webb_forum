@@ -70,6 +70,8 @@ def thread(request, section, thread, thread_id):
     thread = thread.replace('-', ' ')
     try:
         _thread = Thread.objects.get(id=thread_id)
+        if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
+            return render(request, 'error.html')
     except: 
         return render(request, 'error.html')
     try: 
@@ -124,6 +126,8 @@ def msg_redirect(request, section, thread, thread_id, msg_id):
     thread = thread.replace('-', ' ')
     try:
         _thread = Thread.objects.get(id=thread_id)
+        if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
+            return render(request, 'error.html')
     except: 
         return render(request, 'error.html')
     try: 
@@ -157,3 +161,13 @@ def report_msg(request, msg_id):
             new_report.save()
             return redirect('thread', slugify(msg.thread.node.name), slugify(msg.thread.title), msg.thread.id)
     return render(request, 'error.html')
+
+def toggle_close_thread(request, thread_id):
+    try:
+        thread = Thread.objects.get(id=thread_id)
+    except:
+        return render(request, 'error.html')
+    if request.user.has_perm('forum.change_thread'):
+        thread.is_closed = False if thread.is_closed else True
+        thread.save()
+    return redirect('thread', slugify(thread.node.name), slugify(thread.title), thread.id)

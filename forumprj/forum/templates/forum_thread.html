@@ -6,8 +6,12 @@
 {% block content %}
     <header>
         <div class="wrapper">
+            {% if thread.is_visible %}
             <h2 class="title">Forum: {{ thread.title }}</h2>
-
+            {% endif %}
+            {% if not thread.is_visible and perms.view_thread %}
+            <h2 class="title">Forum: {{ thread.title }} (DELETED)</h2>
+            {% endif %}
             <form action="{% url 'forum_main' %}" method="post">
                 {% csrf_token %}
                 <input type="text" name="search" id="">
@@ -16,7 +20,13 @@
             </form>
         </div>
     </header>
-
+    {% if perms.forum.change_thread %}
+        {% if thread.is_closed %}
+            <a href="{% url 'toggle_close_thread' thread.id %}">Open thread</a>
+        {% else %}
+            <a href="{% url 'toggle_close_thread' thread.id %}">Close thread</a>
+        {% endif %}
+    {% endif %}
     {% for msg in messages %}
 
         <div class="container forumThreadCard" id="{{ msg.id }}">
@@ -34,7 +44,6 @@
                 <form action="{% url 'report_msg' msg.id %}" method="post">
                     {% csrf_token %}
                     <input type="text" name="reason" id="">
-                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
                     <input type="submit" value="Report">
                 </form>
             {% endif %}
@@ -46,7 +55,6 @@
                     <input type="text" name="reason" id="">
                     <input type="checkbox" name="is_notified" id="">
                     <input type="text" name="notification" id="">
-                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
                     <input type="submit" value="Delete">
                 </form>
 
@@ -57,7 +65,6 @@
                     <textarea name="new_msg" id="" cols="30" rows="5">{{ msg.message }}</textarea>
                     <input type="checkbox" name="is_notified" id="">
                     <input type="text" name="notification" id="">
-                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
                     <input type="submit" value="Save">
                 </form>
             {% endif %}

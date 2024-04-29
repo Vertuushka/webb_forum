@@ -11,7 +11,7 @@
         {% if profile_content %}
                 <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
                 {% if account.id == request.user.id or perms.users.view_warnings_history %}
-                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
                 {% endif %}
                 {% if perms.user.change_user and not request.user == account %}
                 <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
@@ -39,7 +39,7 @@
             {% else %}
                 <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
                 {% if account.id == request.user.id or perms.users.view_warnings_history %}
-                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings history</a>
+                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
                 {% endif %}
                 {% if perms.user.change_user and not request.user == account %}
                 <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">

@@ -26,28 +26,52 @@
             <a href="{% url 'create_thread' node.name|slugify node.id %}">Start new thread here.</a>
         {% endif %}
         {% for thread, message in threads %}
-            <div class="wrapper themeCard">
-                <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
-                    <p class="meta">Theme</p>
-                    <p class="text">{{thread}}</p>
-                </a>
-                
-                <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
-                    <div class="wrapper" style="justify-content: space-between;">
-                        <p class="meta">Messages</p>
-                        <p class="meta">{{ message.time_created|date:"d/m/Y - H:i" }}</p>
-                    </div>
-                    <p class="text">{{ thread.msg_amount }}</p>
-                </a>
+            {% if thread.is_visible %}
+                <div class="wrapper themeCard">
+                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
+                        <p class="meta">Theme</p>
+                        <p class="text">{{thread}}</p>
+                    </a>
+                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
+                        <div class="wrapper" style="justify-content: space-between;">
+                            <p class="meta">Messages</p>
+                            <p class="meta">{{ message.time_created|date:"d/m/Y - H:i" }}</p>
+                        </div>
+                        <p class="text">{{ thread.msg_amount }}</p>
+                    </a>
 
-                <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
-                    <p class="meta">Created by</p>
-                    <div class="wrapper themeCardProfileCon">
-                        <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
-                        <p class="text">{{ thread.user.username }}</p>
-                    </div>
-                </a>
-            </div>
+                    <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
+                        <p class="meta">Created by</p>
+                        <div class="wrapper themeCardProfileCon">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
+                            <p class="text">{{ thread.user.username }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+            {% if not thread.is_visible and perms.view_thread %}
+                <div class="wrapper themeCard">
+                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
+                        <p class="meta">Theme</p>
+                        <p class="text">{{thread}} (DELETED)</p>
+                    </a>
+                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
+                        <div class="wrapper" style="justify-content: space-between;">
+                            <p class="meta">Messages</p>
+                            <p class="meta">{{ message.time_created|date:"d/m/Y - H:i" }}</p>
+                        </div>
+                        <p class="text">{{ thread.msg_amount }}</p>
+                    </a>
+
+                    <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
+                        <p class="meta">Created by</p>
+                        <div class="wrapper themeCardProfileCon">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
+                            <p class="text">{{ thread.user.username }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 
