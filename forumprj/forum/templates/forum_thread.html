@@ -43,6 +43,16 @@
                 </div>
             </div>
             <p class="forumThreadCardMessage text">{{ msg.message }}</p>
+            {% if msg.thread.node.type_question %}
+                <p>Upvotes: {{ msg.upvotes }}</p>
+                <p>Upvotes: {{ msg.downvotes }}</p>
+                {% if msg.is_solution %}
+                <p>This post is marked as solution</p>
+                {% endif %}
+                {% if request.user == msg.thread.user or perms.forum.change_message %}
+                <a href="">Mark as solution</a>
+                {% endif %}
+            {% endif %}
             {% if request.user.is_authenticated %}
                 <p style="color: #B4FF1F;">Report</p>
                 <!-- should not be visible until user clicks report button -->
