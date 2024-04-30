@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
 from datetime import datetime
+from base.views import notify_user
 # Create your views here.
 def moderation_main(request):
     try:
@@ -41,6 +42,7 @@ def report_details(request, id):
                     notification = request.POST.get('notification')
                     report.notification = notification
                     report.is_notified = True
+                    notify_user(user=report.user, notification_type='report', reason=report, notification=notification)
                 else:
                     report.is_notified = False
                 

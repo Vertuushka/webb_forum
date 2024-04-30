@@ -41,9 +41,12 @@
                     <img class="navBtnIcon" src="{% static 'assets/icon_messages.svg' %}" alt="">
                     <span class="text">Messages</span>
                 </a>
-                <a class="wrapper navBtn" href="">
+                <a class="wrapper navBtn" href="{% url 'notifications' request.user.id %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_notifications.svg' %}" alt="">
                     <span class="text">Notifications</span>
+                    {% if request.user.profile.active_notifications > 0 %}
+                    <p>{{ request.user.profile.active_notifications }}</p>
+                    {% endif %}
                 </a>
                 <a class="wrapper navBtn" href="">
                     <img class="navBtnIcon" src="{% static 'assets/icon_bookmarks.svg' %}" alt="">

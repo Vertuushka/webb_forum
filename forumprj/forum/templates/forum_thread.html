@@ -26,6 +26,11 @@
         {% else %}
             <a href="{% url 'toggle_close_thread' thread.id %}">Close thread</a>
         {% endif %}
+        {% if thread.is_visible %}
+            <a href="{% url 'toggle_thread_visibility' thread.id %}">Delete thread</a>
+        {% else %}
+            <a href="{% url 'toggle_thread_visibility' thread.id %}">Restore thread</a>
+        {% endif %}
     {% endif %}
     {% for msg in messages %}
 

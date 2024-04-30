@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from forum.models import Message, Thread
 from datetime import datetime
+from moderation.models import Report
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -49,11 +50,12 @@ class Preference(models.Model):
 class Notification(models.Model):
     NOTIFICATIONS_TYPE = (
         (0, 'warning'),
-        (1, 'private_message'),
+        # (1, 'private_message'), unused
         (2, 'report'),
         (3, 'message_delete'),
         (4, 'message_edit'),
-        (5, 'profile_edit')
+        (5, 'profile_edit'),
+        (6, 'thread_delete')
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,6 +63,9 @@ class Notification(models.Model):
     notification = models.TextField()
     message = models.ForeignKey(Message, on_delete=models.SET_NULL, null=True, blank=True)
     thread = models.ForeignKey(Thread, on_delete=models.SET_NULL, null=True, blank=True)
+    warning = models.ForeignKey(Warnings_history, on_delete=models.SET_NULL, null=True, blank=True)
+    report = models.ForeignKey(Report, on_delete=models.SET_NULL, null=True, blank=True, related_name="linked_report")
+    time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
         return f'{self.user.username} - {self.get_notification_type_display()}'

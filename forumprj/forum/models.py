@@ -21,6 +21,7 @@ class Thread(models.Model):
     is_visible = models.BooleanField(default=True)
     is_pinned = models.BooleanField(default=False)
     msg_amount = models.IntegerField(blank=True, null=True, default=1)
+    invis_reason = models.TextField(blank=True, null=True)
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
@@ -34,6 +35,7 @@ class Message(models.Model):
     downvotes = models.PositiveIntegerField(null=True, blank=True, default=0)
     is_solution = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
+    invis_reason = models.TextField(blank=True, null=True)
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):

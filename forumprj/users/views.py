@@ -6,6 +6,7 @@ import os
 from . forms import *
 from . models import *
 from forum.models import *
+import asyncio
 
 def profile_view(request, id):
     try:
@@ -110,4 +111,16 @@ def profile_settings(request, id):
         "form": form
     }
     return render(request, 'profile_settings.html', context)
+
+def notifications(request, id):
+    try:
+        notifs = Notification.objects.filter(user=request.user).order_by('-time_created')
+    except:
+        return render(request, 'error.html')
+    context = {
+        "notifications":notifs
+    }
+    request.user.profile.active_notifications = 0
+    request.user.profile.save()
+    return render(request, 'notifications.html', context)
 

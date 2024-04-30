@@ -170,3 +170,12 @@ def toggle_close_thread(request, thread_id):
     thread.is_closed = False if thread.is_closed else True
     thread.save()
     return redirect('thread', slugify(thread.node.name), slugify(thread.title), thread.id)
+
+def toggle_thread_visibility(request, thread_id):
+    try:
+        thread = Thread.objects.get(id=thread_id)
+    except:
+        return render(request, 'error.html')
+    thread.is_visible = False if thread.is_visible else True
+    thread.save()
+    return redirect('section', slugify(thread.node.name))
