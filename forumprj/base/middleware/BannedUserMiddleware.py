@@ -7,7 +7,6 @@ class BannedUserMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        path = request.path_info
         if request.user.is_authenticated and request.user.profile.is_banned:
             return render(request, 'error.html')
         return response

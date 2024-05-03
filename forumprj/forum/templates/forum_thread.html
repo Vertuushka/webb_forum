@@ -91,6 +91,8 @@
                     <input type="text" name="warning (reason/etc)" id="">
                     <input type="hidden" name="message" id="" value="{{ msg.id }}">
                     <input type="submit" value="Warn">
+                    <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
+                    <input type="text" name="deleting_reason" id="">
                 </form>
             {% endif %}
         </div>
