@@ -27,6 +27,12 @@
             <a href="{% url 'toggle_close_thread' thread.id %}">Close thread</a>
         {% endif %}
         {% if thread.is_visible %}
+            {% if thread.is_pinned %}
+                <a href="">Unpin this thread</a>
+            {% else %}
+                <a href="">Pin this thread</a>
+            {% endif %}
+            
             <a href="{% url 'toggle_thread_visibility' thread.id %}">Delete thread</a>
             <!-- should not be visible until user clicks restore button -->
             <form action="" method="post">
@@ -37,6 +43,7 @@
         {% else %}
             <a href="{% url 'toggle_thread_visibility' thread.id %}">Restore thread</a>
         {% endif %}
+
     {% endif %}
     {% for msg in messages %}
         {% if msg.is_visible %}

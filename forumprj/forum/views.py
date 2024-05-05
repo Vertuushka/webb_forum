@@ -56,11 +56,16 @@ def section(request, section):
     except:
         context["child_nodes"] = False
     threads_in_node = Thread.objects.filter(node=node)
-    threads = []
+    pinned_threads = []
+    unpinned_threads = []
     for thread in threads_in_node:
         last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
         if last_msg:
-            threads.append((thread, last_msg))
+            if last_msg.thread.is_pinned:
+                pinned_threads.append((thread, last_msg))
+            else:
+                unpinned_threads.append((thread, last_msg))
+    threads = pinned_threads + unpinned_threads
     context ["node"] = node
     context ["threads"] = threads
     return render(request, "forum_section.html", context)
