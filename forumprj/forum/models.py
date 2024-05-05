@@ -22,6 +22,7 @@ class Thread(models.Model):
     is_pinned = models.BooleanField(default=False)
     msg_amount = models.IntegerField(blank=True, null=True, default=1)
     invis_reason = models.TextField(blank=True, null=True)
+    deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="thread_deleted_by")
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):

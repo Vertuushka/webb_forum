@@ -10,7 +10,7 @@
             <h2 class="title">Forum: {{ thread.title }}</h2>
             {% endif %}
             {% if not thread.is_visible and perms.view_thread %}
-            <h2 class="title">Forum: {{ thread.title }} (DELETED)</h2>
+            <h2 class="title">Forum: {{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
             {% endif %}
             <form action="{% url 'forum_main' %}" method="post">
                 {% csrf_token %}
@@ -28,6 +28,12 @@
         {% endif %}
         {% if thread.is_visible %}
             <a href="{% url 'toggle_thread_visibility' thread.id %}">Delete thread</a>
+            <!-- should not be visible until user clicks restore button -->
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" name="reason" id="">
+                <input type="submit" value="Delete">
+            </form>
         {% else %}
             <a href="{% url 'toggle_thread_visibility' thread.id %}">Restore thread</a>
         {% endif %}
