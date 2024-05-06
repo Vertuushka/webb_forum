@@ -116,20 +116,21 @@
 
 
 
-
 .message {
     padding: 12px;
     font-size: 14px;
 }
 
-.targetMessage {
+.receiverMessage {
+    align-self: flex-start;
     margin-right: 20%;
     border-radius: 12px 12px 12px 4px;
     color: var(--text);
     background-color: var(--primary);
 }
 
-.clientMessage {
+.senderMessage {
+    align-self: flex-end;
     margin-left: 20%;
     border-radius: 12px 12px 4px 12px;
     color: var(--bg);

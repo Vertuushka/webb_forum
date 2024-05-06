@@ -240,7 +240,18 @@ header {
 
 .cardHeader {
     padding: 12px;
+    align-items: center;
     gap: 12px;
+}
+
+.cardHeaderLine {
+    height: 100%;
+    border-left: 1px solid var(--border_dark);
+}
+
+.cardHeaderBtn {
+    font-size: 14px;
+    color: var(--accent);
 }
 
 .cardTitle {
@@ -263,7 +274,39 @@ header {
     gap: 8px;
 }
 
+.cardSectionMultiple {
+    display: grid;
+    grid-template-columns: .75fr .25fr;
+    gap: 8px;
+}
 
+.cardSectionItem {
+    padding: 12px;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: .675fr .325fr;
+    gap: 12px;
+}
+
+.cardSectionAutherItem {
+    padding: 12px;
+    border-radius: 12px;
+    gap: 4px;
+}
+
+.cardSectionAutherItem:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.cardSectionItem:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.cardSectionInnerItem {    
+    gap: 8px;
+}
 
 /* banners and extras */
 .banner {

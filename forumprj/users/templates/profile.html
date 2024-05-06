@@ -103,7 +103,7 @@
                 {% else %}
                     <div class="container banner">
                         <h2 class="title">No content</h2>
-                        <p class="text">This section displays any content created by the {{account.username}}.</p>
+                        <p class="text">This section displays any content created by {{account.username}}.</p>
                     </div>
                 {% endif %}
             </div>
@@ -128,7 +128,7 @@
                 {% else %}
                     <div class="container banner">
                         <h2 class="title">No warnings</h2>
-                        <p class="text">This section displays any warnings received by the {{account.username}}.</p>
+                        <p class="text">This section displays any warnings received by {{account.username}}.</p>
                     </div>
                 {% endif %}
             {% else %}   
@@ -180,8 +180,8 @@
             </button>
         </form>
 
-        <p class="message targetMessage">other person message</p>
-        <p class="message clientMessage">you message</p>
+        <p class="message receiverMessage">other person message</p>
+        <p class="message senderMessage">you message</p>
     </div>
 </div>
 {% endblock %}

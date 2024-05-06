@@ -4,58 +4,57 @@
     <link rel="stylesheet" href="{% static 'forum.css' %}">
 {% endblock %}
 {% block content %}
-    <header>
-        <div class="wrapper">
-            <h2 class="title">Forum</h2>
+    <header class="wrapper">
+        <h2 class="title">Forum</h2>
+        <div class="headerLine"></div>
 
-            <form action="{% url 'forum_main' %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="search" id="">
-                <input type="checkbox" name="content_type" id="" value="threads">
-                <input type="checkbox" name="content_type" id="" value="members">
-            </form>
-        </div>
+        <form class="wrapper headerSearch" action="{% url 'forum_main' %}" method="post">
+            {% csrf_token %}
+            <img src="{% static 'assets/icon_20_search.svg' %}" alt="">
+            <input class="headerSearchInput" placeholder="Search" type="text" name="search" id="">
+            <input type="checkbox" name="content_type" id="" value="threads">
+            <input type="checkbox" name="content_type" id="" value="members">
+        </form>
     </header>
 
     {% if forum_search %}
         {% for result in results %}
-        {{ result }}
+            {{ result }}
         {% endfor %}
     {% endif %}
 
     {% for item in tree %}
 
-        <div class="container forumCard">
-            <div class="container forumCardHeader">
-                <a href="{% url 'section' item.node.name|slugify %}" class="title">{{ item.node.name }}</a>
-
+        <div class="container card">
+            <div class="wrapper cardHeader">
+                <h2 class="cardTitle">{{ item.node.name }}</h2>
+                <div class="cardHeaderLine"></div>
                 {% if item.children %}
-                    <ul>
-                        {% for child in item.children %}
-                            <a href="{% url 'section' child.node.name|slugify %}" class="activeLink">{{ child.node.name }}</a>
-                        {% endfor %}
-                    </ul>
+                    {% for child in item.children %}
+                        <a class="cardHeaderBtn" href="{% url 'section' child.node.name|slugify %}">{{ child.node.name }}</a>
+                    {% endfor %}
                 {% endif %}
             </div>
 
             {% for thread in last_threads %}
-                {% if thread.node == item.node %}   
-                    <div class="wrapper themeCard">
-                        <a href="{% url 'thread' thread.node|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
+                {% if thread.node == item.node %}
+                <div class="cardLine"></div>
+                <div class="cardSectionMultiple">
+                    <a class="cardSectionItem" href="{% url 'thread' thread.node|slugify thread.title|slugify thread.id %}">
+                        <div class="container cardSectionInnerItem">
                             <p class="meta">Theme</p>
                             <p class="text">{{ thread }}</p>
-                        </a>
-                        
-                        <a href="{% url 'thread' thread.node|slugify thread.title|slugify thread.id %}" class="container themeCardSection"">
+                        </div>
+                        <div class="container cardSectionInnerItem">
                             <p class="meta">Messages</p>
                             <p class="text">{{ thread.msg_amount }}</p>
-                        </a>
-
-                        <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
-                            <p class="meta">Created by</p>
-                            <p class="text">{{ thread.user.username }}</p>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
+                    <a class="container cardSectionAutherItem" href="{% url 'profile_view' thread.user.id %}">
+                        <p class="meta">Created by</p>
+                        <p class="text">{{ thread.user.username }}</p>
+                    </a>
+                </div>
                 {% endif %}
             {% endfor %}
         </div>

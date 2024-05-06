@@ -66,3 +66,22 @@
 .forumCardProfileMeta {
     gap: 4px;
 }
+
+
+
+.headerSearch {
+    flex-grow: 1;
+    gap: 12px;
+}
+
+.headerSearchInput {
+    flex-grow: 1;
+    padding: 6px 12px 6px 0px;
+    font-size: 14px;
+    color: var(--text);
+    background-color: var(--bg);
+}
+
+.headerSearchInput:focus {
+    outline: none;
+}
