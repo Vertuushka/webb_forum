@@ -12,11 +12,12 @@
 
     <!-- style -->
     {% load static %}
+    <link rel="stylesheet" href="{% static 'theme.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     {% block style %}{% endblock %}
     <!-- style -->
     
-    <title>Document</title>
+    <title>Forum</title>
 </head>
 <body>
     <nav>
@@ -32,6 +33,8 @@
                 </a>
             </div>
 
+            <div class="navLine"></div>
+
             <div class="container navBtnContainer" id="navConMain">
                 <a class="wrapper navBtn" href="{% url 'forum_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_forum.svg' %}" alt="">
@@ -41,12 +44,13 @@
                     <img class="navBtnIcon" src="{% static 'assets/icon_messages.svg' %}" alt="">
                     <span class="text">Messages</span>
                 </a>
-                <a class="wrapper navBtn" href="{% url 'notifications' request.user.id %}">
-                    <img class="navBtnIcon" src="{% static 'assets/icon_notifications.svg' %}" alt="">
-                    <span class="text">Notifications</span>
-                    <!-- show to user how many missed notifications he/she has -->
+                <a class="wrapper navBtn space" href="{% url 'notifications' request.user.id %}">
+                    <div class="wrapper navBtnMainContainer">
+                        <img class="navBtnIcon" src="{% static 'assets/icon_notifications.svg' %}" alt="">
+                        <span class="text">Notifications</span>
+                    </div>
                     {% if request.user.profile.active_notifications > 0 %}
-                    <p>{{ request.user.profile.active_notifications }}</p>
+                        <p class="navNotificationBadge">{{ request.user.profile.active_notifications }}</p>
                     {% endif %}
                 </a>
                 <a class="wrapper navBtn" href="">
@@ -54,14 +58,16 @@
                     <span class="text">Bookmarks</span>
                 </a>
                 {% if perms.moderation.view_reports %}
-                <a class="wrapper navBtn" href="{% url 'moderation_main' %}">
-                    <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
-                    <span class="text">Reports</span>
+                <a class="wrapper navBtn space" href="{% url 'moderation_main' %}">
+                    <div class="wrapper navBtnMainContainer">
+                        <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
+                        <span class="text">Reports</span>
+                    </div>
                     {% if reports_amount > 0 %}
                         {% if assigned_reports > 0 %}
-                            <p>{{assigned_reports}}/{{reports_amount}}</p>
+                            <p class="navNotificationBadge">{{assigned_reports}}/{{reports_amount}}</p>
                         {% else %}
-                            <p>{{reports_amount}}</p>
+                            <p class="navNotificationBadge">{{reports_amount}}</p>
                         {% endif %}
                     {% endif %}
                 </a>
@@ -69,11 +75,13 @@
                 <!-- show Admin button only for staff -->
                 {% if request.user.is_staff %}
                 <a class="wrapper navBtn" href="{% url 'admin:index' %}">
-                    <img class="navBtnIcon" src="{% static 'assets/icon_tools.svg' %}" alt="">
+                    <img class="navBtnIcon" src="{% static 'assets/icon_admin.svg' %}" alt="">
                     <span class="text">Admin</span>
                 </a>
                 {% endif %}
             </div>
+
+            <div class="navLine"></div>
 
             <div class="container navBtnContainer" id="navConOptions">
                 <a class="wrapper navBtn" href="{% url 'profile_settings' request.user.id %}">
@@ -97,6 +105,8 @@
                 </a>
             </div>
         {% endif %}
+        
+        <div class="navLine"></div>
 
         <div class="container navBtnContainer navConControll" id="navConControll">
             <button class="wrapper navBtn" id="minimizeBtn">
