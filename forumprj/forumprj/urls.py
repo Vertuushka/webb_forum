@@ -17,6 +17,7 @@ urlpatterns = [
     path('moderation/', include('moderation.urls')),
     path('error/', baseviews.error_page, name='error_page'),
     path('admin/', admin.site.urls, name="admin_url"),
+    path('message/', include('profile_messages.urls'))
 ]
 
 if settings.DEBUG:

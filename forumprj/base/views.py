@@ -11,6 +11,7 @@ def index(request):
 def error_page(request):
     return render(request, 'error.html')
 
+# Kiril delete it in correct way!
 def custom_404_page(request, exception):
     return render(request, 'error.html')
 

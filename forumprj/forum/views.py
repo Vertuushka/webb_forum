@@ -26,7 +26,7 @@ def forum_main(request):
         last_threads = []
         for node in nodes:
             threads = Thread.objects.filter(node=node, is_visible=True).annotate(
-            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3]
+            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3] # take and show only 3 threads, with time sorting
             last_threads.extend(threads)
         context = {
             'tree':tree,
@@ -45,6 +45,7 @@ def build_nodes_tree(nodes, parent=None):
 
 def section(request, section):
     context = {}
+    # to change '-' for ' ' in urls
     section = section.replace('-', ' ')
     try:
         node = Node.objects.get(name__iexact = section)
@@ -56,11 +57,17 @@ def section(request, section):
     except:
         context["child_nodes"] = False
     threads_in_node = Thread.objects.filter(node=node)
-    threads = []
+    pinned_threads = []
+    unpinned_threads = []
     for thread in threads_in_node:
         last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
         if last_msg:
-            threads.append((thread, last_msg))
+            # sorting threads by pinned or unpinned threads
+            if last_msg.thread.is_pinned:
+                pinned_threads.append((thread, last_msg))
+            else:
+                unpinned_threads.append((thread, last_msg))
+    threads = pinned_threads + unpinned_threads
     context ["node"] = node
     context ["threads"] = threads
     return render(request, "forum_section.html", context)
@@ -78,10 +85,12 @@ def thread(request, section, thread, thread_id):
         _section = Node.objects.get(name__iexact=section)
         _magic = Thread.objects.get(title__iexact=thread)
     except:
+        # slugify rewriting text to slug
         return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
     else:
         if _thread.node != _section or not _magic:
             return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+    # message inside Thread
     if request.method == "POST":
         new_message = request.POST.get('msg')
         message = Message.objects.create(thread = _thread, user=request.user, message=new_message)
@@ -90,7 +99,6 @@ def thread(request, section, thread, thread_id):
         _thread.save()
         return redirect('msg_redirect', slugify(_thread.node.name), slugify(_thread.title), _thread.id, message.id)
     msgs = Message.objects.filter(thread=_thread).order_by('time_created')
-    # print(msgs)
     context = {
         'thread':_thread,
         'messages': msgs

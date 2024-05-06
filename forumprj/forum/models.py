@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
+# different forums sections (t.ex: main or question)
 class Node(models.Model):
     name = models.CharField(max_length=225)
     description = models.TextField(blank=True, default=None, null=True)
@@ -22,6 +23,7 @@ class Thread(models.Model):
     is_pinned = models.BooleanField(default=False)
     msg_amount = models.IntegerField(blank=True, null=True, default=1)
     invis_reason = models.TextField(blank=True, null=True)
+    deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="thread_deleted_by")
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
@@ -35,8 +37,10 @@ class Message(models.Model):
     downvotes = models.PositiveIntegerField(null=True, blank=True, default=0)
     is_solution = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
+    deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="deleted_by")
     invis_reason = models.TextField(blank=True, null=True)
     time_created = models.DateTimeField(default=datetime.now())
+    time_changed = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.user} - {self.thread}'

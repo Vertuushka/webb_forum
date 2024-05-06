@@ -36,9 +36,12 @@
                         <p class="meta">Theme</p>
                         <p class="text">{{thread}}
                             {% if not thread.is_visible %}
-                            (DELETED)
+                            (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})
                             {% endif %}
                         </p>
+                        {% if thread.is_pinned %}
+                        <p>Pinned thread (icon?)</p>
+                        {% endif %}
                     </a>
                     <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
                         <div class="wrapper" style="justify-content: space-between;">

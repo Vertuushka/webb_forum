@@ -7,6 +7,7 @@
 </head>
 <body>
     {% for notif in notifications %}
+        <!-- models.py > class Notification -->
         {% if notif.notification_type == 0 %}
             <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.content.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
         {% endif %}

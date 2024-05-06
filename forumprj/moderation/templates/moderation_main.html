@@ -6,16 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Reports</h1>
+    <h1>Reports</h1>    
     <p>Active reports:</p>
     {% if active_reports %}
         {% for report in active_reports %}
             <a href="{% url 'report_details' report.id %}">Post in thread '{{ report.content.thread.title }}'</a>
             <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
             <p>{{ report.content.user.username }}</p>
-            <p>{{ report.time_created|date:"d/m/Y - H:i" }}</p>
+            <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
             <!-- last update time: -->
-            <p>{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
+            <p>Time changed: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
             {% if report.assigned_to %}
                 <p>Assigned to {{ report.assigned_to.username }}</p>
             {% endif %}
@@ -29,9 +29,9 @@
             <a href="{% url 'report_details' report.id %}">Post in thread '{{ report.content.thread.title }}'</a>
             <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
             <p>{{ report.content.user.username }}</p>
-            <p>{{ report.time_created|date:"d/m/Y - H:i" }}</p>
+            <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
 
-            <p>{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
+            <p>Time changed: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
             {% if report.is_resolved %}
                 <p>Resolved by {{ report.closed_by }}</p>
             {% else %}

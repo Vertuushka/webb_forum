@@ -1,29 +1,26 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils.text import slugify
+
 import os
 from . forms import *
 from . models import *
+from profile_messages.models import Private_Message
 from forum.models import *
-import asyncio
 
 def profile_view(request, id):
     try:
         account = User.objects.get(id=id)
-    except:
-        return render(request, 'error.html')
-    if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0:
         dictionary = {
         "account": account
         }
+    except:
+        return render(request, 'error.html')
+    if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0 or (account.preference.account_visibility == 1 and request.user.is_authenticated):
+        
         return render(request, "profile.html", dictionary)
     else:
-        if account.preference.account_visibility == 1:
-            if not request.user.is_authenticated:
-                return render(request, 'error.html')
-        elif account.preference.account_visibility == 2:
-            return render(request, 'error.html')
+        return render(request, 'error.html')
     
 
 def profile_edit(request, id):
@@ -36,7 +33,7 @@ def profile_edit(request, id):
         if form.is_valid():
             image_file = request.FILES.get('image')
             if image_file:
-                print(eUser)
+                # print(eUser)
                 file_extension = os.path.splitext(image_file.name)[1]
                 new_filename = f'{eUser.id}{file_extension}' 
                 image_file.name = new_filename
@@ -44,6 +41,7 @@ def profile_edit(request, id):
                 eUser.profile.profile_picture = new_filename
                 eUser.profile.save()
                 with open(file_path, 'wb+') as destination:
+                    #  chunk() instead of using read() ensures that large files don’t overwhelm your system’s memory.
                     for chunk in image_file.chunks():
                         destination.write(chunk)
             form.save()

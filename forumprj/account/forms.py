@@ -1,5 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+# To change layout of Django-login/signup form 
+
 class SignupUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
