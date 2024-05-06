@@ -6,7 +6,7 @@ from moderation.models import Report
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True, default="Member")
     info = models.CharField(max_length=200, null=True, blank=True)
     profile_picture = models.CharField(max_length=225, null=True, blank=True)
     warnings = models.SmallIntegerField(default=0)
