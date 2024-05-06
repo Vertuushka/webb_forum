@@ -201,38 +201,54 @@
 
         {% endif %}
         {% for msg in private_messages %}
-            {% if perms.private_message.change_private_message %}
-            <p style="color: #B4FF1F;">Delete</p>
-            <!-- should not be visible until user clicks delete button -->
-            <form action="">
-                {% csrf_token %}
-                <input type="text" name="reason" id="">
-                <input type="checkbox" name="is_notified" id="">
-                <input type="text" name="notification" id="">
-                <input type="submit" value="Delete">
-            </form>
-            {% endif %}
-            {% if perms.users.create_warnings_history %}
-                <p style="color: #B4FF1F;">Warn</p>
-                <!-- should not be visible until user clicks warn button -->
-                <form action="">
-                    {% csrf_token %}
-                    <input type="text" name="warning (reason/etc)" id="">
-                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
-                    <input type="submit" value="Warn">
-                    <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
-                    <input type="text" name="deleting_reason" id="">
-                </form>
-            {% endif %}
+        
             {% if msg.sender == request.user %}
-                <p class="message clientMessage">{{ msg.content }}</p>
-                <p>{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                <div class="container messageContainer senderMessageContainer">
+                    <div class="wrapper messageMetaContainer senderMessageMetaContainer">
+                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                        {% if perms.private_message.change_private_message %}
+                            <span class="meta">•</span>
+                            <button class="messageMetaBtn">Delete</button>
+                        {% endif %}
+                    </div>
+                    <p class="message senderMessage">{{ msg.content }}</p>
+                </div>
             {% else %}
-                <p class="message targetMessage">{{ msg.content }}</p>
-                <p>{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+
+                <div class="container messageContainer receiverMessageContainer">
+                    <div class="wrapper messageMetaContainer">
+                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                        {% if perms.users.create_warnings_history %}
+                            <span class="meta">•</span>
+                            <button class="messageMetaBtn">Warn</button>
+                        {% endif %}
+                    </div>
+                    <p class="message receiverMessage">{{ msg.content }}</p>
+                </div>
             {% endif %}
         {% endfor %}
     </div>
+    {% endif %}
+
+    <!-- should not be visible until user clicks delete button -->
+    <form class="popup" style="display: none;" action="">
+        {% csrf_token %}
+        <input type="text" name="reason" id="">
+        <input type="checkbox" name="is_notified" id="">
+        <input type="text" name="notification" id="">
+        <input type="submit" value="Delete">
+    </form>
+
+    {% if perms.users.create_warnings_history %}
+        <!-- should not be visible until user clicks warn button -->
+        <form style="display: none;" action="">
+            {% csrf_token %}
+            <input type="text" name="warning (reason/etc)" id="">
+            <input type="hidden" name="message" id="" value="{{ msg.id }}">
+            <input type="submit" value="Warn">
+            <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
+            <input type="text" name="deleting_reason" id="">
+        </form>
     {% endif %}
 </div>
 {% endblock %}

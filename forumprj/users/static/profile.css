@@ -118,8 +118,39 @@
 
 
 .message {
-    padding: 12px;
+    padding: 8px 12px;
     font-size: 14px;
+}
+
+.messageContainer {
+    gap: 8px;
+}
+
+.receiverMessageContainer {
+    align-items: flex-start;
+}
+
+.senderMessageContainer {
+    align-items: flex-end;
+}
+
+.messageMetaContainer {
+    gap: 4px;
+}
+
+.senderMessageMetaContainer {
+    flex-direction: row-reverse;
+}
+
+.messageMetaBtn {
+    font-size: 12px;
+    color: var(--text-muted);
+    background-color: var(--bg);
+}
+
+.messageMetaBtn:hover {
+    cursor: pointer;
+    color: var(--accent);
 }
 
 .receiverMessage {
