@@ -7,7 +7,6 @@ from . forms import *
 from . models import *
 from profile_messages.models import Private_Message
 from forum.models import *
-import asyncio
 
 def profile_view(request, id):
     try:

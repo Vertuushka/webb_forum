@@ -40,9 +40,14 @@
                     <img class="navBtnIcon" src="{% static 'assets/icon_forum.svg' %}" alt="">
                     <span class="text">Forum</span>
                 </a>
-                <a class="wrapper navBtn" href="">
-                    <img class="navBtnIcon" src="{% static 'assets/icon_messages.svg' %}" alt="">
-                    <span class="text">Messages</span>
+                <a class="wrapper navBtn space" href="">
+                    <div class="wrapper navBtnMainContainer">
+                        <img class="navBtnIcon" src="{% static 'assets/icon_messages.svg' %}" alt="">
+                        <span class="text">Messages</span>
+                    </div>
+                    {% if msgs_amount > 0 %}
+                        <p class="navNotificationBadge">{{ msgs_amount }}</p>
+                    {% endif %}
                 </a>
                 <a class="wrapper navBtn space" href="{% url 'notifications' request.user.id %}">
                     <div class="wrapper navBtnMainContainer">

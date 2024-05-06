@@ -10,6 +10,7 @@ class Private_Message(models.Model):
     is_visible = models.BooleanField(default=True)
     deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="PM_deleted_by")
     invis_reason = models.TextField(blank=True, null=True)
+    is_read = models.BooleanField(default=False)
     time_created = models.DateTimeField(default=datetime.now())
     time_changed = models.DateTimeField(null=True, blank=True)
 
