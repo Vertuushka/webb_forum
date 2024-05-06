@@ -91,32 +91,46 @@
                     <h2 class="cardTitle">Content</h2>
                 </div>
     
-                {% for msg in content %}
-                    <div class="cardLine"></div>
-                    <div class="container cardSection">
-                        <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                        <p class="meta">theme</p>
-                        <p class="text">{{ msg.thread }}</p>
+                {% if content %}
+                    {% for msg in content %}
+                        <div class="cardLine"></div>
+                        <div class="container cardSection">
+                            <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                            <p class="meta">theme</p>
+                            <p class="text">{{ msg.thread }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="container banner">
+                        <h2 class="title">No content</h2>
+                        <p class="text">This section displays any content created by the {{account.username}}.</p>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
         {% else %}
             {% if warnings_history %}
-                <div class="container card">
-                    <div class="wrapper cardHeader">
-                        <h2 class="cardTitle">Warnings</h2>
-                    </div>
-
-                    {% for warn in warnings %}
-                        <div class="cardLine"></div>
-                        <div class="container cardSection">
-                            <a class="meta" href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}">
-                            <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</p>
-                            <p class="meta">{{ warn.time_warned }}</p>
-                            <p class="text">{{ warn.details }}</p>
+                {% if warnings %}
+                    <div class="container card">
+                        <div class="wrapper cardHeader">
+                            <h2 class="cardTitle">Warnings</h2>
                         </div>
-                    {% endfor %}
-                </div>
+
+                        {% for warn in warnings %}
+                            <div class="cardLine"></div>
+                            <div class="container cardSection">
+                                <a class="meta" href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}">
+                                <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</p>
+                                <p class="meta">{{ warn.time_warned }}</p>
+                                <p class="text">{{ warn.details }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="container banner">
+                        <h2 class="title">No warnings</h2>
+                        <p class="text">This section displays any warnings received by the {{account.username}}.</p>
+                    </div>
+                {% endif %}
             {% else %}   
                 <div class="container card">
                     <div class="wrapper cardHeader">
@@ -129,11 +143,13 @@
                         <p class="text">{{ account.username }}</p>
                     </div>
         
-                    <div class="cardLine"></div>
-                    <div class="container cardSection">
-                        <p class="meta">Forum title:</p>
-                        <p class="text">{{ account.last_name }}</p>
-                    </div>
+                    {% if account.last_name %}
+                        <div class="cardLine"></div>
+                        <div class="container cardSection">
+                            <p class="meta">Forum title:</p>
+                            <p class="text">{{ account.last_name }}</p>
+                        </div>
+                    {% endif %}
         
                     <div class="cardLine"></div>
                     <div class="container cardSection">

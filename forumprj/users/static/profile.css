@@ -13,6 +13,7 @@
 }
 
 .profileView {
+    padding-bottom: 12px;
     box-sizing: border-box;
     height: calc(100vh - (52.8px + 24px));
 
