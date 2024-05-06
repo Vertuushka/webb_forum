@@ -1,29 +1,27 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils.text import slugify
+
 import os
 from . forms import *
 from . models import *
+from profile_messages.models import Private_Message
 from forum.models import *
 import asyncio
 
 def profile_view(request, id):
     try:
         account = User.objects.get(id=id)
-    except:
-        return render(request, 'error.html')
-    if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0:
         dictionary = {
         "account": account
         }
+    except:
+        return render(request, 'error.html')
+    if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0 or (account.preference.account_visibility == 1 and request.user.is_authenticated):
+        
         return render(request, "profile.html", dictionary)
     else:
-        if account.preference.account_visibility == 1:
-            if not request.user.is_authenticated:
-                return render(request, 'error.html')
-        elif account.preference.account_visibility == 2:
-            return render(request, 'error.html')
+        return render(request, 'error.html')
     
 
 def profile_edit(request, id):

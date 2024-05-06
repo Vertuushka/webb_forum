@@ -74,7 +74,11 @@
             <div class="container">
                 <h2 class="title">{{ account.username }} 
                     {% if perms.users.view_profile %}
+                    {% if account.profile.is_banned %}
+                    ({{ account.profile.warnings }} warnings) - BANNED
+                    {% else %}
                     ({{ account.profile.warnings }} warnings)
+                    {% endif %}
                     {% endif %}
                 </h2>
                 <p class="meta">{{ account.last_name }}</p>
@@ -93,12 +97,24 @@
     
                 {% if content %}
                     {% for msg in content %}
+                    {% if msg.is_visible or perms.forum.view_message %}
+                    {% if msg.thread.is_visible or perms.forum.view_thread %}
                         <div class="cardLine"></div>
                         <div class="container cardSection">
                             <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                            <p class="meta">theme</p>
-                            <p class="text">{{ msg.thread }}</p>
+                            <p class="meta">Theme
+                                {% if not msg.thread.is_visible %}
+                                   (DELETED)
+                                {% endif %}
+                            </p>
+                            <p class="text">{{ msg.thread }}
+                                {% if not msg.is_visible %}
+                                (DELETED)
+                                {% endif %}
+                            </p>
                         </div>
+                    {% endif %}
+                    {% endif %}
                     {% endfor %}
                 {% else %}
                     <div class="container banner">
@@ -118,9 +134,9 @@
                         {% for warn in warnings %}
                             <div class="cardLine"></div>
                             <div class="container cardSection">
-                                <a class="meta" href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}">
-                                <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</p>
-                                <p class="meta">{{ warn.time_warned }}</p>
+                            <a class="meta" href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}">link</a>
+                                <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</span></p>
+                                <p class="meta">{{ warn.time_warned|date:"d/m/Y - H:i" }}</p>
                                 <p class="text">{{ warn.details }}</p>
                             </div>
                         {% endfor %}
@@ -172,16 +188,51 @@
     <!-- chat -->
     <!-- chat -->
     <!-- chat -->
+    {% if private_messages %}
     <div class="container chatView">
-        <form class="wrapper chatForm" action="">
-            <input placeholder="Write a message to {{ account.username }}" class="chatInput" type="text">
+        {% if account.preference.private_messages == 0 or perms.private_messages.add_private_message %}
+        <form class="wrapper chatForm" action="{% url 'send_private_message' account.id %}" method="post">
+            {% csrf_token %}
+            <input placeholder="Write a message to {{ account.username }}" class="chatInput" type="text" name="content">
             <button class="wrapper chatBtn" type="submit">
                 <img src="{% static 'assets/icon_send.svg' %}" alt="">
             </button>
         </form>
-
-        <p class="message targetMessage">other person message</p>
-        <p class="message clientMessage">you message</p>
+        {% endif %}
+        {% for msg in private_messages %}
+            {% if perms.private_message.change_private_message %}
+            <p style="color: #B4FF1F;">Delete</p>
+            <!-- should not be visible until user clicks delete button -->
+            <form action="">
+                {% csrf_token %}
+                <input type="text" name="reason" id="">
+                <input type="checkbox" name="is_notified" id="">
+                <input type="text" name="notification" id="">
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+            {% if perms.users.create_warnings_history %}
+                <p style="color: #B4FF1F;">Warn</p>
+                <!-- should not be visible until user clicks warn button -->
+                <form action="">
+                    {% csrf_token %}
+                    <input type="text" name="warning (reason/etc)" id="">
+                    <input type="hidden" name="message" id="" value="{{ msg.id }}">
+                    <input type="submit" value="Warn">
+                    <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
+                    <input type="text" name="deleting_reason" id="">
+                </form>
+            {% endif %}
+            {% if msg.sender == request.user %}
+                <p class="message clientMessage">{{ msg.content }}</p>
+                <p>{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+            {% else %}
+                <p class="message targetMessage">{{ msg.content }}</p>
+                <p>{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+            {% endif %}
+        {% endfor %}
+        
     </div>
+    {% endif %}
 </div>
 {% endblock %}
