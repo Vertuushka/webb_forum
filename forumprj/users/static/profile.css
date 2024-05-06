@@ -1,5 +1,35 @@
-.canvas {
-    gap: 24px;
+.content {
+    box-sizing: border-box;
+    height: calc(100vh - 24px);
+}
+
+.mainContentWrapper {
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(256px, 1fr));
+    grid-template-rows: minmax(256px, 100%);
+    gap: 12px;
+}
+
+.profileView {
+    box-sizing: border-box;
+    height: calc(100vh - (52.8px + 24px));
+
+    overflow-y: scroll;
+    gap: 12px;
+}
+
+.chatView {
+    box-sizing: border-box;
+    height: calc(100vh - (58.8px + 32px));
+
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px dashed var(--border_dark);
+
+    flex-direction: column-reverse;
+    gap: 12px;
 }
 
 .avatar {
@@ -10,7 +40,7 @@
 
 .profileContainer {
     padding: 16px;
-    border-radius: 12px 12px 0px 0px;
+    border-radius: 12px;
 
     background-color: var(--primary);
 
@@ -83,13 +113,57 @@
 }
 
 
-@media only screen and (max-width: 512px) {
-    .profileInfoContainer {
-        grid-template-columns: 1fr;
-    }
 
-    .profileInfoContainerEmail {
-        grid-row: 5;
-        grid-column: 1;
-    }
+
+
+.message {
+    padding: 12px;
+    font-size: 14px;
+}
+
+.targetMessage {
+    margin-right: 20%;
+    border-radius: 12px 12px 12px 4px;
+    color: var(--text);
+    background-color: var(--primary);
+}
+
+.clientMessage {
+    margin-left: 20%;
+    border-radius: 12px 12px 4px 12px;
+    color: var(--bg);
+    background-color: var(--accent);
+}
+
+
+.chatForm {
+    gap: 8px;
+}
+
+.chatInput {
+    flex-grow: 1;
+
+    padding: 12px;
+    border: 12px;
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    color: var(--text);
+    background-color: var(--isClickable);
+}
+
+.chatInput:focus {
+    outline: none;
+}
+
+.chatBtn {
+    padding: 8px;
+    border-radius: 12px;
+    background-color: var(--primary);
+}
+
+.chatBtn:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
 }

@@ -1,19 +1,3 @@
-:root {
-    --text: hsl(0, 0%, 100%);
-    --text-muted: hsl(0, 0%, 82%);
-
-    --bg: hsl(220, 7%, 18%);
-
-    --primary: hsl(225, 6%, 13%);
-    --secondary: hsl(223, 7%, 22%);
-    --section: #383A40;
-
-    --border: hsl(227, 7%, 32%);
-    --input: hsl(225, 7%, 28%);
-    --active: hsl(220, 7%, 18%);
-    --action: hsl(80, 100%, 56%);
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -24,14 +8,11 @@
 
 body {
     box-sizing: border-box;
-
+    padding: 12px;
     height: 100vh;
-    padding: 12px 12px 12px 0px;
-
     background-color: var(--bg);
-
     display: grid;
-    grid-template-columns: minmax(64px, 300px) minmax(256px , 1fr);
+    grid-template-columns: 256px minmax(256px , 1fr);
     gap: 12px;
 }
 
@@ -49,9 +30,13 @@ body {
     justify-content: center;
 }
 
+.space {
+    justify-content: space-between;
+}
+
 .title {
     color: var(--text);
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -75,12 +60,39 @@ body {
     color: var(--action);
 }
 
+.hLine {
+    height: 1px;
+    width: 100%;
+    background-color: var();
+}
+
 nav {
+    box-sizing: border-box;
     height: 100%;
 
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 12px;
+}
+
+.navLine {
+    margin: 0px 8px;
+    border-top: 1px solid var(--border_light);
+}
+
+.navNotificationBadge {
+    padding: 4px 8px;
+    border-radius: 24px;
+
+    font-size: 12px;
+
+    color: var(--bg);
+    background-color: var(--accent);
+}
+
+.navBtnContainer {
+    box-sizing: border-box;
+    gap: 2px;
 }
 
 #navConProfile {
@@ -105,24 +117,22 @@ nav {
     grid-column: 1;
 }
 
-.navBtnContainer {
-    padding: 12px;
-    box-sizing: border-box;
-    background-color: var(--primary);
-    gap: 8px;
-}
-
 .navBtn {
-    padding: 8px 12px;
-    border-radius: 6px;
-    background-color: var(--primary);
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--bg);
     align-items: center;
     gap: 12px;
 }
 
 .navBtn:hover {
     cursor: pointer;
-    background-color: var(--secondary);
+    background-color: var(--isClickable);
+}
+
+.navBtnMainContainer {
+    align-items: center;
+    gap: 12px;
 }
 
 .navBtnIcon {
@@ -133,22 +143,53 @@ nav {
 .navBtnAvatar {
     width: 38px;
     aspect-ratio: 1/1;
-
-    /* border-radius: 48px; */
     border-radius: 100%;
     border: 1px solid var(--border);
-
-    /* background-color: var(--action); */
 }
 
-/* Canvas */
+.navLine {
+    box-sizing: border-box;
+    margin: 0px 8px;
+    height: 1px;
+    flex-grow: 1;
+    background-color: var(--border_light);
+}
+
 .content {
-    gap: 24px;
+    gap: 12px;
 }
 
 header {
-    padding: 12px 12px 0px 12px;
+    padding: 12px;
+    align-items: center;
+    gap: 12px;
+}
+
+.headerNav {
+    align-items: center;
     gap: 6px;
+}
+
+.headerLine {
+    width: 1px;
+    height: 24px;
+    border-left: 1px solid var(--border_light);
+}
+
+.headerBtn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--accent);
+}
+
+.headerBtn:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.headerBtnFocus {
+    background-color: var(--focus);
 }
 
 .miniNav {
@@ -175,77 +216,49 @@ header {
     border-radius: 8px;
 }
 
-@media only screen and (min-width: 513px) {
-    #navConOptions {
-        border-radius: 0px 0px 12px 0px;
-    }
-
-    #navConControll {
-        display: none;
-    }
-
-    .navBtnContainer:first-child {
-        border-radius: 0px 12px 0px 0px;
-    }
-    
-    .navBtnContainer:last-child {
-        border-radius: 0px 0px 12px 0px;
-    }
+.largeBtn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text);
+    background-color: var(--primary);
 }
 
-@media only screen and (max-width: 512px) {
-    body {
-        padding: 12px 12px 0px 12px;
+.largeBtn:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
 
-        grid-template-columns: minmax(256px, 512px);
-        grid-template-rows: 1fr max-content;
-    }
 
-    nav {
-        grid-row: 2;
-        bottom: 0px;
-        position: sticky;
+/* card */
+.card {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: var(--primary);
+    gap: 8px;
+}
 
-        border-radius: 12px 12px 0px 0px;
-        background-color: var(--bg);
+.cardHeader {
+    padding: 12px;
+    gap: 12px;
+}
 
-        display: grid;
-        grid-template-columns: 1fr max-content;
-        grid-template-rows: repeat(3, max-content);
-        gap: 1px;
-    }
-    
-    #navConProfile {
-        grid-row: 1;
-        grid-column: 1;
+.cardTitle {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text);
+}
 
-        border-radius: 12px 0px 0px 0px;
-    }
-    
-    #navConMain {
-        height: 100%;
-    
-        grid-row: 2;
-        grid-column: 1 /span 2;
-    }
-    
-    #navConOptions {
-        grid-row: 3;
-        grid-column: 1 /span 2;
-    }
-    
-    #navConControll {
-        grid-row: 1;
-        grid-column: 2;
+.cardLine {
+    margin: 0px 12px;
+    border-top: 1px solid var(--border_dark);
+}
 
-        border-radius: 0px 12px 0px 0px;
-    }
+.cardLine:nth-child(2) {
+    border-top: 1px solid var(--accent);
+}
 
-    .navBtnContainerControllText {
-        display: none;
-    }
-    
-    #minimizeBtn {
-        height: 100%;
-    }
+.cardSection {
+    padding: 12px;
+    gap: 8px;
 }

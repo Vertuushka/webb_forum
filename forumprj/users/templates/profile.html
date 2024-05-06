@@ -4,120 +4,168 @@
     <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
 {% block content %}
-<header class="container">
+<header class="wrapper">
     <h2 class="title">Profile</h2>
 
-    <div class="wrapper miniNav">
+    <div class="wrapper headerNav">
+        <div class="headerLine"></div>
+
         {% if profile_content %}
-                <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
-                {% if account.id == request.user.id or perms.users.view_warnings_history %}
-                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
-                {% endif %}
-                {% if perms.user.change_user and not request.user == account %}
-                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
+            <a class="headerBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+            <a class="headerBtn headerBtnFocus" href="{% url 'profile_content' account.id %}">Content</a>
+            {% if account.id == request.user.id or perms.users.view_warnings_history %}
+                <a class="headerBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
+            {% endif %}
+            
+            {% if perms.user.change_user and not request.user == account %}
+                <div class="headerLine"></div>
+                <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
                     {% if account.profile.is_banned %}
-                    Unban
+                        Unban
                     {% else %}
-                    Ban
+                        Ban
                     {% endif %}
                 </a>
-                {% endif %}
-                <a class="miniNavBtn" href="">Start chat</a>
+            {% endif %}
         {% else %}
             {% if warnings_history %}
-                <a class="miniNavBtn" href="{% url 'profile_view' account.id %}">Profile</a>
-                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
-                {% if perms.user.change_user and not request.user == account %}
-                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
-                    {% if account.profile.is_banned %}
-                    Unban
-                    {% else %}
-                    Ban
-                    {% endif %}</a>
-                {% endif %}
-                <a class="miniNavBtn" href="">Start chat</a>
-            {% else %}
-                <a class="miniNavBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                <a class="headerBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+                <a class="headerBtn" href="{% url 'profile_content' account.id %}">Content</a>
                 {% if account.id == request.user.id or perms.users.view_warnings_history %}
-                <a class="miniNavBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
+                    <a class="headerBtn headerBtnFocus" href="{% url 'profile_warnings' account.id %}">Warnings</a>
                 {% endif %}
+
                 {% if perms.user.change_user and not request.user == account %}
-                <a class="miniNavBtn" href="{% url 'profile_toggle_ban' account.id %}">
-                    {% if account.profile.is_banned %}
-                    Unban
-                    {% else %}
-                    Ban
-                    {% endif %}
-                </a>
+                    <div class="headerLine"></div>
+                    <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
+                        {% if account.profile.is_banned %}
+                            Unban
+                        {% else %}
+                            Ban
+                        {% endif %}
+                    </a>
                 {% endif %}
-                <a class="miniNavBtn" href="">Start chat</a>
+            {% else %}
+                <a class="headerBtn headerBtnFocus" href="{% url 'profile_view' account.id %}">Profile</a>
+                <a class="headerBtn" href="{% url 'profile_content' account.id %}">Content</a>
+                {% if account.id == request.user.id or perms.users.view_warnings_history %}
+                    <a class="headerBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
+                {% endif %}
+
+                {% if perms.user.change_user and not request.user == account %}
+                    <div class="headerLine"></div>
+                    <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
+                        {% if account.profile.is_banned %}
+                            Unban
+                        {% else %}
+                            Ban
+                        {% endif %}
+                    </a>
+                {% endif %}
             {% endif %}
         {% endif %}
     </div>
 </header>
 
-<div class="container">
-
-    <div class="wrapper profileContainer">
-        <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
-        <div class="container">
-            <h2 class="title">{{ account.username }} 
-                {% if perms.users.view_profile %}
-                ({{ account.profile.warnings }} warnings)
-                {% endif %}
-            </h2>
-            <p class="meta">{{ account.last_name }}</p>
+<div class="mainContentWrapper">
+    <div class="container profileView">
+        <div class="wrapper profileContainer">
+            <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
+            <div class="container">
+                <h2 class="title">{{ account.username }} 
+                    {% if perms.users.view_profile %}
+                    ({{ account.profile.warnings }} warnings)
+                    {% endif %}
+                </h2>
+                <p class="meta">{{ account.last_name }}</p>
+            </div>
         </div>
-    </div>
 
-    {% if profile_content %}
-        {% for msg in content %}
-            <a href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}" class="container profileItemCard">
-                <p class="meta">Theme</p>
-                <p class="text">{{ msg.thread }}</p>
-            </a>
-        {% endfor %}
+        {% if request.user.id == account.id or perms.users.change_profile %}
+            <a href="{% url 'profile_edit' account.id %}" class="largeBtn">Edit</a>
+        {% endif %}
 
-    {% else %}
-        {% if warnings_history %}
-            {% for warn in warnings %}
-                <a href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}" class="container profileItemCard">
-                    <div class="wrapper profileItemCardHeader">
-                        <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</span></p>
-                        <p class="meta">{{ warn.time_warned }}</p>
+        {% if profile_content %}
+            <div class="container card">
+                <div class="wrapper cardHeader">
+                    <h2 class="cardTitle">Content</h2>
+                </div>
+    
+                {% for msg in content %}
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                        <p class="meta">theme</p>
+                        <p class="text">{{ msg.thread }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if warnings_history %}
+                <div class="container card">
+                    <div class="wrapper cardHeader">
+                        <h2 class="cardTitle">Warnings</h2>
                     </div>
 
-                    <p class="text">{{ warn.details }}</p>
-                </a>
-
-            {% endfor %}
-        {% else %}
-            <div class="wrapper profileInfoContainer">
-                <div class="container profileInfoContainerItem">
-                    <p class="meta">Username:</p>
-                    <p class="text">{{ account.username }}</p>
+                    {% for warn in warnings %}
+                        <div class="cardLine"></div>
+                        <div class="container cardSection">
+                            <a class="meta" href="{% url 'thread' warn.content.thread.node.name|slugify  warn.content.thread.title|slugify warn.content.thread.id %}#{{ warn.content.id }}">
+                            <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.content.thread.title }}</p>
+                            <p class="meta">{{ warn.time_warned }}</p>
+                            <p class="text">{{ warn.details }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
+            {% else %}   
+                <div class="container card">
+                    <div class="wrapper cardHeader">
+                        <h2 class="cardTitle">Information</h2>
+                    </div>
         
-                <div class="container profileInfoContainerItem">
-                    <p class="meta">Forum title:</p>
-                    <p class="text">{{ account.last_name }}</p>
-                </div>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Username:</p>
+                        <p class="text">{{ account.username }}</p>
+                    </div>
         
-                <div class="container profileInfoContainerItem">
-                    <p class="meta">Joined:</p>
-                    <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
-                </div>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Forum title:</p>
+                        <p class="text">{{ account.last_name }}</p>
+                    </div>
         
-                <div class="container profileInfoContainerItem profileInfoContainerEmail">
-                    <p class="meta">e-mail:</p>
-                    <p class="text">{{ account.email }}</p>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Joined:</p>
+                        <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
+                    </div>
+        
+                    {% if account.email %}
+                        <div class="cardLine"></div>
+                        <div class="container cardSection">
+                            <p class="meta">e-mail:</p>
+                            <p class="text">{{ account.email }}</p>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
-
-            {% if request.user.id == account.id or perms.users.change_profile %}
-                <a href="{% url 'profile_edit' account.id %}" class="profileActionBtn">Edit</a>
             {% endif %}
         {% endif %}
-    {% endif %}
+    </div>
+
+    <!-- chat -->
+    <!-- chat -->
+    <!-- chat -->
+    <div class="container chatView">
+        <form class="wrapper chatForm" action="">
+            <input placeholder="Write a message to {{ account.username }}" class="chatInput" type="text">
+            <button class="wrapper chatBtn" type="submit">
+                <img src="{% static 'assets/icon_send.svg' %}" alt="">
+            </button>
+        </form>
+
+        <p class="message targetMessage">other person message</p>
+        <p class="message clientMessage">you message</p>
+    </div>
 </div>
 {% endblock %}
