@@ -4,7 +4,10 @@ import re
 class PermissionsHandler:
     def __init__(self, get_response):
         self.get_response = get_response
+        # dictionary
         self.required_permissions = {
+            # r for using \d+
+            # \d+ is for int in urls
             '/moderation/': 'moderation.view_report',
             r'/moderation/\d+': 'moderation.view_report',
             r'/profile/\d+/warnings': 'moderation.view_warnings_history',
@@ -17,6 +20,7 @@ class PermissionsHandler:
         response = self.get_response(request)
         return response
 
+    # processing all views in all APP's
     def process_view(self, request, view_func, view_args, view_kwargs):
         for url, permission in self.required_permissions.items():
             if request.path.startswith(url) or re.match(url, request.path_info):

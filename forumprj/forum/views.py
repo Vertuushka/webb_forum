@@ -26,7 +26,7 @@ def forum_main(request):
         last_threads = []
         for node in nodes:
             threads = Thread.objects.filter(node=node, is_visible=True).annotate(
-            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3]
+            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3] # take and show only 3 threads, with time sorting
             last_threads.extend(threads)
         context = {
             'tree':tree,
@@ -45,6 +45,7 @@ def build_nodes_tree(nodes, parent=None):
 
 def section(request, section):
     context = {}
+    # to change '-' for ' ' in urls
     section = section.replace('-', ' ')
     try:
         node = Node.objects.get(name__iexact = section)
@@ -61,6 +62,7 @@ def section(request, section):
     for thread in threads_in_node:
         last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
         if last_msg:
+            # sorting threads by pinned or unpinned threads
             if last_msg.thread.is_pinned:
                 pinned_threads.append((thread, last_msg))
             else:

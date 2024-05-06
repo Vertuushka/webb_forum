@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
+# different forums sections (t.ex: main or question)
 class Node(models.Model):
     name = models.CharField(max_length=225)
     description = models.TextField(blank=True, default=None, null=True)
