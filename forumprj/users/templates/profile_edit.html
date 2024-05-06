@@ -17,6 +17,7 @@
     </div>
 </header>
 
+ <!--enctype for sending images to server -->
 <form class="container canvas" action="{% url 'profile_edit' account.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="wrapper profileInfoContainer">

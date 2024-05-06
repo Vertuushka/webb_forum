@@ -85,10 +85,12 @@ def thread(request, section, thread, thread_id):
         _section = Node.objects.get(name__iexact=section)
         _magic = Thread.objects.get(title__iexact=thread)
     except:
+        # slugify rewriting text to slug
         return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
     else:
         if _thread.node != _section or not _magic:
             return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+    # message inside Thread
     if request.method == "POST":
         new_message = request.POST.get('msg')
         message = Message.objects.create(thread = _thread, user=request.user, message=new_message)
@@ -97,7 +99,6 @@ def thread(request, section, thread, thread_id):
         _thread.save()
         return redirect('msg_redirect', slugify(_thread.node.name), slugify(_thread.title), _thread.id, message.id)
     msgs = Message.objects.filter(thread=_thread).order_by('time_created')
-    # print(msgs)
     context = {
         'thread':_thread,
         'messages': msgs
