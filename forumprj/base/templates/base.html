@@ -61,7 +61,7 @@
                         <p class="navNotificationBadge">{{ request.user.profile.active_notifications }}</p>
                     {% endif %}
                 </a>
-                <a class="wrapper navBtn" href="">
+                <a class="wrapper navBtn" href="{% url 'bookmarks_main' %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_bookmarks.svg' %}" alt="">
                     <span class="text">Bookmarks</span>
                 </a>

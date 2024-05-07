@@ -2,5 +2,4 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
-admin.site.register(Private_Message)
-admin.site.register(Dialog)
+admin.site.register(Bookmark)
