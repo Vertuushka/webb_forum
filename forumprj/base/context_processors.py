@@ -19,4 +19,14 @@ def menuProcessor(request):
         assigned_reports = active_reports_amount.filter(assigned_to=request.user) 
         shared_data['reports_amount'] = len(active_reports_amount)
         shared_data['assigned_reports'] = len(assigned_reports)
+    if request.path.startswith('/profile/'):
+        shared_data["current_tab"] = 'profile'
+    if request.path.startswith('/forum/'):
+        shared_data["current_tab"] = 'forum'
+    if request.path.startswith('/moderation/'):
+        shared_data["current_tab"] = 'moderation'
+    if request.path.startswith('/message/'):
+        shared_data["current_tab"] = 'message'
+    if 'notifications' in str(request.path):
+        shared_data["current_tab"] = 'notifications'
     return shared_data

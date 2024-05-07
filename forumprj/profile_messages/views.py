@@ -7,6 +7,7 @@ from django.db.models import Q, Max
 # Create your views here.
 
 def send_private_message(request, id):
+    # add to dialog on new dialog start
     if request.method == "POST":
         if not request.user.is_authenticated:
             return redirect('profile_view', id)
@@ -15,12 +16,15 @@ def send_private_message(request, id):
         except:
             return redirect('profile_view', id)
         content = request.POST.get('content')
-        new_msg = Private_Message.objects.create(
-            sender=request.user,
-            receiver=receiver,
-            content=content
-        )
-        new_msg.save()
+        try:
+            new_msg = Private_Message.objects.create(
+                sender=request.user,
+                receiver=receiver,
+                content=content
+            )
+            new_msg.save()
+        except:
+            return redirect('profile_view', id)
     return redirect('profile_view', id)
 
 def messages_main(request):
