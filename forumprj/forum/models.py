@@ -10,6 +10,7 @@ class Node(models.Model):
     description = models.TextField(blank=True, default=None, null=True)
     type_question = models.BooleanField(default=False)
     type_private = models.BooleanField(default=False)
+    user_only = models.BooleanField(default=False)
     staff_only = models.BooleanField(default=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
 
