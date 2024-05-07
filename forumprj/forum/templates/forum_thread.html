@@ -43,7 +43,12 @@
         {% else %}
             <a href="{% url 'toggle_thread_visibility' thread.id %}">Restore thread</a>
         {% endif %}
-
+    {% endif %}
+    {% if perms.forum.change_thread %}
+    <p>Change thread</p>
+    <form action="">
+        <input type="text" name="thread title" id="" value="{{ thread.title }}">
+    </form>
     {% endif %}
     {% for msg in messages %}
         {% if msg.is_visible %}

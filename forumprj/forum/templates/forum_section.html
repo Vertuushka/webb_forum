@@ -22,10 +22,10 @@
             <div class="wrapper cardHeader">
                 <h2 class="cardTitle">{{ node.name }}</h2>
 
-                {% if item.children %}
-                    <div class="cardHeaderLine"></div>
-                    {% for child in item.children %}
-                        <a class="forumCardHeaderBtn" href="{% url 'section' child.node.name|slugify %}">{{ child.node.name }}</a>
+                {% if child_nodes %}
+                    <div class="forumCardHeaderLine"></div>
+                    {% for child in child_nodes %}
+                        <a class="forumCardHeaderBtn" href="{% url 'section' child.name|slugify %}">{{ child.name }}</a>
                     {% endfor %}
                 {% endif %}
             </div>
@@ -52,7 +52,6 @@
                         <a class="cardSectionItem" href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}">
                             <div class="container cardSectionInnerItem">
                                 <p class="meta">Theme</p>
-
                                 <p class="text">{{thread}}
                                     {% if not thread.is_visible %}
                                         (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})

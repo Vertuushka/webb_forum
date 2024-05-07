@@ -45,10 +45,8 @@ def build_nodes_tree(nodes, parent=None):
 
 def section(request, section):
     context = {}
-    # to change '-' for ' ' in urls
-    section = section.replace('-', ' ')
     try:
-        node = Node.objects.get(name__iexact = section)
+        node = Node.objects.get(slug__iexact = section)
     except: 
         return render(request, 'error.html')
     try:
@@ -70,11 +68,10 @@ def section(request, section):
     threads = pinned_threads + unpinned_threads
     context ["node"] = node
     context ["threads"] = threads
+    print(threads)
     return render(request, "forum_section.html", context)
 
 def thread(request, section, thread, thread_id):
-    section = section.replace('-', ' ')
-    thread = thread.replace('-', ' ')
     try:
         _thread = Thread.objects.get(id=thread_id)
         if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
@@ -82,14 +79,14 @@ def thread(request, section, thread, thread_id):
     except: 
         return render(request, 'error.html')
     try: 
-        _section = Node.objects.get(name__iexact=section)
-        _magic = Thread.objects.get(title__iexact=thread)
+        _section = Node.objects.get(slug__iexact=section)
+        _magic = Thread.objects.get(slug__iexact=thread)
     except:
         # slugify rewriting text to slug
-        return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+        return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     else:
         if _thread.node != _section or not _magic:
-            return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+            return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     # message inside Thread
     if request.method == "POST":
         new_message = request.POST.get('msg')
@@ -97,7 +94,7 @@ def thread(request, section, thread, thread_id):
         message.save()
         _thread.msg_amount += 1
         _thread.save()
-        return redirect('msg_redirect', slugify(_thread.node.name), slugify(_thread.title), _thread.id, message.id)
+        return redirect('msg_redirect', _thread.node.slug, _thread.slug, _thread.id, message.id)
     msgs = Message.objects.filter(thread=_thread).order_by('time_created')
     context = {
         'thread':_thread,
@@ -123,7 +120,7 @@ def create_thread(request, section, section_id):
         new_thread.save()
         first_message = Message.objects.create(thread=new_thread, user=author, message=text)
         first_message.save()
-        return redirect('thread', slugify(new_thread.node.name), slugify(new_thread.title), new_thread.id)
+        return redirect('thread', new_thread.node.slug, new_thread.slug, new_thread.id)
     context = {
         'node':node
     }
@@ -142,10 +139,10 @@ def msg_redirect(request, section, thread, thread_id, msg_id):
         _section = Node.objects.get(name__iexact=section)
         _magic = Thread.objects.get(title__iexact=thread)
     except:
-        return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+        return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     else:
         if _thread.node != _section or not _magic:
-            return redirect('thread', slugify(_thread.node.name), slugify(_thread.title), thread_id)
+            return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     msgs = Message.objects.filter(thread=_thread).order_by('time_created')
     context = {
         'thread':_thread,
@@ -167,7 +164,7 @@ def report_msg(request, msg_id):
                 reason=reason,
                 time_changed=datetime.now())
             new_report.save()
-            return redirect('thread', slugify(msg.thread.node.name), slugify(msg.thread.title), msg.thread.id)
+            return redirect('thread', msg.thread.node.slug, msg.thread.slug, msg.thread.id)
     return render(request, 'error.html')
 
 def toggle_close_thread(request, thread_id):
@@ -177,7 +174,7 @@ def toggle_close_thread(request, thread_id):
         return render(request, 'error.html')
     thread.is_closed = False if thread.is_closed else True
     thread.save()
-    return redirect('thread', slugify(thread.node.name), slugify(thread.title), thread.id)
+    return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
 def toggle_thread_visibility(request, thread_id):
     try:
@@ -186,4 +183,4 @@ def toggle_thread_visibility(request, thread_id):
         return render(request, 'error.html')
     thread.is_visible = False if thread.is_visible else True
     thread.save()
-    return redirect('section', slugify(thread.node.name))
+    return redirect('section', thread.node.slug)

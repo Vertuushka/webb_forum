@@ -1,15 +1,22 @@
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # different forums sections (t.ex: main or question)
 class Node(models.Model):
     name = models.CharField(max_length=225)
+    slug = models.SlugField(max_length=225, blank=True, null=True)
     description = models.TextField(blank=True, default=None, null=True)
     type_question = models.BooleanField(default=False)
     type_private = models.BooleanField(default=False)
     staff_only = models.BooleanField(default=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -17,6 +24,7 @@ class Node(models.Model):
 class Thread(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=225)
+    slug = models.SlugField(max_length=225, blank=True, null=True)
     node = models.ForeignKey(Node, on_delete=models.CASCADE)
     is_closed = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
@@ -25,6 +33,11 @@ class Thread(models.Model):
     invis_reason = models.TextField(blank=True, null=True)
     deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="thread_deleted_by")
     time_created = models.DateTimeField(default=datetime.now())
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
