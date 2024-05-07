@@ -1,0 +1,35 @@
+.mainContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.formView {
+    gap: 12px;
+}
+
+input {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text);
+    background-color: var(--isClickable);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    text-align: center;
+    font-size: 14px;
+
+    color: var(--text);
+    background-color: var(--primary);
+}
+
+.submitBtn:hover {
+    cursor: pointer;
+    color: var(--bg);
+    background-color: var(--accent);
+}

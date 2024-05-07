@@ -29,7 +29,10 @@
                     {% else %}
                         <img src="{% static 'assets/missing_avatar.svg' %}" alt=""> 
                     {% endif %}
-                    <span class="text">{{ request.user.username }}</span> 
+                    <div class="container">
+                        <span class="text">{{ request.user.username }}</span>
+                        <span class="meta">{{request.user.profile.title}}</span>
+                    </div>
                 </a>
             </div>
 
