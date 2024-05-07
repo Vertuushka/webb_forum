@@ -69,19 +69,26 @@
 
 <div class="mainContentWrapper">
     <div class="container profileView">
+        {% if perms.users.view_profile %}
+            {% if account.profile.is_banned %}
+                <div class="container dangerBanner">
+                    <h2 class="dangerBannerTitle">BANNED</h2>
+                    <p class="dangerBannerText">This user has been banned</p>
+                </div>
+            {% endif %}
+            {% if account.profile.warnings %}
+                <div class="container warningBanner">
+                    <h2 class="warningBannerTitle">{{ account.profile.warnings }} WARNINGS</h2>
+                    <p class="warningBannerText">This user has recived {{ account.profile.warnings }} warnings</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
         <div class="wrapper profileContainer">
             <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
             <div class="container">
-                <h2 class="title">{{ account.username }} 
-                    {% if perms.users.view_profile %}
-                    {% if account.profile.is_banned %}
-                    ({{ account.profile.warnings }} warnings) - BANNED
-                    {% else %}
-                    ({{ account.profile.warnings }} warnings)
-                    {% endif %}
-                    {% endif %}
-                </h2>
-                <p class="meta">{{ account.last_name }}</p>
+                <h2 class="title">{{ account.username }}</h2>
+                <p class="meta">{{ account.profile.title }}</p>
             </div>
         </div>
 
@@ -90,39 +97,39 @@
         {% endif %}
 
         {% if profile_content %}
-            <div class="container card">
-                <div class="wrapper cardHeader">
-                    <h2 class="cardTitle">Content</h2>
-                </div>
-    
-                {% if content %}
-                    {% for msg in content %}
-                    {% if msg.is_visible or perms.forum.view_message %}
-                    {% if msg.thread.is_visible or perms.forum.view_thread %}
-                        <div class="cardLine"></div>
-                        <div class="container cardSection">
-                            <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                            <p class="meta">Theme
-                                {% if not msg.thread.is_visible %}
-                                   (DELETED)
-                                {% endif %}
-                            </p>
-                            <p class="text">{{ msg.thread }}
-                                {% if not msg.is_visible %}
-                                (DELETED)
-                                {% endif %}
-                            </p>
-                        </div>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <div class="container banner">
-                        <h2 class="title">No content</h2>
-                        <p class="text">This section displays any content created by {{account.username}}.</p>
+            {% if content %}
+                <div class="container card">
+                    <div class="wrapper cardHeader">
+                        <h2 class="cardTitle">Content</h2>
                     </div>
-                {% endif %}
-            </div>
+    
+                    {% for msg in content %}
+                        {% if msg.is_visible or perms.forum.view_message %}
+                            {% if msg.thread.is_visible or perms.forum.view_thread %}
+                                <div class="cardLine"></div>
+                                <div class="container cardSection">
+                                    <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                                    <p class="meta">Theme
+                                        {% if not msg.thread.is_visible %}
+                                            (DELETED)
+                                        {% endif %}
+                                    </p>
+                                    <p class="text">{{ msg.thread }}
+                                        {% if not msg.is_visible %}
+                                            (DELETED)
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="container banner">
+                    <h2 class="title">No content</h2>
+                    <p class="text">This section displays any content created by {{account.username}}.</p>
+                </div>
+            {% endif %}
         {% else %}
             {% if warnings_history %}
                 {% if warnings %}
@@ -159,11 +166,11 @@
                         <p class="text">{{ account.username }}</p>
                     </div>
         
-                    {% if account.last_name %}
+                    {% if account.profile.title %}
                         <div class="cardLine"></div>
                         <div class="container cardSection">
-                            <p class="meta">Forum title:</p>
-                            <p class="text">{{ account.last_name }}</p>
+                            <p class="meta">Title:</p>
+                            <p class="text">{{ account.profile.title }}</p>
                         </div>
                     {% endif %}
         

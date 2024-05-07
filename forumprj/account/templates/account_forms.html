@@ -48,13 +48,13 @@
         </header>
 
         <div class="mainContent">
-            <form class="container formView" action="{% url 'login_user' %}" method="post">
+            <form class="container formView" action="{% url 'create_user' %}" method="post">
                 {% csrf_token %}
                 <div class="container card">
                     <div class="cardHeader">
                         <h2 class="cardTitle">Sign up</h2>
                     </div>
-                    
+
                     <div class="cardLine"></div>
                     <div class="container cardSection">
                         <p class="meta">Username</p>
