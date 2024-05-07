@@ -1,62 +1,83 @@
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'form.css' %}">
+    <link rel="stylesheet" href="{% static 'account.css' %}">
 {% endblock %}
 {% block content %}
     {% if is_login_page %} 
-        <header class="container">
-            <h2 class="title">Welcome, please login</h2>
-            <div class="wrapper miniNav">
-                <p class="meta">Dont have an account?</p>
-                <a class="activeLink" href="{% url 'create_user' %}">Create one here!</a>
-            </div>
+        <header class="wrapper">
+            <h2 class="title">Welcome</h2>
+            <div class="headerLine"></div>
+
+            <a class="headerBtn headerBtnFocus" href="{% url 'login_user' %}">Login</a>
+            <a class="headerBtn" href="{% url 'create_user' %}">Sign up</a>
         </header>
 
-        <div class="container canvas center">
-            <form class="center" action="{% url 'login_user' %}" method="post">
+        <div class="mainContent">
+            <form class="container formView" action="{% url 'login_user' %}" method="post">
                 {% csrf_token %}
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_person.svg' %}" alt="">
-                    {{form.username}}
+                <div class="container card">
+                    <div class="cardHeader">
+                        <h2 class="cardTitle">Login</h2>
+                    </div>
+
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Username</p>
+                        {{form.username}}
+                    </div>
+
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Password</p>
+                        {{form.password}}
+                    </div>
                 </div>
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
-                    {{form.password}}
-                </div>
-                <button class="btn actionBtn" type="submit">Login</button>
+
+                <button class="submitBtn" type="submit">Login</button>
             </form>
         </div>
         
     {% else %}
-        <header class="container">
-            <h2 class="title">Welcome, create a new account here!</h2>
-            <div class="wrapper miniNav">
-                <p class="meta">Already have an account?</p>
-                <a class="activeLink" href="{% url 'login_user' %}">Login here!</a>
-            </div>
+        <header class="wrapper">
+            <h2 class="title">Welcome</h2>
+            <div class="headerLine"></div>
+
+            <a class="headerBtn" href="{% url 'login_user' %}">Login</a>
+            <a class="headerBtn headerBtnFocus" href="{% url 'create_user' %}">Sign up</a>
         </header>
 
-        <div class="container canvas center">
-            <form class="center" action="{% url 'create_user' %}" method="post">
+        <div class="mainContent">
+            <form class="container formView" action="{% url 'login_user' %}" method="post">
                 {% csrf_token %}
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_person.svg' %}" alt="">
-                    {{form.username}}
+                <div class="container card">
+                    <div class="cardHeader">
+                        <h2 class="cardTitle">Sign up</h2>
+                    </div>
+                    
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Username</p>
+                        {{form.username}}
+                    </div>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Email</p>
+                        {{form.email}}
+                    </div>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Password</p>
+                        {{form.password1}}
+                    </div>
+                    <div class="cardLine"></div>
+                    <div class="container cardSection">
+                        <p class="meta">Repeat password</p>
+                        {{form.password2}}
+                    </div>
                 </div>
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_email.svg' %}" alt="">
-                    {{form.email}}
-                </div>
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
-                    {{form.password1}}
-                </div>
-                <div class="wrapper">
-                    <img class="formInputIcon" src="{% static 'assets/icon_20_key.svg' %}" alt="">
-                    {{form.password2}}
-                </div>
-                <button class="btn actionBtn" type="submit">Create account</button>
+
+                <button class="submitBtn" type="submit">Sign up</button>
             </form>
         </div>
     {% endif %}
