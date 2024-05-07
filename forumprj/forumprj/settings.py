@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'base',
     'users',
     'moderation',
-    'profile_messages'
+    'profile_messages',
+    'bookmarks'
 ]
 
 MIDDLEWARE = [

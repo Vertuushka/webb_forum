@@ -13,14 +13,23 @@ def send_private_message(request, id):
             return redirect('profile_view', id)
         try:
             receiver = User.objects.get(id=id)
+
         except:
             return redirect('profile_view', id)
         content = request.POST.get('content')
         try:
+            dialog = Dialog.objects.get(user_1=receiver, user_2=request.user)
+        except:
+            try:
+                dialog = Dialog.objects.get(user_1=request.user, user_2=receiver)
+            except:
+                return redirect('profile_view', id)
+        try:
             new_msg = Private_Message.objects.create(
                 sender=request.user,
                 receiver=receiver,
-                content=content
+                content=content, 
+                dialog=dialog
             )
             new_msg.save()
         except:

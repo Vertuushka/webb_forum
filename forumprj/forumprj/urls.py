@@ -20,7 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls, name="admin_url"),
     path('message/', include('profile_messages.urls')),
     path('notifications/', notifications, name='notifications'),
-    path('settings/<int:id>', profile_settings, name='profile_settings')
+    path('settings/<int:id>', profile_settings, name='profile_settings'),
+    path('bookmarks/', include('bookmarks.urls'))
 ]
 
 if settings.DEBUG:

@@ -55,6 +55,7 @@
                     <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                 </div>
             </div>
+            <a href="{% url 'add_msg_bookmark' msg.id %}">Add to bookmarks (icon?)</a>
             <p class="forumThreadCardMessage text">{{ msg.message }}</p>
             {% if msg.thread.node.type_question %}
                 <p>Upvotes: {{ msg.upvotes }}</p>
