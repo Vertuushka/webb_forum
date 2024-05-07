@@ -291,14 +291,19 @@ header {
 }
 
 .cardSectionAutherItem {
-    padding: 12px;
+    padding: 12px 12px 10px 12px;
     border-radius: 12px;
-    gap: 4px;
+    gap: 6px;
 }
 
 .cardSectionAutherItem:hover {
     cursor: pointer;
     background-color: var(--isClickable);
+}
+
+.cardSectionAutherItemMetaContainer {
+    align-items: center;
+    gap: 8px;
 }
 
 .cardSectionItem:hover {

@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+
+    <header>
+        <h2 class="title">Notifications</h2>
+    </header>
+
     {% for notif in notifications %}
         <!-- models.py > class Notification -->
         {% if notif.notification_type == 0 %}
             <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.content.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
         {% endif %}
+
         {% if notif.notification_type == 2 %}
             <p>Your report was 
                 {% if notif.report.is_resolved %}
@@ -18,32 +18,37 @@
                 {% else %}
                     rejected
                 {% endif %}
-                 with following alert: {{ notif.report.notification }}
+                with following alert: {{ notif.report.notification }}
             </p>
         {% endif %}
+
         {% if notif.notification_type == 3 %}
-        <p>Your message in 
-            <a href="">{{ report.message.thread.title }}</a> 
-            was deleted. Reason: {{ notif.notification }}
-        </p>
+            <p>Your message in 
+                <a href="">{{ report.message.thread.title }}</a> 
+                was deleted. Reason: {{ notif.notification }}
+            </p>
         {% endif %}
+
         {% if notif.notification_type == 4 %}
-        <p>Your message in 
-            <!-- difference between this section and section above in link modification. I'll do it later -->
-            <a href="">{{ report.message.thread.title }}</a> 
-            was edited. Reason: {{ notif.notification }}
-        </p>
-        {% if notif.notification_type == 5 %}
-        <p>Your profile information was edited. Reason: {{ notif.notification }}</p>
+            <p>Your message in 
+                <!-- difference between this section and section above in link modification. I'll do it later -->
+                <a href="">{{ report.message.thread.title }}</a> 
+                was edited. Reason: {{ notif.notification }}
+            </p>
+
+            {% if notif.notification_type == 5 %}
+                <p>Your profile information was edited. Reason: {{ notif.notification }}</p>
+            {% endif %}
+
+            {% if notif.notification_type == 6 %}
+                <p>You thread in 
+                    <a href="">{{ notif.thread.node.name }}</a>
+                    was deleted. Reason: {{ notif.notification }}
+                </p>
+            {% endif %}
         {% endif %}
-        {% if notif.notification_type == 6 %}
-        <p>You thread in 
-            <a href="">{{ notif.thread.node.name }}</a>
-            was deleted. Reason: {{ notif.notification }}
-        </p>
-        {% endif %}
-        {% endif %}
+
         <p>{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
     {% endfor %}
-</body>
-</html>
+
+{% endblock %}

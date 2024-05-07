@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+
     <p>Post in thread '{{ report.content.thread.title }}'</p>
     <a href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
     {% if report.content.user.profile.title %}
-        <p>{{ report.content.user.profile.title }}</p>
+    <p>{{ report.content.user.profile.title }}</p>
     {% endif %}
     <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
     <p>{{ report.content.message }}</p>
@@ -17,44 +12,44 @@
     <p>Reason: {{ report.reason }}</p>
     <p>Created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
     <p>Status: 
-        {% if report.is_closed %}
-            {% if report.is_resolved %}
-                resolved (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
-            {% else %}
-                rejected (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
-            {% endif %}
-        {% endif %}
+    {% if report.is_closed %}
+    {% if report.is_resolved %}
+    resolved (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+    {% else %}
+    rejected (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+    {% endif %}
+    {% endif %}
     </p>
     {% if report.is_notified %}
-        <p>The follow notification was sent:</p>
-        <p>{{ report.notification }}</p>
+    <p>The follow notification was sent:</p>
+    <p>{{ report.notification }}</p>
     {% endif %}
-    
+
     {% if not report.is_closed %}
-        <form action="{% url 'report_details' report.id %}" method="post">
-        {% csrf_token %}
-        <label for=""><input type="radio" name="status" id="" value="open" checked> Open</label> <br>
-        <label for=""><input type="radio" name="status" id="" value="resolve">Resolve</label> <br>
-        <label for=""><input type="radio" name="status" id="" value="reject">Reject</label> <br>
-        Assign to:
-        <select name="assigned_to" id="">
-            <option value="">---</option>
-            {% for moderator in moderators %}
-            {% if report.assigned_to and report.assigned_to == moderator %}
-                <option value="{{ moderator.username }}" selected>{{ moderator.username }}</option>
-            {% else %}
-                <option value="{{ moderator.username }}">{{ moderator.username }}</option>
-            {% endif %}
-            {% endfor %}
-        </select> <br>
-<!-- if is_notified is checked then notification input should be unlocked by deleting readonly attribute. It means is_notified should toggle readonly attribute for the input below -->
-        <label for=""><input type="checkbox" name="is_notified" id="">Send notification:</label> <br>
-        <label for="">Notification: <input type="text" name="notification" id="" readonly></label>
-            
-        <input type="submit" value="Save">
-        </form>
+    <form action="{% url 'report_details' report.id %}" method="post">
+    {% csrf_token %}
+    <label for=""><input type="radio" name="status" id="" value="open" checked> Open</label> <br>
+    <label for=""><input type="radio" name="status" id="" value="resolve">Resolve</label> <br>
+    <label for=""><input type="radio" name="status" id="" value="reject">Reject</label> <br>
+    Assign to:
+    <select name="assigned_to" id="">
+    <option value="">---</option>
+    {% for moderator in moderators %}
+    {% if report.assigned_to and report.assigned_to == moderator %}
+    <option value="{{ moderator.username }}" selected>{{ moderator.username }}</option>
+    {% else %}
+    <option value="{{ moderator.username }}">{{ moderator.username }}</option>
+    {% endif %}
+    {% endfor %}
+    </select> <br>
+    <!-- if is_notified is checked then notification input should be unlocked by deleting readonly attribute. It means is_notified should toggle readonly attribute for the input below -->
+    <label for=""><input type="checkbox" name="is_notified" id="">Send notification:</label> <br>
+    <label for="">Notification: <input type="text" name="notification" id="" readonly></label>
+
+    <input type="submit" value="Save">
+    </form>
     {% endif %}
 
     <p>Updated: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
-</body>
-</html>
+
+{% endblock %}

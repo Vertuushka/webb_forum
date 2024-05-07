@@ -4,61 +4,78 @@
     <link rel="stylesheet" href="{% static 'forum.css' %}">
 {% endblock %}
 {% block content %}
-    <header>
-        <div class="wrapper">
-            <h2 class="title">Forum</h2>
+    <header class="wrapper">
+        <h2 class="title">Forum</h2>
+        <div class="headerLine"></div>
 
-            <form action="{% url 'forum_main' %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="search" id="">
-                <input type="checkbox" name="content_type" id="" value="threads">
-                <input type="checkbox" name="content_type" id="" value="members">
-            </form>
-        </div>
+        <form class="wrapper headerSearch" action="{% url 'forum_main' %}" method="post">
+            {% csrf_token %}
+            <img src="{% static 'assets/icon_20_search.svg' %}" alt="">
+            <input class="headerSearchInput" placeholder="Search" type="text" name="search" id="">
+            <input type="checkbox" name="content_type" id="" value="threads">
+            <input type="checkbox" name="content_type" id="" value="members">
+        </form>
     </header>
 
-    <div class="container forumCard">
-        <div class="container forumCardHeader">
-            <a href="" class="title">{{ node.name }}</a>
-            <p>{{ node.description }}</p>
+    <div class="container card">
+        <div class="container mainCard">
+            <div class="wrapper cardHeader">
+                <h2 class="cardTitle">{{ node.name }}</h2>
+
+                {% if item.children %}
+                    <div class="cardHeaderLine"></div>
+                    {% for child in item.children %}
+                        <a class="forumCardHeaderBtn" href="{% url 'section' child.node.name|slugify %}">{{ child.node.name }}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- description for the child thread -->
+            <p class="text">{{ node.description }}</p>
+
+            <!-- add new thread -->
+            {% if node.staff_only and perms.forum.create_thread or not node.staff_only and request.user.is_authenticated %}
+                <a href="{% url 'create_thread' node.name|slugify node.id %}">Start new thread here.</a>
+            {% endif %}
+
+            <!-- card header banner -->
+            {% if node.type_private %}
+                <p>This section is private. Only you and administrators can see your threads here</p>
+            {% endif %}
         </div>
-        {% if node.staff_only and perms.forum.create_thread or not node.staff_only and request.user.is_authenticated %}
-            <a href="{% url 'create_thread' node.name|slugify node.id %}">Start new thread here.</a>
-        {% endif %}
-        {% if node.type_private %}
-            <p>This section is private. Only you and administrators can see your threads here</p>
-        {% endif %}
+
         {% for thread, message in threads %}
             {% if thread.is_visible or perms.view_thread %}
                 {% if not thread.node.type_private or perms.view_node or request.user == message.user %}
-                <div class="wrapper themeCard">
-                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
-                        <p class="meta">Theme</p>
-                        <p class="text">{{thread}}
-                            {% if not thread.is_visible %}
-                            (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})
-                            {% endif %}
-                        </p>
-                        {% if thread.is_pinned %}
-                        <p>Pinned thread (icon?)</p>
-                        {% endif %}
-                    </a>
-                    <a href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" class="container themeCardSection">
-                        <div class="wrapper" style="justify-content: space-between;">
-                            <p class="meta">Messages</p>
-                            <p class="meta">{{ message.time_created|date:"d/m/Y - H:i" }}</p>
-                        </div>
-                        <p class="text">{{ thread.msg_amount }}</p>
-                    </a>
+                    <div class="cardLine"></div>
+                    <div class="cardSectionMultiple">
+                        <a class="cardSectionItem" href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}">
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">Theme</p>
 
-                    <a href="{% url 'profile_view' thread.user.id %}" class="container themeCardSection">
-                        <p class="meta">Created by</p>
-                        <div class="wrapper themeCardProfileCon">
-                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
-                            <p class="text">{{ thread.user.username }}</p>
-                        </div>
-                    </a>
-                </div>
+                                <p class="text">{{thread}}
+                                    {% if not thread.is_visible %}
+                                        (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})
+                                    {% endif %}
+                                </p>
+                                {% if thread.is_pinned %}
+                                    <p>Pinned thread (icon?)</p>
+                                    <img src="{% static 'asstes/icon_20_pin.svg' %}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">Messages</p>
+                                <p class="text">{{ thread.msg_amount }}</p>
+                            </div>
+                        </a>
+                        <a class="container cardSectionAutherItem" href="{% url 'profile_view' thread.user.id %}">
+                            <p class="meta">Created by</p>
+                            <div class="wrapper cardSectionAutherItemMetaContainer">
+                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
+                                <p class="text">{{ thread.user.username }}</p>
+                            </div>
+                        </a>
+                    </div>
                 {% endif %}
             {% endif %}
         {% endfor %}

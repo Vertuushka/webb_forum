@@ -7,9 +7,35 @@
 }
 
 .forumCardHeader {
-    padding: 16px;
+    padding: 6px 4px;
     border-radius: 12px 12px 0px 0px;
-    background-color: var(--secondary);
+    align-items: center;
+    gap: 4px;
+}
+
+.forumCardHeaderLine {
+    height: 24px;
+    border-left: 1px solid var(--border_dark);
+}
+
+.forumCardHeaderBtn {
+    padding: 6px 8px;
+    font-size: 14px;
+    color: var(--accent);
+}
+
+.forumCardBtn {
+    padding: 6px 8px;
+    border-radius: 8px; 
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    background-color: var(--primary);
+}
+
+.forumCardBtn:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
 }
 
 .themeCard {

@@ -24,14 +24,15 @@
     {% endif %}
 
     {% for item in tree %}
-
         <div class="container card">
-            <div class="wrapper cardHeader">
-                <h2 class="cardTitle">{{ item.node.name }}</h2>
-                <div class="cardHeaderLine"></div>
+
+            <div class="wrapper forumCardHeader">
+                <a class="forumCardBtn"  href="{% url 'section' item.node.name|slugify %}">{{ item.node.name }}</a>
+
                 {% if item.children %}
+                    <div class="forumCardHeaderLine"></div>
                     {% for child in item.children %}
-                        <a class="cardHeaderBtn" href="{% url 'section' child.node.name|slugify %}">{{ child.node.name }}</a>
+                        <a class="forumCardHeaderBtn" href="{% url 'section' child.node.name|slugify %}">{{ child.node.name }}</a>
                     {% endfor %}
                 {% endif %}
             </div>
@@ -52,7 +53,10 @@
                     </a>
                     <a class="container cardSectionAutherItem" href="{% url 'profile_view' thread.user.id %}">
                         <p class="meta">Created by</p>
-                        <p class="text">{{ thread.user.username }}</p>
+                        <div class="wrapper cardSectionAutherItemMetaContainer">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
+                            <p class="text">{{ thread.user.username }}</p>
+                        </div>
                     </a>
                 </div>
                 {% endif %}
