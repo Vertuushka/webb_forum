@@ -1,6 +1,6 @@
 from django.utils.text import slugify
 from django.shortcuts import render, redirect
-from django.db.models import Max, Min, Count
+from django.db.models import Max
 from . models import *
 from moderation.models import Report
 from datetime import datetime

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for dialog in dialogs %}
+    <p>
+        {% if request.user == dialog.user_1 %}
+            {{dialog.user_2}}
+        {% else %}
+            {{dialog.user_1}}
+        {% endif %}
+    </p>
+    {% endfor %}
+    {% if messages %}
+        {% for msg in messages %}
+        <p>{{msg}}</p>
+        {% endfor %}
+    {% else %}
+        <p>Select one of your dialogs to view messages</p>
+    {% endif %}
+</body>
+</html>

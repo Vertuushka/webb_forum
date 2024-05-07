@@ -3,7 +3,15 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 # Create your models here.
+class Dialog(models.Model):
+    user_1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dialog_user_1")
+    user_2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dialog_user_2")
+
+    def __str__(self):
+        return f'{self.user_1} - {self.user_2}'
+
 class Private_Message(models.Model):
+    dialog = models.ForeignKey(Dialog, on_delete=models.CASCADE)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_receiver")
     content = models.TextField()
