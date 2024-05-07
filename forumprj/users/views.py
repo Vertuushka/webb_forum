@@ -110,7 +110,7 @@ def profile_settings(request, id):
     }
     return render(request, 'profile_settings.html', context)
 
-def notifications(request, id):
+def notifications(request):
     try:
         notifs = Notification.objects.filter(user=request.user).order_by('-time_created')
     except:

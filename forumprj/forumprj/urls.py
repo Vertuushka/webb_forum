@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from forum import views
 from base import views as baseviews
+from users.views import notifications, profile_settings
 
 handler404 = 'base.views.custom_404_page'
 
@@ -17,7 +18,9 @@ urlpatterns = [
     path('moderation/', include('moderation.urls')),
     path('error/', baseviews.error_page, name='error_page'),
     path('admin/', admin.site.urls, name="admin_url"),
-    path('message/', include('profile_messages.urls'))
+    path('message/', include('profile_messages.urls')),
+    path('notifications/', notifications, name='notifications'),
+    path('settings/<int:id>', profile_settings, name='profile_settings')
 ]
 
 if settings.DEBUG:

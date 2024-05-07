@@ -49,7 +49,7 @@
                         <p class="navNotificationBadge">{{ msgs_amount }}</p>
                     {% endif %}
                 </a>
-                <a class="wrapper navBtn space" href="{% url 'notifications' request.user.id %}">
+                <a class="wrapper navBtn space" href="{% url 'notifications' %}">
                     <div class="wrapper navBtnMainContainer">
                         <img class="navBtnIcon" src="{% static 'assets/icon_notifications.svg' %}" alt="">
                         <span class="text">Notifications</span>

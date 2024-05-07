@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from forum.models import Message, Thread
 from datetime import datetime
 from moderation.models import Report
+from profile_messages.models import Private_Message
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -12,13 +13,17 @@ class Profile(models.Model):
     warnings = models.SmallIntegerField(default=0)
     active_notifications = models.IntegerField(default=0)
     is_banned = models.BooleanField(default=False)
+    banned_by = models.ForeignKey(User, related_name='banned_by', null=True, blank=True, on_delete=models.SET_NULL)
+    ban_reason = models.TextField(null=True, blank=True)
+    ban_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
         
 class Warnings_history(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.ForeignKey(Message, on_delete=models.CASCADE)
+    forum_msg = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
+    profile_msg = models.ForeignKey(Private_Message, on_delete=models.CASCADE, null=True, blank=True)
     warned_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='moderator', null=True)
     details = models.TextField()
     time_warned = models.DateTimeField(default=datetime.now())
