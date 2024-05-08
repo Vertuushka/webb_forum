@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
     path('', moderation_main, name="moderation_main"),
-    path('<int:id>', report_details, name="report_details")
+    path('<int:id>/', report_details, name="report_details")
 ]

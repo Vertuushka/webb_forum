@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
 from datetime import datetime
-from base.views import notify_user
+from base.utils import notify_user
 
 # Create your views here.
 def moderation_main(request):

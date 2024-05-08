@@ -13,7 +13,9 @@ class PermissionsHandler:
             r'/profile/\d+/warnings': 'moderation.view_warnings_history',
             r'/profile/\d+/edit': 'users.change_profile',
             r'/\d+/ban': 'users.change_warning_history',
-            r'/\d+/close': 'forum.change_thread'
+            r'/\d+/close': 'forum.change_thread',
+            r'/\d+/delete': 'forum.change_thread',
+            r'/\d+/pin': 'forum.change_thread'
         }
 
     def __call__(self, request):
@@ -22,6 +24,8 @@ class PermissionsHandler:
 
     # processing all views in all APP's
     def process_view(self, request, view_func, view_args, view_kwargs):
+        if (not request.user.is_authenticated) and re.match(r'/\d+/report', request.path_info):
+            return render(request, 'error.html')
         for url, permission in self.required_permissions.items():
             if request.path.startswith(url) or re.match(url, request.path_info):
                 if re.match(url, request.path_info):

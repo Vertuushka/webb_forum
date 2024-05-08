@@ -88,6 +88,7 @@ def profile_toggle_ban(request, id):
     except:
         return render(request, 'error.html')
     account.profile.is_banned = False if account.profile.is_banned else True
+    account.profile.banned_by = request.user
     account.profile.save()
     return redirect('profile_view', account.id)
 

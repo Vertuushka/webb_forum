@@ -60,7 +60,8 @@ class Notification(models.Model):
         (3, 'message_delete'),
         (4, 'message_edit'),
         (5, 'profile_edit'),
-        (6, 'thread_delete')
+        (6, 'thread_delete'),
+        (7, 'thread_change')
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

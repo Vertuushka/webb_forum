@@ -4,6 +4,7 @@ from django.db.models import Max
 from . models import *
 from moderation.models import Report
 from datetime import datetime
+from base.utils import notify_user
 # from users.models import Profile
 
 def forum_main(request):
@@ -181,6 +182,33 @@ def toggle_thread_visibility(request, thread_id):
         thread = Thread.objects.get(id=thread_id)
     except:
         return render(request, 'error.html')
-    thread.is_visible = False if thread.is_visible else True
+    if request.method == "POST":
+        thread.is_visible = False if thread.is_visible else True
+        reason = request.POST.get('reason')
+        thread.invis_reason = reason
+        thread.deleted_by = request.user
+        is_notified = request.POST.get('is_notified')
+        if is_notified:
+            notif = request.POST.get('notification')
+            notify_user(
+                user = thread.user, 
+                notification_type = 'thread_delete',
+                reason = thread,
+                notification = notif
+            )
+        thread.save()
+        return redirect('section', thread.node.slug)
+    else:
+        if not thread.is_visible:
+            thread.is_visible = True
+            thread.save()
+        return redirect('thread', thread.node.slug, thread.slug, thread.id)
+
+def toggle_thread_pin(request, thread_id):
+    try:
+        thread = Thread.objects.get(id=thread_id)
+    except:
+        return render(request, 'error.html')
+    thread.is_pinned = False if thread.is_pinned else True
     thread.save()
-    return redirect('section', thread.node.slug)
+    return redirect('thread', thread.node.slug, thread.slug, thread.id)

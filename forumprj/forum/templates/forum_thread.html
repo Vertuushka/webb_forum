@@ -28,16 +28,17 @@
         {% endif %}
         {% if thread.is_visible %}
             {% if thread.is_pinned %}
-                <a href="">Unpin this thread</a>
+                <a href="{% url 'toggle_thread_pin' thread.id %}">Unpin this thread</a>
             {% else %}
-                <a href="">Pin this thread</a>
+                <a href="{% url 'toggle_thread_pin' thread.id %}">Pin this thread</a>
             {% endif %}
-            
-            <a href="{% url 'toggle_thread_visibility' thread.id %}">Delete thread</a>
+            <p>Delete thread</p>
             <!-- should not be visible until user clicks restore button -->
-            <form action="" method="post">
+            <form action="{% url 'toggle_thread_visibility' thread.id %}" method="post">
                 {% csrf_token %}
                 <input type="text" name="reason" id="">
+                <input type="checkbox" name="is_notified" id="">
+                <input type="text" name="notification" id="">
                 <input type="submit" value="Delete">
             </form>
         {% else %}
@@ -48,6 +49,8 @@
     <p>Change thread</p>
     <form action="">
         <input type="text" name="thread title" id="" value="{{ thread.title }}">
+        <input type="checkbox" name="is_notified" id="">
+        <input type="text" name="notification" id="">
     </form>
     {% endif %}
     {% for msg in messages %}

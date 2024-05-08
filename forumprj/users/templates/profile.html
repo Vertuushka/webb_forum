@@ -73,7 +73,7 @@
             {% if account.profile.is_banned %}
                 <div class="container dangerBanner">
                     <h2 class="dangerBannerTitle">BANNED</h2>
-                    <p class="dangerBannerText">This user has been banned</p>
+                    <p class="dangerBannerText">This user has been banned by {{ account.profile.banned_by }} - {{ account.profile.ban_reason }}</p>
                 </div>
             {% endif %}
             {% if account.profile.warnings %}
