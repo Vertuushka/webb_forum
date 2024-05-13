@@ -8,7 +8,7 @@ from base.utils import notify_user
 # Create your views here.
 def moderation_main(request):
     try:
-        active_reports = Report.objects.filter(is_closed=False).order_by('-time_changed')
+        active_reports = Report.objects.filter(is_closed=False).order_by('-id')
     except:
         active_reports = False
     try:

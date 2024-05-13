@@ -13,9 +13,10 @@ class PermissionsHandler:
             r'/profile/\d+/warnings': 'moderation.view_warnings_history',
             r'/profile/\d+/edit': 'users.change_profile',
             r'/\d+/ban': 'users.change_warning_history',
-            r'/\d+/close': 'forum.change_thread',
-            r'/\d+/delete': 'forum.change_thread',
-            r'/\d+/pin': 'forum.change_thread'
+            r'/thread/\d+/close': 'forum.change_thread',
+            r'/thread/\d+/delete': 'forum.change_thread',
+            r'/thread/\d+/pin': 'forum.change_thread',
+            r'/message/\d+/delete/': 'forum.change_message'
         }
 
     def __call__(self, request):
