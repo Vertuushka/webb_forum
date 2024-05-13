@@ -34,6 +34,7 @@ class Thread(models.Model):
     invis_reason = models.TextField(blank=True, null=True)
     deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="thread_deleted_by")
     time_created = models.DateTimeField(default=datetime.now())
+    time_changed = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -47,6 +48,7 @@ class Message(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
+    is_start = models.BooleanField(default=False)
     upvotes = models.PositiveIntegerField(null=True, blank=True, default=0)
     downvotes = models.PositiveIntegerField(null=True, blank=True, default=0)
     is_solution = models.BooleanField(default=False)

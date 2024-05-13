@@ -61,7 +61,7 @@ def profile_content(request, id):
         account = User.objects.get(id=id)
     except:
         return render(request, 'error.html')
-    content = Message.objects.filter(user=account).order_by('-time_created')
+    content = Message.objects.filter(user=account).order_by('-id')
     context = {
         'account':account,
         'profile_content': True,
@@ -74,7 +74,7 @@ def profile_warnings(request, id):
         account = User.objects.get(id=id)
     except:
         return render(request, 'error.html')
-    warnings = Warnings_history.objects.filter(user=account).order_by('-time_warned')
+    warnings = Warnings_history.objects.filter(user=account).order_by('-id')
     context = {
         'account': account,
         'warnings_history': True,
@@ -113,7 +113,7 @@ def profile_settings(request, id):
 
 def notifications(request):
     try:
-        notifs = Notification.objects.filter(user=request.user).order_by('-time_created')
+        notifs = Notification.objects.filter(user=request.user).order_by('-id')
     except:
         return render(request, 'error.html')
     context = {

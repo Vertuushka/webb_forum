@@ -27,7 +27,7 @@ def forum_main(request):
         last_threads = []
         for node in nodes:
             threads = Thread.objects.filter(node=node, is_visible=True).annotate(
-            latest_msg_time=Max('message__time_created')).order_by('-latest_msg_time')[:3] # take and show only 3 threads, with time sorting
+            latest_msg=Max('message__id')).order_by('-latest_msg')[:3] # take and show only 3 threads, with time sorting
             last_threads.extend(threads)
         context = {
             'tree':tree,
@@ -55,11 +55,12 @@ def section(request, section):
         context["child_nodes"] = child_nodes
     except:
         context["child_nodes"] = False
-    threads_in_node = Thread.objects.filter(node=node)
+    threads_in_node = Thread.objects.filter(node=node).annotate(
+            latest_msg=Max('message__id')).order_by('-id')
     pinned_threads = []
     unpinned_threads = []
     for thread in threads_in_node:
-        last_msg = Message.objects.filter(thread=thread, is_visible=True).order_by('-time_created').first()
+        last_msg = Message.objects.filter(thread=thread).order_by('-id').first()
         if last_msg:
             # sorting threads by pinned or unpinned threads
             if last_msg.thread.is_pinned:
@@ -69,7 +70,7 @@ def section(request, section):
     threads = pinned_threads + unpinned_threads
     context ["node"] = node
     context ["threads"] = threads
-    print(threads)
+    # print(threads)
     return render(request, "forum_section.html", context)
 
 def thread(request, section, thread, thread_id):
@@ -80,13 +81,13 @@ def thread(request, section, thread, thread_id):
     except: 
         return render(request, 'error.html')
     try: 
-        _section = Node.objects.get(slug__iexact=section)
-        _magic = Thread.objects.get(slug__iexact=thread)
+        _section = Node.objects.filter(slug__iexact=section)
+        _magic = Thread.objects.filter(slug__iexact=thread)
     except:
         # slugify rewriting text to slug
         return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     else:
-        if _thread.node != _section or not _magic:
+        if _thread.node not in _section or not any(_magic):
             return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
     # message inside Thread
     if request.method == "POST":
@@ -96,7 +97,7 @@ def thread(request, section, thread, thread_id):
         _thread.msg_amount += 1
         _thread.save()
         return redirect('msg_redirect', _thread.node.slug, _thread.slug, _thread.id, message.id)
-    msgs = Message.objects.filter(thread=_thread).order_by('time_created')
+    msgs = Message.objects.filter(thread=_thread).order_by('id')
     context = {
         'thread':_thread,
         'messages': msgs
@@ -119,7 +120,7 @@ def create_thread(request, section, section_id):
         author = request.user
         new_thread = Thread.objects.create(user=author, title=title, node=node)
         new_thread.save()
-        first_message = Message.objects.create(thread=new_thread, user=author, message=text)
+        first_message = Message.objects.create(thread=new_thread, user=author, message=text, is_start=True)
         first_message.save()
         return redirect('thread', new_thread.node.slug, new_thread.slug, new_thread.id)
     context = {
@@ -212,3 +213,46 @@ def toggle_thread_pin(request, thread_id):
     thread.is_pinned = False if thread.is_pinned else True
     thread.save()
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
+
+def toggle_msg_visibility(request, msg_id):
+    try:
+        message = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        reason = request.POST.get('reason')
+        if request.POST.get('is_notified'):
+            notification = request.POST.get('notification')
+            notify_user(user=message.user,
+                        notification_type='message_delete',
+                        reason=message,
+                        notification=notification)
+        message.thread.msg_amount -= 1
+        message.thread.save()
+        message.is_visible = False
+        message.deleted_by = request.user
+        message.invis_reason = reason
+        message.time_changed = datetime.now()
+        message.save()
+        if message.is_start:
+            if request.POST.get('notify_thread'):
+                notify_user(user=message.user,
+                            notification_type='thread_delete',
+                            reason=message.thread,
+                            notification=notification)
+            message.thread.is_visible = False
+            message.thread.invis_reason = reason
+            message.thread.deleted_by = request.user
+            message.thread.time_changed = datetime.now()
+            message.thread.save()
+            return redirect('section', message.thread.node.slug)
+    else:
+        message.is_visible = True
+        message.thread.msg_amount += 1
+        message.thread.save()
+        message.save()
+        pass
+    return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
+
+def change_message(request, msg_id):
+    pass

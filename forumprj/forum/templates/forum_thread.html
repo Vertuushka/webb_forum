@@ -139,7 +139,7 @@
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                         {% if perms.forum.change_message %}
                                             <p class="forumMessageControllBtn">View message</p>
-                                            <p class="forumMessageControllBtn">Restore</p>
+                                            <a class="forumMessageControllBtn" href="{% url 'toggle_msg_visibility' msg.id %}">Restore</a>
 
                                             <!-- popup -->
                                                 <!-- popup -->
@@ -230,11 +230,15 @@
 
         <!-- delete form -->
         <!-- should not be visible until user clicks delete button -->
-        <form action="">
+        <form action="{% url 'toggle_msg_visibility' msg.id %}" method="post">
             {% csrf_token %}
             <input type="text" name="reason" id="">
             <input type="checkbox" name="is_notified" id="">
             <input type="text" name="notification" id="">
+            {% if msg.is_start %} !!!
+                <p>Delete thread as well</p>
+                <input type="checkbox" name="notify_thread" id="">
+            {% endif %}
             <input type="submit" value="Delete">
         </form>
     
