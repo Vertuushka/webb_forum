@@ -13,6 +13,13 @@
     gap: 4px;
 }
 
+.forumCardTitle {
+    padding: 6px 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
 .forumCardHeaderLine {
     height: 24px;
     border-left: 1px solid var(--border_dark);
@@ -93,7 +100,95 @@
     gap: 4px;
 }
 
+/* forum messages  */
+/* forum messages  */
+/* forum messages  */
 
+.forumCardCanvas {
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.forumMessage {
+    padding: 12px;
+    gap: 12px;
+}
+
+.forumMessageProfilePicture {
+    align-self: flex-start;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: center;
+
+    width: 32px;
+    border-radius: 32px;
+    background-color: var(--bg);
+}
+
+.forumMessageBody {
+    flex-grow: 1;
+    gap: 8px;
+}
+
+.forumMessageMetaWrapper {
+    justify-content: space-between;
+}
+
+.forumMessageUserMeta {
+    gap: 8px;
+}
+
+.forumMessageUsername {
+    font-size: 12px;
+    color: var(--accent);
+}
+
+.forumMessageControllWrapper {
+    gap: 8px;
+}
+
+.forumMessageControllBtn {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.forumMessageControllBtn:hover {
+    cursor: pointer;
+    color: var(--accent);
+}
+
+.forumMessageWrapper {
+    gap: 8px;
+}
+
+.forumMessageContent {
+    font-size: 14px;
+    color: var(--text);
+}
+
+.forumMessageInput {
+    flex-grow: 1;
+
+    padding: 12px;
+    border-radius: 8px;
+
+    font-size: 14px;
+    color: var(--text);
+    background-color: var(--isClickable);
+}
+
+.forumMessageInput:focus {
+    outline: none;
+}
+
+.forumMessageSubmitBtn {
+    padding: 4px;
+}
+
+/* forum messages  */
+/* forum messages  */
+/* forum messages  */
 
 .headerSearch {
     flex-grow: 1;
