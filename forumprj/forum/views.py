@@ -55,11 +55,12 @@ def section(request, section):
         context["child_nodes"] = child_nodes
     except:
         context["child_nodes"] = False
-    threads_in_node = Thread.objects.filter(node=node)
+    threads_in_node = Thread.objects.filter(node=node).annotate(
+            latest_msg=Max('message__id')).order_by('-id')
     pinned_threads = []
     unpinned_threads = []
     for thread in threads_in_node:
-        last_msg = Message.objects.filter(thread=thread).order_by('-time_created').first()
+        last_msg = Message.objects.filter(thread=thread).order_by('-id').first()
         if last_msg:
             # sorting threads by pinned or unpinned threads
             if last_msg.thread.is_pinned:
@@ -69,7 +70,7 @@ def section(request, section):
     threads = pinned_threads + unpinned_threads
     context ["node"] = node
     context ["threads"] = threads
-    print(threads)
+    # print(threads)
     return render(request, "forum_section.html", context)
 
 def thread(request, section, thread, thread_id):
