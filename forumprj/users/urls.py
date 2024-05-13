@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:id>/content/', views.profile_content, name="profile_content"),
     path('<int:id>/warnings/', views.profile_warnings, name="profile_warnings"),
     path('<int:id>/ban/', views.profile_toggle_ban, name="profile_toggle_ban"),
+    path('<int:msg_id>/warn/', views.warn, name="warn"),
     # path('<int:id>/settings', views.profile_settings, name="profile_settings"),
     # path('<int:id>/notifications', views.notifications, name="notifications")
 ]

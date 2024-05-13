@@ -25,8 +25,9 @@ def add_msg_bookmark(request, id):
     except:
         bookmark = Bookmark.objects.create(user=request.user, forum_msg=msg)
         bookmark.save()
-    url = reverse('msg_redirect', args=(slugify(msg.thread.node.name), slugify(msg.thread.title), msg.thread.id, msg.id)).replace('%23', '#')
-    return redirect(url)
+    # url = reverse('msg_redirect', args=(msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id))
+    # print(url)
+    return redirect('msg_redirect', msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id)
 
 
 def del_bookmark(request, id):

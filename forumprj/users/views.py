@@ -123,3 +123,10 @@ def notifications(request):
     request.user.profile.save()
     return render(request, 'notifications.html', context)
 
+def warn(request, msg_id):
+    try:
+        message = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        pass

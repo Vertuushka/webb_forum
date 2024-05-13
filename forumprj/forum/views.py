@@ -1,11 +1,10 @@
-from django.utils.text import slugify
 from django.shortcuts import render, redirect
 from django.db.models import Max
 from . models import *
 from moderation.models import Report
 from datetime import datetime
 from base.utils import notify_user
-# from users.models import Profile
+from .utils import *
 
 def forum_main(request):
     context = {}
@@ -36,13 +35,6 @@ def forum_main(request):
         }
     return render(request, "forum_main.html", context)
 
-def build_nodes_tree(nodes, parent=None):
-    tree = []
-    for node in nodes:
-        if node.parent == parent:
-            children = build_nodes_tree(nodes, parent=node)
-            tree.append({'node': node, 'children': children})
-    return tree
 
 def section(request, section):
     context = {}
@@ -81,7 +73,7 @@ def thread(request, section, thread, thread_id):
     except: 
         return render(request, 'error.html')
     try: 
-        _section = Node.objects.filter(slug__iexact=section)
+        _section = Node.objects.filter(slug__iexact=section)    
         _magic = Thread.objects.filter(slug__iexact=thread)
     except:
         # slugify rewriting text to slug
@@ -184,18 +176,14 @@ def toggle_thread_visibility(request, thread_id):
     except:
         return render(request, 'error.html')
     if request.method == "POST":
-        thread.is_visible = False if thread.is_visible else True
-        reason = request.POST.get('reason')
-        thread.invis_reason = reason
-        thread.deleted_by = request.user
-        is_notified = request.POST.get('is_notified')
-        if is_notified:
-            notif = request.POST.get('notification')
+        deleting_form = get_reason_input(request)
+        delete_thread(request, thread, deleting_form["reason"])
+        if deleting_form["notification"] != None:
             notify_user(
                 user = thread.user, 
                 notification_type = 'thread_delete',
                 reason = thread,
-                notification = notif
+                notification = deleting_form["notification"]
             )
         thread.save()
         return redirect('section', thread.node.slug)
@@ -220,32 +208,19 @@ def toggle_msg_visibility(request, msg_id):
     except:
         return render(request, 'error.html')
     if request.method == "POST":
-        reason = request.POST.get('reason')
-        if request.POST.get('is_notified'):
-            notification = request.POST.get('notification')
+        deleting_form = get_reason_input(request)
+        delete_message(request, message, deleting_form["reason"])
+        if deleting_form["notification"] != None:
             notify_user(user=message.user,
                         notification_type='message_delete',
                         reason=message,
-                        notification=notification)
-        message.thread.msg_amount -= 1
-        message.thread.save()
-        message.is_visible = False
-        message.deleted_by = request.user
-        message.invis_reason = reason
-        message.time_changed = datetime.now()
-        message.save()
-        if message.is_start:
+                        notification=deleting_form["notification"])
             if request.POST.get('notify_thread'):
                 notify_user(user=message.user,
                             notification_type='thread_delete',
                             reason=message.thread,
-                            notification=notification)
-            message.thread.is_visible = False
-            message.thread.invis_reason = reason
-            message.thread.deleted_by = request.user
-            message.thread.time_changed = datetime.now()
-            message.thread.save()
-            return redirect('section', message.thread.node.slug)
+                            notification=deleting_form["notification"])
+        return redirect('section', message.thread.node.slug)
     else:
         message.is_visible = True
         message.thread.msg_amount += 1

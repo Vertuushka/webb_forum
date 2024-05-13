@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+# from users.models import Warnings_history
 
 # different forums sections (t.ex: main or question)
 class Node(models.Model):
@@ -55,6 +56,7 @@ class Message(models.Model):
     is_visible = models.BooleanField(default=True)
     deleted_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="deleted_by")
     invis_reason = models.TextField(blank=True, null=True)
+    # warning = models.OneToOneField(Warnings_history, on_delete=models.SET_NULL, null=True, blank=True)
     time_created = models.DateTimeField(default=datetime.now())
     time_changed = models.DateTimeField(null=True, blank=True)
 

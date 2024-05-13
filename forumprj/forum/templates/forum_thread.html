@@ -106,7 +106,7 @@
                                     {% endif %}
 
                                     {% if perms.users.create_warnings_history %}
-                                        <p class="forumMessageControllBtn">Warn</p>
+                                        <p class="forumMessageControllBtn warnBtn">Warn</p>
                                     {% endif %}
                                 </div>
 
@@ -139,7 +139,7 @@
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                         {% if perms.forum.change_message %}
                                             <p class="forumMessageControllBtn">View message</p>
-                                            <a class="forumMessageControllBtn" href="{% url 'toggle_msg_visibility' msg.id %}">Restore</a>
+                                            <a class="forumMessageControllBtn" href="">Restore</a>
 
                                             <!-- popup -->
                                                 <!-- popup -->
@@ -201,14 +201,14 @@
             </form>
         {% endif %}
     </div>
-
-
+    
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
     <div style="display: none;">
     
         <!-- warning form  -->
         <!-- should not be visible until user clicks warn button -->
-        <form action="">
-            {% csrf_token %}
+        <form action="" >
+            
             <input type="text" name="warning (reason/etc)" id="">
             <input type="hidden" name="message" id="" value="{{ msg.id }}">
             <input type="submit" value="Warn">
@@ -230,7 +230,7 @@
 
         <!-- delete form -->
         <!-- should not be visible until user clicks delete button -->
-        <form action="{% url 'toggle_msg_visibility' msg.id %}" method="post">
+        <form action="" method="post">
             {% csrf_token %}
             <input type="text" name="reason" id="">
             <input type="checkbox" name="is_notified" id="">
@@ -241,8 +241,7 @@
             {% endif %}
             <input type="submit" value="Delete">
         </form>
-    
-    
+
     </div>
 
 {% endblock %}
