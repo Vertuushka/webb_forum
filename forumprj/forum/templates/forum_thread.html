@@ -137,12 +137,8 @@
             <p>View message</p>
             <!-- should not be visible until user clicks view message button -->
             <p class="forumThreadCardMessage text">{{ msg.message }}</p>
-            <p style="color: #B4FF1F;">Restore</p>
             <!-- should not be visible until user clicks restore button -->
-            <form action="">
-                {% csrf_token %}
-                <input type="submit" value="Restore">
-            </form>
+            <a href="{% url 'toggle_msg_visibility' msg.id %}">Restore</a>
             {% endif %}
         
     </div>

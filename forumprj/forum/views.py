@@ -226,23 +226,29 @@ def toggle_msg_visibility(request, msg_id):
                         notification_type='message_delete',
                         reason=message,
                         notification=notification)
-            message.thread.msg_amount -= 1
+        message.thread.msg_amount -= 1
+        message.thread.save()
+        message.is_visible = False
+        message.deleted_by = request.user
+        message.invis_reason = reason
+        message.time_changed = datetime.now()
+        message.save()
+        if message.is_start:
+            if request.POST.get('notify_thread'):
+                notify_user(user=message.user,
+                            notification_type='thread_delete',
+                            reason=message.thread,
+                            notification=notification)
+            message.thread.is_visible = False
+            message.thread.invis_reason = reason
+            message.thread.deleted_by = request.user
+            message.thread.time_changed = datetime.now()
             message.thread.save()
-            if message.is_start:
-                if request.POST.get('notify_thread'):
-                    notify_user(user=message.user,
-                                notification_type='thread_delete',
-                                reason=message.thread,
-                                notification=notification)
-                message.thread.is_visible = False
-                message.thread.invis_reason = reason
-                message.thread.deleted_by = request.user
-                message.thread.time_changed = datetime.now()
-                message.thread.save()
-            message.is_visible = False
-            message.deleted_by = request.user
-            message.invis_reason = reason
-            message.time_changed = datetime.now()
-            message.save()
             return redirect('section', message.thread.node.slug)
+    else:
+        message.is_visible = True
+        message.thread.msg_amount += 1
+        message.thread.save()
+        message.save()
+        pass
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
