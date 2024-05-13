@@ -253,3 +253,6 @@ def toggle_msg_visibility(request, msg_id):
         message.save()
         pass
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
+
+def change_message(request, msg_id):
+    pass

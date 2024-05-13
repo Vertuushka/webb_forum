@@ -13,5 +13,6 @@ urlpatterns = [
     path('thread/<int:thread_id>/close/', toggle_close_thread, name="toggle_close_thread"),
     path('thread/<int:thread_id>/delete/', toggle_thread_visibility, name="toggle_thread_visibility"),
     path('thread/<int:thread_id>/pin/', toggle_thread_pin, name="toggle_thread_pin"),
-    path('message/<int:msg_id>/delete/', toggle_msg_visibility, name="toggle_msg_visibility")
+    path('message/<int:msg_id>/delete/', toggle_msg_visibility, name="toggle_msg_visibility"),
+    path('message/<int:msg_id>/edit/', change_message, name="change_message"),
 ]
