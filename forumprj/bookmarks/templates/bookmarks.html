@@ -1,22 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>Bookmarks</p>
-    {% if bookmarks %}
-    {% for bookmark in bookmarks %}
-        <img src="{{ media_url }}{{ bookmark.forum_msg.profile.profile_picture }}" alt="">
-        <p>{{ bookmark.forum_msg.user }}</p>
-        <p>{{ bookmark.forum_msg.message }}</p>
-        <p>{{ bookmark.forum_msg.time_created|date:"d/m/Y - H:i" }}</p>
-        <a href="{% url 'del_bookmark' bookmark.id %}">Delete from bookmarks</a>
-    {% endfor %}
-    {% else %}
-    <p>You don't have any bookmarks yet</p>
-    {% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block header %}
+    <header class="wrapper">
+        <h2 class="title">Bookmarks</h2>
+    </header>
+{% endblock %}
+{% block content %}
+
+    <div class="container content">
+        {% if bookmarks %}
+            {% for bookmark in bookmarks %}
+                <img src="{{ media_url }}{{ bookmark.forum_msg.user.profile.profile_picture }}" alt="">
+                <p>{{ bookmark.forum_msg.user }}</p>
+                <p>{{ bookmark.forum_msg.message }}</p>
+                <p>{{ bookmark.forum_msg.time_created|date:"d/m/Y - H:i" }}</p>
+                <a href="{% url 'del_bookmark' bookmark.id %}">Delete from bookmarks</a>
+            {% endfor %}
+
+            {% else %}
+
+            <div class="NoContentBanner">
+                <h2>Bookmarks</h2>
+                <p>You don't have any bookmarks yet</p>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

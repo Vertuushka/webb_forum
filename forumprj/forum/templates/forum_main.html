@@ -3,7 +3,8 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
 {% endblock %}
-{% block content %}
+{% block header %}
+
     <header class="wrapper">
         <h2 class="title">Forum</h2>
         <div class="headerLine"></div>
@@ -17,18 +18,20 @@
         </form>
     </header>
 
+{% endblock %}
+{% block content %}
+<div class="container content">
     {% if forum_search %}
         {% for result in results %}
             {{ result }}
         {% endfor %}
     {% endif %}
-
+    
     {% for item in tree %}
         <div class="container card">
-
             <div class="wrapper forumCardHeader">
                 <a class="forumCardBtn"  href="{% url 'section' item.node.name|slugify %}">{{ item.node.name }}</a>
-
+    
                 {% if item.children %}
                     <div class="forumCardHeaderLine"></div>
                     {% for child in item.children %}
@@ -36,7 +39,7 @@
                     {% endfor %}
                 {% endif %}
             </div>
-
+    
             {% for thread in last_threads %}
                 {% if thread.node == item.node %}
                 <div class="cardLine"></div>
@@ -63,4 +66,6 @@
             {% endfor %}
         </div>
     {% endfor %}
+</div>
+
 {% endblock %}

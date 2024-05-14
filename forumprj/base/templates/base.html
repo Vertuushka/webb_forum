@@ -128,7 +128,8 @@
         </div>
     </nav>
 
-    <div class="container content">
+    <div class="main">
+        {% block header %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
 

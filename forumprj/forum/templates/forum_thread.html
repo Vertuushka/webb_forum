@@ -2,9 +2,9 @@
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
+    <link rel="stylesheet" href="{% static 'thread.css' %}">
 {% endblock %}
-{% block content %}
-
+{% block header %}
     <header class="wrapper">
         <h2 class="title">Forum</h2>
         <div class="headerLine"></div>
@@ -17,99 +17,119 @@
             <input type="checkbox" name="content_type" id="" value="members">
         </form>
     </header>
-
-    {% if perms.forum.change_thread %}
-        {% if thread.is_closed %}
-            <a href="{% url 'toggle_close_thread' thread.id %}">Open thread</a>
-        {% else %}
-            <a href="{% url 'toggle_close_thread' thread.id %}">Close thread</a>
-        {% endif %}
-
-        {% if thread.is_visible %}
-            {% if thread.is_pinned %}
-                <a href="{% url 'toggle_thread_pin' thread.id %}">Unpin this thread</a>
-            {% else %}
-                <a href="{% url 'toggle_thread_pin' thread.id %}">Pin this thread</a>
-            {% endif %}
-
-            <p>Delete thread</p>
-            <!-- should not be visible until user clicks restore button -->
-            <form action="{% url 'toggle_thread_visibility' thread.id %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="reason" id="">
-                <input type="checkbox" name="is_notified" id="">
-                <input type="text" name="notification" id="">
-                <input type="submit" value="Delete">
-            </form>
-        {% else %}
-            <a href="{% url 'toggle_thread_visibility' thread.id %}">Restore thread</a>
-        {% endif %}
-    {% endif %}
-
-    {% if perms.forum.change_thread %}
-        <p>Change thread</p>
-        <form action="">
-            <input type="text" name="thread title" id="" value="{{ thread.title }}">
-            <input type="checkbox" name="is_notified" id="">
-            <input type="text" name="notification" id="">
-        </form>
-    {% endif %}
-
+{% endblock %}
+{% block content %}
+<div class="container content">    
     <div class="container card">
-        <div class="forumCardHeader">
+        <div class="wrapper forumCardHeader space">
             {% if thread.is_visible %}
                 <h2 class="forumCardTitle">{{ thread.title }}</h2>
             {% endif %}
-
+    
             {% if not thread.is_visible and perms.view_thread %}
                 <h2 class="forumCardTitle">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
             {% endif %}
+
+            <div class="wrapper modToolsContainer">
+                {% if perms.forum.change_thread %}
+                    {% if thread.is_closed %}
+                        <a class="modToolsBtn" href="{% url 'toggle_close_thread' thread.id %}">
+                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_lock_closed.svg' %}" alt="">
+                        </a>
+                    {% else %}
+                        <a class="modToolsBtn" href="{% url 'toggle_close_thread' thread.id %}">
+                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_lock_open.svg' %}" alt="">
+                        </a>
+                    {% endif %}
+            
+                    {% if thread.is_visible %}
+                        {% if thread.is_pinned %}
+                            <a class="modToolsBtn" href="{% url 'toggle_thread_pin' thread.id %}">
+                                <img class="modToolsBtnIcon" src="{% static 'assets/icon_unpin.svg' %}" alt="">
+                            </a>
+                        {% else %}
+                            <a class="modToolsBtn" href="{% url 'toggle_thread_pin' thread.id %}">
+                                <img class="modToolsBtnIcon" src="{% static 'assets/icon_pin.svg' %}" alt="">
+                            </a>
+                        {% endif %}
+            
+                        <button class="modToolsBtn">
+                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_bin.svg' %}" alt="">
+                        </button>
+        
+                        <!-- should not be visible until user clicks restore button -->
+                        <form style="display: none;" action="{% url 'toggle_thread_visibility' thread.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="reason" id="">
+                            <input type="checkbox" name="is_notified" id="">
+                            <input type="text" name="notification" id="">
+                            <input type="submit" value="Delete">
+                        </form>
+                    {% else %}
+                        <a class="modToolsBtn" href="{% url 'toggle_thread_visibility' thread.id %}">
+                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_recycle.svg' %}" alt="">
+                        </a>
+                    {% endif %}
+                {% endif %}
+            
+                {% if perms.forum.change_thread %}
+                    <button class="modToolsBtn">
+                        <img class="modToolsBtnIcon" src="{% static 'assets/icon_edit.svg' %}" alt="">
+                    </button>
+        
+                    <form style="display: none;" action="">
+                        <input type="text" name="thread title" id="" value="{{ thread.title }}">
+                        <input type="checkbox" name="is_notified" id="">
+                        <input type="text" name="notification" id="">
+                    </form>
+                {% endif %}
+            </div>
         </div>
         <div class="cardLine"></div>
-
+    
         <div class="container forumCardCanvas">
             {% for msg in messages %}
                 {% if msg.is_visible %}
                     <div class="wrapper forumMessage" id="{{ msg.id }}">
                         <img class="forumMessageProfilePicture" src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
-
+    
                         <div class="container forumMessageBody">
                             <div class="wrapper forumMessageMetaWrapper">
                                 <div class="wrapper forumMessageUserMeta">
                                     <a class="forumMessageUsername" href="">{{ msg.user.username }}</a>
                                     <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                                 </div>
-
+    
                                 <div class="wrapper forumMessageControllWrapper">
                                     <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
-
+    
                                     {% if msg.thread.node.type_question %}
                                         <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
                                         <p class="forumMessageControllBtn">Upvotes: {{ msg.downvotes }}</p>
-
+    
                                         {% if msg.is_solution %}
                                             <p class="forumMessageControllBtn">This post is marked as solution</p>
                                         {% endif %}
-
+    
                                         {% if request.user == msg.thread.user or perms.forum.change_message %}
                                             <a class="forumMessageControllBtn" href="">Mark as solution</a>
                                         {% endif %}
                                     {% endif %}
-
+    
                                     {% if request.user.is_authenticated %}
                                         <p class="forumMessageControllBtn">Report</p>
                                     {% endif %}
-
+    
                                     {% if perms.forum.change_message %}
                                         <p class="forumMessageControllBtn">Delete</p>
                                         <p class="forumMessageControllBtn">Edit</p>
                                     {% endif %}
-
+    
                                     {% if perms.users.create_warnings_history %}
                                         <p class="forumMessageControllBtn warnBtn">Warn</p>
                                     {% endif %}
                                 </div>
-
+    
                                 <!-- report form  -->
                                 <!-- should not be visible until user clicks report button -->
                                 <form style="display: none;" action="{% url 'report_msg' msg.id %}" method="post">
@@ -118,33 +138,33 @@
                                     <input type="submit" value="Report">
                                 </form>
                             </div>
-
+    
                             <p class="forumMessageContent">{{ msg.message }}</p>
                         </div>
                     </div>
                 {% else %}
                     {% if perms.forum.view_message %}
-
+    
                         <div class="wrapper forumMessage" id="{{ msg.id }}">
                             <img class="forumMessageProfilePicture" src="{{ media_url }}{{ msg.user.profile.profile_picture }}" alt="">
-
+    
                             <div class="container forumMessageBody">
                                 <div class="wrapper forumMessageMetaWrapper">
                                     <div class="wrapper forumMessageUserMeta">
                                         <a class="forumMessageUsername" href="">{{ msg.user.username }}</a>
                                         <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                                     </div>
-
+    
                                     <div class="wrapper forumMessageControllWrapper">
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                         {% if perms.forum.change_message %}
                                             <p class="forumMessageControllBtn">View message</p>
                                             <a class="forumMessageControllBtn" href="">Restore</a>
-
+    
                                             <!-- popup -->
                                                 <!-- popup -->
                                                     <!-- popup -->
-
+    
                                                         <div style="display: none;">
                                                             <!-- should not be visible until user clicks view message button -->
                                                             <p class="forumThreadCardMessage text">{{ msg.message }}</p>
@@ -154,22 +174,22 @@
                                                                 <input type="submit" value="Restore">
                                                             </form>
                                                         </div>
-
+    
                                                     <!-- popup -->
                                                 <!-- popup -->
                                             <!-- popup -->
                                             
                                         {% endif %}
-
+    
                                         {% if perms.users.create_warnings_history %}
                                             <p class="forumMessageControllBtn">Warn</p>
                                         {% endif %}
                                     </div>
-
+    
                                     <!-- popup -->
                                         <!-- popup -->
                                             <!-- popup -->
-
+    
                                                 <!-- report form  -->
                                                 <!-- should not be visible until user clicks report button -->
                                                 <form style="display: none;" action="{% url 'report_msg' msg.id %}" method="post">
@@ -177,21 +197,21 @@
                                                     <input type="text" name="reason" id="">
                                                     <input type="submit" value="Report">
                                                 </form>
-
+    
                                             <!-- popup -->
                                         <!-- popup -->
                                     <!-- popup -->
                                 </div>
-
+    
                                 <p class="forumMessageContent">Deleted by {{  msg.deleted_by }}. Reason: {{ msg.invis_reason }}</p>
                             </div>
                         </div>
-
+    
                     {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
-
+    
         {% if not thread.is_closed and request.user.is_authenticated or perms.forum.change_thread %}
             <!-- I guess we can draw user's profile picture here -->
             <form class="wrapper forumMessageWrapper" action="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" method="post">
@@ -201,6 +221,8 @@
             </form>
         {% endif %}
     </div>
+</div>
+
     
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
     <div style="display: none;">

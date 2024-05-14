@@ -1,0 +1,22 @@
+.modToolsContainer {
+    gap: 8px;
+}
+
+.modToolsBtn {
+    aspect-ratio: 1/1;
+    padding: 6px;
+    border-radius: 8px;
+
+    background-color: var(--primary);
+    display: flex;
+}
+
+.modToolsBtn:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.modToolsBtnIcon {
+    aspect-ratio: 1/1;
+    width: 20px;
+}

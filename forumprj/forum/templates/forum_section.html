@@ -2,8 +2,9 @@
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
+    <link rel="stylesheet" href="{% static 'thread.css' %}">
 {% endblock %}
-{% block content %}
+{% block header %}
     <header class="wrapper">
         <h2 class="title">Forum</h2>
         <div class="headerLine"></div>
@@ -16,31 +17,35 @@
             <input type="checkbox" name="content_type" id="" value="members">
         </form>
     </header>
-
+{% endblock %}
+{% block content %}
+<div class="container content">
     <div class="container card">
         <div class="container mainCard">
             <div class="wrapper cardHeader">
-                <h2 class="cardTitle">{{ node.name }}</h2>
+                    <h2 class="cardTitle">{{ node.name }}</h2>
+    
+                <div class="wrapper" style="flex-grow: 1;">
+                    {% if child_nodes %}
+                        <div class="forumCardHeaderLine"></div>
+                        {% for child in child_nodes %}
+                            <a class="forumCardHeaderBtn" href="{% url 'section' child.name|slugify %}">{{ child.name }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
 
-                {% if child_nodes %}
-                    <div class="forumCardHeaderLine"></div>
-                    {% for child in child_nodes %}
-                        <a class="forumCardHeaderBtn" href="{% url 'section' child.name|slugify %}">{{ child.name }}</a>
-                    {% endfor %}
+                <div class="forumCardHeaderLine"></div>
+                {% if node.staff_only and perms.forum.create_thread or not node.staff_only and request.user.is_authenticated %}
+                    <a class="modToolsBtn" href="{% url 'create_thread' node.name|slugify node.id %}">
+                        <img class="modToolsBtnIcon" src="{% static 'assets/icon_write.svg' %}" alt="">
+                    </a>
                 {% endif %}
             </div>
 
-            <!-- description for the child thread -->
-            <p class="text">{{ node.description }}</p>
+            <p class="cardHeaderDescription">{{ node.description }}</p>
 
-            <!-- add new thread -->
-            {% if node.staff_only and perms.forum.create_thread or not node.staff_only and request.user.is_authenticated %}
-                <a href="{% url 'create_thread' node.name|slugify node.id %}">Start new thread here.</a>
-            {% endif %}
-
-            <!-- card header banner -->
             {% if node.type_private %}
-                <p>This section is private. Only you and administrators can see your threads here</p>
+                <p class="cardHeaderBanner">This section is private. Only you and administrators can see your threads here</p>
             {% endif %}
         </div>
 
@@ -80,5 +85,6 @@
         {% endfor %}
         
     </div>
+</div>
 
 {% endblock %}
