@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+<title>{{ thread.title }}</title>
+{% endblock %}
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
@@ -96,7 +99,11 @@
                         <div class="container forumMessageBody">
                             <div class="wrapper forumMessageMetaWrapper">
                                 <div class="wrapper forumMessageUserMeta">
-                                    <a class="forumMessageUsername" href="">{{ msg.user.username }}</a>
+                                    {% if msg.user.profile.is_banned and perms.view_profile %}
+                                        <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}"><del>{{ msg.user.username }}</del></a>
+                                    {% else %}
+                                        <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
+                                    {% endif %}
                                     <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                                 </div>
     
@@ -151,7 +158,11 @@
                             <div class="container forumMessageBody">
                                 <div class="wrapper forumMessageMetaWrapper">
                                     <div class="wrapper forumMessageUserMeta">
-                                        <a class="forumMessageUsername" href="">{{ msg.user.username }}</a>
+                                        {% if msg.user.profile.is_banned and perms.view_profile %}
+                                            <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}"><del>{{ msg.user.username }}</del></a>
+                                        {% else %}
+                                            <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
+                                        {% endif %}
                                         <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                                     </div>
     

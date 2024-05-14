@@ -1,9 +1,11 @@
-
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'form.css' %}">
     <link rel="stylesheet" href="{% static 'profile.css' %}">
+{% endblock %}
+{% block title %}
+    <title>Edit - {{ account.username }}</title>
 {% endblock %}
 {% block content %}
 <header class="container">

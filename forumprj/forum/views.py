@@ -167,7 +167,7 @@ def toggle_close_thread(request, thread_id):
     except:
         return render(request, 'error.html')
     thread.is_closed = False if thread.is_closed else True
-    thread.save()
+    thread.save()   
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
 def toggle_thread_visibility(request, thread_id):

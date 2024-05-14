@@ -3,6 +3,14 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'account.css' %}">
 {% endblock %}
+{% block title %}
+{% if is_login_page %}
+<title>Log in</title>
+{% else %}
+<title>Sign up</title>
+{% endif %}
+
+{% endblock %}
 {% block content %}
     {% if is_login_page %} 
         <header class="wrapper">

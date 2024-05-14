@@ -3,6 +3,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
+{% block title %}
+<title>{{ account.username }}</title>
+{% endblock %}
 {% block content %}
 <header class="wrapper">
     <h2 class="title">Profile</h2>
