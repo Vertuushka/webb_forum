@@ -5,13 +5,17 @@
 {% block content %}
 
     <p>Post in thread '{{ report.content.thread.title }}'</p>
-    <a href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
+    {% if report.content.user.profile.is_banned and perms.users.view_profile %}
+        <a href="{% url 'profile_view' report.content.user.id %}"><del>{{ report.content.user.username }}</del></a>
+    {% else %}
+        <a href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
+    {% endif %}
     {% if report.content.user.profile.title %}
     <p>{{ report.content.user.profile.title }}</p>
     {% endif %}
     <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
     <p>{{ report.content.message }}</p>
-    <a href="{% url 'thread' report.content.thread.node.name|slugify report.content.thread.title|slugify report.content.thread.id %}#{{report.content.id}}">Go to content</a>
+    <a href="{% url 'thread' report.content.thread.node.slug report.content.thread.slugy report.content.thread.id %}#{{report.content.id}}">Go to content</a>
     <p>Reason: {{ report.reason }}</p>
     <p>Created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
     <p>Status: 

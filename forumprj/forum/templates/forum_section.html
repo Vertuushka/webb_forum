@@ -60,9 +60,11 @@
                         <a class="cardSectionItem" href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}">
                             <div class="container cardSectionInnerItem">
                                 <p class="meta">Theme</p>
-                                <p class="text">{{thread}}
+                                <p class="text">
                                     {% if not thread.is_visible %}
-                                        (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})
+                                        <del>{{thread}}</del>
+                                    {% else %}
+                                        {{thread}}
                                     {% endif %}
                                 </p>
                                 {% if thread.is_pinned %}
@@ -79,7 +81,11 @@
                             <p class="meta">Created by</p>
                             <div class="wrapper cardSectionAutherItemMetaContainer">
                                 <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ thread.user.profile.profile_picture }}" alt="">
-                                <p class="text">{{ thread.user.username }}</p>
+                                {% if perms.users.view_profile and thread.user.profile.is_banned %}
+                                    <p class="text"><del>{{ thread.user.username }}</del></p>
+                                {% else %}
+                                    <p class="text">{{ thread.user.username }}</p>
+                                {% endif %}
                             </div>
                         </a>
                     </div>
