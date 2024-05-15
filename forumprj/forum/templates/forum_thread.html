@@ -132,8 +132,12 @@
                                         <p class="forumMessageControllBtn">Edit</p>
                                     {% endif %}
     
-                                    {% if perms.users.create_warnings_history %}
-                                        <p class="forumMessageControllBtn warnBtn">Warn</p>
+                                    {% if perms.users.create_warnings_history and not msg.user == request.user and not msg.user.is_staff %}
+                                        {% if msg.warnings_history %}
+                                            <p class="forumMessageControllBtn">View warning</p>
+                                        {% else %}
+                                            <p class="forumMessageControllBtn warnBtn">Warn</p>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
     
@@ -240,7 +244,7 @@
     
         <!-- warning form  -->
         <!-- should not be visible until user clicks warn button -->
-        <form action="" >
+        <form action="{% url 'warn_user' 5 %}" >
             
             <input type="text" name="warning (reason/etc)" id="">
             <input type="hidden" name="message" id="" value="{{ msg.id }}">

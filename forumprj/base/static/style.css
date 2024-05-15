@@ -360,6 +360,6 @@ header {
     gap: 8px;
 }
 
-.focus {
-    background-color: var(--isClickable);
+.focus{
+    background-color: var(--focus);
 }
