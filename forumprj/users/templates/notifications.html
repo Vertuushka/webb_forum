@@ -11,7 +11,11 @@
     {% for notif in notifications %}
         <!-- models.py > class Notification -->
         {% if notif.notification_type == 0 %}
-            <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.content.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
+            {% if not notif.warning.forum_msg.is_start %}
+            <p>You were given a warning as a message in the topic <a href="{% url 'thread' notif.warning.forum_msg.thread.node.slug notif.warning.forum_msg.thread.slug notif.warning.forum_msg.thread.id %}">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
+            {% else %}
+            <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
+            {% endif %}
         {% endif %}
 
         {% if notif.notification_type == 2 %}

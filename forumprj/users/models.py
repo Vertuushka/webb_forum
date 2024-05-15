@@ -67,10 +67,10 @@ class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notification_type = models.SmallIntegerField(choices=NOTIFICATIONS_TYPE)
     notification = models.TextField()
-    message = models.ForeignKey(Message, on_delete=models.SET_NULL, null=True, blank=True)
-    thread = models.ForeignKey(Thread, on_delete=models.SET_NULL, null=True, blank=True)
-    warning = models.ForeignKey(Warnings_history, on_delete=models.SET_NULL, null=True, blank=True)
-    report = models.ForeignKey(Report, on_delete=models.SET_NULL, null=True, blank=True, related_name="linked_report")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True)
+    warning = models.ForeignKey(Warnings_history, on_delete=models.CASCADE, null=True, blank=True)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True, blank=True, related_name="linked_report")
     time_created = models.DateTimeField(default=datetime.now())
 
     def __str__(self):

@@ -12,6 +12,8 @@ def notify_user(user, notification_type, reason, notification):
         'thread_change':    7,
     }
     notif = Notification.objects.create(user=user, notification_type=NOTIFICATIONS_TYPE.get(notification_type), notification=notification)
+    if notification_type == 'warning':
+        notif.warning = reason
     if notification_type == 'message_delete' or notification_type == 'message_edit':
         notif.message = reason
     elif notification_type == 'thread_delete' or notification_type == 'thread_change':

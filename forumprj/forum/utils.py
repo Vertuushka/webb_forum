@@ -28,12 +28,12 @@ def delete_message(request, message, reason):
         deleting_thread = delete_thread(request, message.thread, reason)
         if not deleting_thread:
             return False
-    else:
-        message.thread.msg_amount -= 1
-        message.thread.save()
-        
-        message.is_visible = False
-        message.deleted_by = request.user
-        message.invis_reason = reason
-        message.time_changed = datetime.now()
-        return True
+    message.thread.msg_amount -= 1
+    message.thread.save()
+    
+    message.is_visible = False
+    message.deleted_by = request.user
+    message.invis_reason = reason
+    message.time_changed = datetime.now()
+    message.save()
+    return True

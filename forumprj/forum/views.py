@@ -243,15 +243,19 @@ def warn_user(request, msg_id):
         warning = Warnings_history.objects.create(user=message.user, 
                                                   forum_msg=message,
                                                   warned_by=request.user,
-                                                  details=None, 
+                                                  details=details, 
                                                   time_warned=datetime.now())
         warning.save()
+        message.user.profile.warnings += 1
+        message.user.profile.save()
         notify_user(user=message.user,
                     notification_type="warning",
-                    reason=message,
-                    notification=None)
-        if request.POST.get("is_deleted"):
+                    reason=warning,
+                    notification=details)
+
+        if request.POST.get("is_deleted")  == "on":
             reason = request.POST.get("deleting_reason")
+            # print(reason)
             try_delete = delete_message(request, message, reason)
             if not try_delete:
                 return render(request, 'error.html')
