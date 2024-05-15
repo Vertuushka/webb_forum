@@ -2,9 +2,11 @@
     margin: 0;
     padding: 0;
     border: none;
-    text-decoration: none;
+    
     font-family: "Roboto", sans-serif;
 }
+
+
 
 body {
     box-sizing: border-box;
@@ -14,6 +16,10 @@ body {
     display: grid;
     grid-template-columns: 256px minmax(256px , 1fr);
     gap: 12px;
+}
+
+a {
+    text-decoration: none;
 }
 
 .container {
@@ -352,4 +358,8 @@ header {
     align-items: center;
     justify-content: center;
     gap: 8px;
+}
+
+.focus{
+    background-color: var(--focus);
 }

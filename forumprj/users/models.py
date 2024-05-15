@@ -22,7 +22,7 @@ class Profile(models.Model):
         
 class Warnings_history(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    forum_msg = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
+    forum_msg = models.OneToOneField(Message, on_delete=models.CASCADE, null=True, blank=True)
     profile_msg = models.OneToOneField(Private_Message, on_delete=models.CASCADE, null=True, blank=True)
     warned_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='moderator', null=True)
     details = models.TextField()

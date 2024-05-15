@@ -3,6 +3,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
+{% block title %}
+<title>Settings - {{ account.username }}</title>
+{% endblock %}
 {% block content %}
 <header class="container">
     <h2 class="title">Profile</h2>
@@ -13,7 +16,12 @@
     <div class="wrapper profileContainer">
         <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
         <div class="container">
-            <h2 class="title">{{ account.username }} 
+            <h2 class="title">
+                {% if account.profile.is_banned and perms.users.view_profile %}
+                    <del>{{ account.username }} </del>
+                {% else %}
+                    {{ account.username }} 
+                {% endif %}
                 {% if perms.users.view_profile %}
                 ({{ account.profile.warnings }} warnings)
                 {% endif %}

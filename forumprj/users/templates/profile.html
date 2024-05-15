@@ -3,6 +3,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
+{% block title %}
+<title>{{ account.username }}</title>
+{% endblock %}
 {% block content %}
 <header class="wrapper">
     <h2 class="title">Profile</h2>
@@ -109,14 +112,12 @@
                                 <div class="cardLine"></div>
                                 <div class="container cardSection">
                                     <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                                    <p class="meta">Theme
-                                        {% if not msg.thread.is_visible %}
-                                            (DELETED)
-                                        {% endif %}
-                                    </p>
-                                    <p class="text">{{ msg.thread }}
-                                        {% if not msg.is_visible %}
-                                            (DELETED)
+                                    <p class="meta">Theme</p>
+                                    <p class="text">
+                                        {% if not msg.is_visible or not msg.thread.is_visible %}
+                                            <del>{{ msg.thread }}</del>
+                                        {% else %}
+                                            {{ msg.thread }}
                                         {% endif %}
                                     </p>
                                 </div>

@@ -16,7 +16,8 @@ class PermissionsHandler:
             r'/thread/\d+/close': 'forum.change_thread',
             r'/thread/\d+/delete': 'forum.change_thread',
             r'/thread/\d+/pin': 'forum.change_thread',
-            r'/message/\d+/delete/': 'forum.change_message'
+            r'/message/\d+/delete/': 'forum.change_message',
+            r'/message/\d+/warn/': 'users.change_warning_history'
         }
 
     def __call__(self, request):

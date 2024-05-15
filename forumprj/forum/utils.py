@@ -25,7 +25,7 @@ def delete_thread(request, thread, reason):
 
 def delete_message(request, message, reason):
     if message.is_start:
-        deleting_thread = delete_thread(request, message.thread, form)
+        deleting_thread = delete_thread(request, message.thread, reason)
         if not deleting_thread:
             return False
     else:

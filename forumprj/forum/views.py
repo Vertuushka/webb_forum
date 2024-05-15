@@ -5,6 +5,7 @@ from moderation.models import Report
 from datetime import datetime
 from base.utils import notify_user
 from .utils import *
+from users.models import Warnings_history
 
 def forum_main(request):
     context = {}
@@ -167,7 +168,7 @@ def toggle_close_thread(request, thread_id):
     except:
         return render(request, 'error.html')
     thread.is_closed = False if thread.is_closed else True
-    thread.save()
+    thread.save()   
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
 def toggle_thread_visibility(request, thread_id):
@@ -231,3 +232,29 @@ def toggle_msg_visibility(request, msg_id):
 
 def change_message(request, msg_id):
     pass
+
+def warn_user(request, msg_id):
+    try:
+        message = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        details = request.POST.get("warn_reason")
+        warning = Warnings_history.objects.create(user=message.user, 
+                                                  forum_msg=message,
+                                                  warned_by=request.user,
+                                                  details=None, 
+                                                  time_warned=datetime.now())
+        warning.save()
+        notify_user(user=message.user,
+                    notification_type="warning",
+                    reason=message,
+                    notification=None)
+        if request.POST.get("is_deleted"):
+            reason = request.POST.get("deleting_reason")
+            try_delete = delete_message(request, message, reason)
+            if not try_delete:
+                return render(request, 'error.html')
+        if message.is_start:
+            return redirect('section', message.thread.node.slug)
+    return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
