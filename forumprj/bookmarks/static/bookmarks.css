@@ -1,1 +1,11 @@
-.NoContentBanner {}
+.NoContentBanner {
+    padding: 12px;
+
+    border-radius: 12px;
+    border: 1px dashed var(--border_dark);
+
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
