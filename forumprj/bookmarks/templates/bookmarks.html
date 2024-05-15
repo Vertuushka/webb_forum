@@ -18,32 +18,35 @@
             <div class="wrapper forumCardHeader">
                 <h2 class="forumCardTitle">Bookmarks</h2>
             </div>
-                {% for bookmark in bookmarks %}
-                    <div class="cardLine"></div>
-                    <div class="cardSectionMultiple">
-                        <div class="wrapper cardSectionItem">
-                            <div class="container cardSectionInnerItem">
-                                <div class="wrapper">
-                                    <p class="meta">Theme</p>
-                                    <p class="meta">{{ bookmark.forum_msg.time_created|date:"d/m/Y - H:i" }}</p>
-                                </div>
-    
-                                <p class="text">{{ bookmark.forum_msg.message }}</p>
+
+            {% for bookmark in bookmarks %}
+                <div class="cardLine"></div>
+                <div class="cardSectionMultiple">
+
+                    <div class="wrapper cardSectionItem">
+                        <div class="container cardSectionInnerItem">
+                            <div class="wrapper">
+                                <p class="meta">Theme</p>
+                                <p class="meta">{{ bookmark.forum_msg.time_created|date:"d/m/Y - H:i" }}</p>
                             </div>
-                            <div class="container cardSectionInnerItem">
-                                <a class="" href="{% url 'del_bookmark' bookmark.id %}">Delete</a>
-                            </div>
+
+                            <p class="text">{{ bookmark.forum_msg.message }}</p>
                         </div>
 
-                        <div class="container cardSectionAutherItem">
-                            <p class="meta">Author</p>
-                            <div class="wrapper themeCardProfileCon">
-                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ bookmark.forum_msg.user.profile.profile_picture }}" alt="">
-                                <p class="text">{{ bookmark.forum_msg.user }}</p>
-                            </div>
+                        <div class="container cardSectionInnerItem">
+                            <a class="" href="{% url 'del_bookmark' bookmark.id %}">Delete</a>
                         </div>
                     </div>
-                {% endfor %}
+
+                    <div class="container cardSectionAutherItem">
+                        <p class="meta">Author</p>
+                        <div class="wrapper themeCardProfileCon">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ bookmark.forum_msg.user.profile.profile_picture }}" alt="">
+                            <p class="text">{{ bookmark.forum_msg.user }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
 
         {% else %}

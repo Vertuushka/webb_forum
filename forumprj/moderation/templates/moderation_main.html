@@ -5,6 +5,7 @@
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'moderation.css' %}">
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
 {% endblock %}
 {% block content %}
 
@@ -19,28 +20,21 @@
             </div>
 
             {% for report in active_reports %}
-                <div class="wrapper">
-                    <a class="wrapper" href="{% url 'report_details' report.id %}">
-                        <div class="container">
+                <div class="cardLine"></div>
+                <div class="wrapper cardSectionMultiple">
+                    <a class="wrapper cardSectionItem" href="{% url 'report_details' report.id %}">
+                        <div class="container cardSectionInnerItem">
                             <p class="meta">Content</p>
                             <p class="text">{{ report.content.thread.title }}</p>
                         </div>
-    
-                        <div class="wrapper">
-                            <div class="container">
-                                <p class="meta">Created</p>
-                                <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
-                            </div>
-        
-                            <div class="container">
-                                <p class="meta">Created</p>
-                                <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
-                            </div>
+                        <div class="container cardSectionInnerItem">
+                            <p class="meta">Created</p>
+                            <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
                         </div>
                     </a>
     
                     {% if report.assigned_to %}
-                        <a href="">
+                        <a class="container cardSectionAutherItem" href="">
                             <p class="meta">Assigned to</p>
                             <div class="wrapper">
                                 <img src="" alt="">
@@ -64,25 +58,43 @@
 
         <div class="container card">
             <div class="wapper cardHeader">
-                <p class="cardHeaderTitle">Closed reports</p>
+                <p class="cardTitle">Closed reports</p>
             </div>
 
             {% for report in closed_reports %}
-                <a href="{% url 'report_details' report.id %}">Post in thread '{{ report.content.thread.title }}'</a>
-                <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
-                {% if report.content.user.profile.id_banned and perms.users.view_profile %}
-                    <p><del>{{ report.content.user.username }}</del></p>
-                {% else %}
-                    <p>{{ report.content.user.username }}</p>
-                {% endif %}
-                <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
+                <div class="cardLine"></div>
+                <div class="wrapper cardSectionMultiple">
 
-                <p>Time changed: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
-                {% if report.is_resolved %}
-                    <p>Resolved by {{ report.closed_by }}</p>
-                {% else %}
-                    <p>Rejected by {{ report.closed_by }}</p>
-                {% endif %}
+                    <a class="wrapper cardSectionItem" href="{% url 'report_details' report.id %}">
+                        <div class="container cardSectionInnerItem">
+                            <p class="meta">Content</p>
+                            <p class="text">
+                                {{ report.content.thread.title }} by
+                                {% if report.content.user.profile.id_banned and perms.users.view_profile %}
+                                    <del>{{ report.content.user.username }}</del>
+                                {% else %}
+                                    {{ report.content.user.username }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="container cardSectionInnerItem">
+                            <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
+                            <p>Time changed: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
+                        </div>
+                    </a>
+
+                    <a class="container cardSectionAutherItem" href="">
+                        {% if report.is_resolved %}
+                            <p class="meta">Resolved by</p>
+                        {% else %}
+                            <p class="meta">Rejected by</p>
+                        {% endif %}
+                        <div class="wrapper themeCardProfileCon">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+                            <p class="text">{{ report.closed_by }}</p>
+                        </div>
+                    </a>
+                </div>
             {% endfor %}
         </div>
     {% endif %}
