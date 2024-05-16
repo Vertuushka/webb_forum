@@ -107,9 +107,8 @@
                                     <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
                                 </div>
     
-                                <div class="">
-                                    <div class="upperBlock wrapper forumMessageControllWrapper">
-                                        {% if request.user.is_authenticated %}
+                                <div class="wrapper forumMessageControllWrapper">
+                                    {% if request.user.is_authenticated %}
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                     {% endif %}
                                     {% if msg.thread.node.type_question %}
@@ -143,16 +142,13 @@
                                             <p class="forumMessageControllBtn warnBtn">Warn</p>
                                         {% endif %}
                                     {% endif %}
-                                    </div>
-                                    <div class="wrapper forumMessageControllWrapper">
-                                        {% if msg.time_changed %}
-                                        <p class="forumMessageControllBtn">Changed {{ msg.time_changed|date:"d/m/Y - H:i" }}
-                                            {% if perms.forum.view_message %}
-                                            by {{ msg.changer.username }}
-                                            {% endif %}
-                                        </p>
+                                    {% if msg.time_changed %}
+                                    <p>Changed {{ msg.time_changed }}
+                                        {% if perms.view_message %}
+                                        by {{ msg.changer }}
                                         {% endif %}
-                                    </div>
+                                    </p>
+                                    {% endif %}
                                 </div>
     
                                 <!-- report form  -->
@@ -230,7 +226,19 @@
                                         <!-- popup -->
                                     <!-- popup -->
                                 </div>
-    
+                                <!-- popup -->
+                                        <!-- popup -->
+                                            <!-- popup -->
+                                {% if msg.time_changed %}
+                                    <p>Changed {{ msg.time_changed }}
+                                        {% if perms.view_message %}
+                                        by {{ msg.changer }}
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
+                                        <!-- popup -->
+                                    <!-- popup -->
+                                <!-- popup -->
                                 <p class="forumMessageContent">Deleted by {{  msg.deleted_by }}. Reason: {{ msg.invis_reason }}</p>
                             </div>
                         </div>
