@@ -1,0 +1,18 @@
+.cardSectionSquad {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+}
+
+.cardSectionSquadItem {
+    padding: 12px;
+    border-radius: 12px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.cardSectionSquadItem:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
