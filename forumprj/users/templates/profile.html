@@ -109,18 +109,35 @@
                     {% for msg in content %}
                         {% if msg.is_visible or perms.forum.view_message %}
                             {% if msg.thread.is_visible or perms.forum.view_thread %}
-                                <div class="cardLine"></div>
-                                <div class="container cardSection">
-                                    <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                                    <p class="meta">Theme</p>
-                                    <p class="text">
-                                        {% if not msg.is_visible or not msg.thread.is_visible %}
-                                            <del>{{ msg.thread }}</del>
-                                        {% else %}
-                                            {{ msg.thread }}
-                                        {% endif %}
-                                    </p>
-                                </div>
+                                {% if msg.thread.node.type_private %}
+                                    {% if request.user == msg.thread.user or perms.forum.view_thread %}
+                                        <div class="cardLine"></div>
+                                        <div class="container cardSection">
+                                            <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                                            <p class="meta">Theme</p>
+                                            <p class="text">
+                                                {% if not msg.is_visible or not msg.thread.is_visible %}
+                                                    <del>{{ msg.thread }}</del>
+                                                {% else %}
+                                                    {{ msg.thread }}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="cardLine"></div>
+                                    <div class="container cardSection">
+                                        <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                                        <p class="meta">Theme</p>
+                                        <p class="text">
+                                            {% if not msg.is_visible or not msg.thread.is_visible %}
+                                                <del>{{ msg.thread }}</del>
+                                            {% else %}
+                                                {{ msg.thread }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endfor %}

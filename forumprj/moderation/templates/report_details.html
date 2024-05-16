@@ -15,7 +15,7 @@
     {% endif %}
     <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
     <p>{{ report.content.message }}</p>
-    <a href="{% url 'thread' report.content.thread.node.slug report.content.thread.slugy report.content.thread.id %}#{{report.content.id}}">Go to content</a>
+    <a href="{% url 'thread' report.content.thread.node.slug report.content.thread.slug report.content.thread.id %}#{{report.content.id}}">Go to content</a>
     <p>Reason: {{ report.reason }}</p>
     <p>Created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
     <p>Status: 

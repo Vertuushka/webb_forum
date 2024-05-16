@@ -71,6 +71,8 @@ def thread(request, section, thread, thread_id):
         _thread = Thread.objects.get(id=thread_id)
         if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
             return render(request, 'error.html')
+        if _thread.node.type_private and (request.user != _thread.user or not request.user.has_perm('forum.view_thread')):
+            return redirect('section', _thread.node.slug)
     except: 
         return render(request, 'error.html')
     try: 

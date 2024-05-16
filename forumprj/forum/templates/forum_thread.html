@@ -108,18 +108,21 @@
                                 </div>
     
                                 <div class="wrapper forumMessageControllWrapper">
-                                    <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
-    
+                                    {% if request.user.is_authenticated %}
+                                        <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
+                                    {% endif %}
                                     {% if msg.thread.node.type_question %}
                                         <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
-                                        <p class="forumMessageControllBtn">Upvotes: {{ msg.downvotes }}</p>
+                                        <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
     
                                         {% if msg.is_solution %}
                                             <p class="forumMessageControllBtn">This post is marked as solution</p>
                                         {% endif %}
     
                                         {% if request.user == msg.thread.user or perms.forum.change_message %}
-                                            <a class="forumMessageControllBtn" href="">Mark as solution</a>
+                                            {%  if not msg.is_start %}
+                                                <a class="forumMessageControllBtn" href="">Mark as solution</a>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
     

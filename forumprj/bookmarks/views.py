@@ -18,6 +18,8 @@ def bookmarks_main(request):
 def add_msg_bookmark(request, id):
     try:
         msg = Message.objects.get(id=id)
+        if msg.thread.node.type_private and (request.user != msg.thread.user or not request.user.has_perm('forum.view_thread')):
+            return redirect('section', msg.thread.node.slug)
     except:
         return render(request, 'error.html')
     try:
