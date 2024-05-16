@@ -3,9 +3,11 @@ $(document).ready(function() {
     function onWindowResize() {
         $('body').css('height', `${window.innerHeight}px`)
     }
-
+    
     onWindowResize();
     window.addEventListener('resize', onWindowResize);
+    
+    var baseUrl = window.location.protocol + "//" + window.location.host;
 
     // warning btn
     $(".warnBtn").each(function(index, button){
@@ -109,6 +111,16 @@ $(document).ready(function() {
             else{
                 this.innerHTML = "View message"
                 $(`#msg_${id}`).attr("style", "display: none;")
+            }
+        })
+    })
+
+    //view warn btn
+    $(".viewWarn").each(function(index, button){
+        let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+        this.addEventListener('click', function(){
+            warning_info = $.get(`${baseUrl}/api.msg_warning/${id}/`), function(data){
+                console.log(data)
             }
         })
     })

@@ -19,7 +19,6 @@ def delete_thread(request, thread, reason):
     thread.is_visible = False
     thread.invis_reason = reason
     thread.deleted_by = request.user
-    thread.time_changed = datetime.now()
     thread.save()
     return True
 
@@ -34,6 +33,5 @@ def delete_message(request, message, reason):
     message.is_visible = False
     message.deleted_by = request.user
     message.invis_reason = reason
-    message.time_changed = datetime.now()
     message.save()
     return True

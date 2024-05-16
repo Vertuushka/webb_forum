@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from forum import views
 from base import views as baseviews
+from base import api
 from users.views import notifications, profile_settings
 
 handler404 = 'base.views.custom_404_page'
@@ -21,7 +22,8 @@ urlpatterns = [
     path('message/', include('profile_messages.urls')),
     path('notifications/', notifications, name='notifications'),
     path('settings/<int:id>/', profile_settings, name='profile_settings'),
-    path('bookmarks/', include('bookmarks.urls'))
+    path('bookmarks/', include('bookmarks.urls')),
+    path('api.msg_warning/<int:msg_id>/', api.get_warning_by_message)
 ]
 
 if settings.DEBUG:

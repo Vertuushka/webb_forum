@@ -137,7 +137,7 @@
     
                                     {% if perms.users.create_warnings_history and not msg.user == request.user and not msg.user.is_staff %}
                                         {% if msg.warnings_history %}
-                                            <p class="forumMessageControllBtn">View warning</p>
+                                            <p class="forumMessageControllBtn viewWarn">View warning</p>
                                         {% else %}
                                             <p class="forumMessageControllBtn warnBtn">Warn</p>
                                         {% endif %}
@@ -195,7 +195,13 @@
                                         {% endif %}
     
                                         {% if perms.users.create_warnings_history %}
-                                            <p class="forumMessageControllBtn warnBtn">Warn</p>
+                                            {% if perms.users.create_warnings_history and not msg.user == request.user and not msg.user.is_staff %}
+                                                {% if msg.warnings_history %}
+                                                    <p class="forumMessageControllBtn viewWarn">View warning</p>
+                                                {% else %}
+                                                    <p class="forumMessageControllBtn warnBtn">Warn</p>
+                                                {% endif %}
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>

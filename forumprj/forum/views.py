@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Max
 from django.contrib.auth.decorators import permission_required
+from django.http import JsonResponse
 from . models import *
 from moderation.models import Report
 from datetime import datetime
