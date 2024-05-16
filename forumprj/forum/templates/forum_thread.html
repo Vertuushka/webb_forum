@@ -181,27 +181,16 @@
     
                                     <div class="wrapper forumMessageControllWrapper">
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
+                                        {% if msg.thread.node.type_question %}
+                                        <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
+                                        <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
+                                            {% if msg.is_solution %}
+                                                <p class="forumMessageControllBtn">This post is marked as solution</p>
+                                            {% endif %}
+                                        {% endif %}
                                         {% if perms.forum.change_message %}
-                                            <p class="forumMessageControllBtn">View message</p>
+                                            <p class="forumMessageControllBtn viewBtn">View message</p>
                                             <a class="forumMessageControllBtn" href="{% url 'toggle_msg_visibility' msg.id %}">Restore</a>
-    
-                                            <!-- popup -->
-                                                <!-- popup -->
-                                                    <!-- popup -->
-    
-                                                        <div style="display: none;">
-                                                            <!-- should not be visible until user clicks view message button -->
-                                                            <p class="forumThreadCardMessage text">{{ msg.message }}</p>
-                                                            <!-- should not be visible until user clicks restore button -->
-                                                            <form action="">
-                                                                {% csrf_token %}
-                                                                <input type="submit" value="Restore">
-                                                            </form>
-                                                        </div>
-    
-                                                    <!-- popup -->
-                                                <!-- popup -->
-                                            <!-- popup -->
                                             
                                         {% endif %}
     
@@ -209,22 +198,6 @@
                                             <p class="forumMessageControllBtn warnBtn">Warn</p>
                                         {% endif %}
                                     </div>
-    
-                                    <!-- popup -->
-                                        <!-- popup -->
-                                            <!-- popup -->
-    
-                                                <!-- report form  -->
-                                                <!-- should not be visible until user clicks report button -->
-                                                <form style="display: none;" action="{% url 'report_msg' msg.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <input type="text" name="reason" id="">
-                                                    <input type="submit" value="Report">
-                                                </form>
-    
-                                            <!-- popup -->
-                                        <!-- popup -->
-                                    <!-- popup -->
                                 </div>
                                 <!-- popup -->
                                         <!-- popup -->
@@ -240,6 +213,7 @@
                                     <!-- popup -->
                                 <!-- popup -->
                                 <p class="forumMessageContent">Deleted by {{  msg.deleted_by }}. Reason: {{ msg.invis_reason }}</p>
+                                <p class="forumMessageContent" style="display: none;" id="msg_{{ msg.id }}">{{ msg.message }}</p>
                             </div>
                         </div>
     

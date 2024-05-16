@@ -96,6 +96,22 @@ $(document).ready(function() {
             })
         })
     })
+
+    //view message btn
+    $(".viewBtn").each(function(index, button){
+        let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+        this.addEventListener('click', function(){
+            if($(`#msg_${id}`).attr("style"))
+            {
+                this.innerHTML = "Hide message"
+                $(`#msg_${id}`).removeAttr("style")
+            }
+            else{
+                this.innerHTML = "View message"
+                $(`#msg_${id}`).attr("style", "display: none;")
+            }
+        })
+    })
 });
 
 function GetCsrfToken()
