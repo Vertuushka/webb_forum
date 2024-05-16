@@ -59,6 +59,7 @@ class Message(models.Model):
     # warning = models.OneToOneField(Warnings_history, on_delete=models.SET_NULL, null=True, blank=True)
     time_created = models.DateTimeField(default=datetime.now())
     time_changed = models.DateTimeField(null=True, blank=True)
+    changer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="changer")
 
     def __str__(self):
         return f'{self.user} - {self.thread}'

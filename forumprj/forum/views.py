@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Max
+from django.contrib.auth.decorators import permission_required
 from . models import *
 from moderation.models import Report
 from datetime import datetime
@@ -223,7 +224,10 @@ def toggle_msg_visibility(request, msg_id):
                             notification_type='thread_delete',
                             reason=message.thread,
                             notification=deleting_form["notification"])
-        return redirect('section', message.thread.node.slug)
+        if message.is_start and not request.user.has_perm("forum.view_thread"):
+            return redirect('section', message.thread.node.slug)
+        else:
+            return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
     else:
         message.is_visible = True
         message.thread.msg_amount += 1
@@ -232,8 +236,24 @@ def toggle_msg_visibility(request, msg_id):
         pass
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
 
+@permission_required('forum.change_message', raise_exception=False)
 def change_message(request, msg_id):
-    pass
+    try:
+        message = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        new_msg = request.POST.get('new_msg')
+        message.message = new_msg
+        message.time_changed = datetime.now()
+        message.changer = request.user
+        if request.POST.get('is_notified') == "on":
+            notify_user(user=message.user, 
+                        notification_type="message_edit",
+                        reason=message,
+                        notification=request.POST.get('notification'))
+        message.save()
+    return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
 
 def warn_user(request, msg_id):
     try:
