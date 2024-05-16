@@ -131,7 +131,7 @@
                                     {% endif %}
     
                                     {% if perms.forum.change_message %}
-                                        <p class="forumMessageControllBtn">Delete</p>
+                                        <p class="forumMessageControllBtn delBtn">Delete</p>
                                         <p class="forumMessageControllBtn">Edit</p>
                                     {% endif %}
     
@@ -177,7 +177,7 @@
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                         {% if perms.forum.change_message %}
                                             <p class="forumMessageControllBtn">View message</p>
-                                            <a class="forumMessageControllBtn" href="">Restore</a>
+                                            <a class="forumMessageControllBtn" href="{% url 'toggle_msg_visibility' msg.id %}">Restore</a>
     
                                             <!-- popup -->
                                                 <!-- popup -->

@@ -8,9 +8,7 @@ $(document).ready(function() {
     window.addEventListener('resize', onWindowResize);
 
     // warning btn
-    console.log($(".warnBtn"))
     $(".warnBtn").each(function(index, button){
-        console.log("1")
         let msg = this.parentElement.parentElement.parentElement.lastElementChild.innerHTML;
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
@@ -37,7 +35,21 @@ $(document).ready(function() {
     // edit btn
 
     // delete btn
-
+    $(".delBtn").each(function(index, button){
+        let msg = this.parentElement.parentElement.parentElement.lastElementChild.innerHTML;
+        let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+        this.addEventListener('click', function(){
+            $("body").append(`
+            <form action="" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                <input type="text" name="reason" id="">
+                <input type="checkbox" name="is_notified" id="">
+                <input type="text" name="notification" id="">
+                <input type="submit" value="Delete">
+            </form>
+            `)
+        })
+    })
 });
 
 function GetCsrfToken()
