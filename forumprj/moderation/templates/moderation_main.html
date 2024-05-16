@@ -4,8 +4,8 @@
 {% endblock %}
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'moderation.css' %}">
     <link rel="stylesheet" href="{% static 'forum.css' %}">
+    <link rel="stylesheet" href="{% static 'moderation.css' %}">
 {% endblock %}
 {% block content %}
 
@@ -37,7 +37,7 @@
                         <a class="container cardSectionAutherItem" href="">
                             <p class="meta">Assigned to</p>
                             <div class="wrapper">
-                                <img src="" alt="">
+                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.assigned_to.profile.profile_picture }}" alt="">
                                 <p class="text">{{ report.assigned_to.username }}</p>
                             </div>
                         </a>
@@ -63,13 +63,14 @@
 
             {% for report in closed_reports %}
                 <div class="cardLine"></div>
-                <div class="wrapper cardSectionMultiple">
+                <div class="wrapper cardSectionSquad">
 
-                    <a class="wrapper cardSectionItem" href="{% url 'report_details' report.id %}">
-                        <div class="container cardSectionInnerItem">
-                            <p class="meta">Content</p>
+                    <a class="container cardSectionAutherItem" href="">
+                        <p class="meta">Author</p>
+                        <div class="wrapper themeCardProfileCon">
+                            <!-- user content -->
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
                             <p class="text">
-                                {{ report.content.thread.title }} by
                                 {% if report.content.user.profile.id_banned and perms.users.view_profile %}
                                     <del>{{ report.content.user.username }}</del>
                                 {% else %}
@@ -77,9 +78,19 @@
                                 {% endif %}
                             </p>
                         </div>
+                    </a>
+
+                    <a class="wrapper cardSectionSquadItem" href="{% url 'report_details' report.id %}">
                         <div class="container cardSectionInnerItem">
-                            <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
-                            <p>Time changed: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>
+                            <p class="meta">Content</p>
+                            <p class="text">
+                                {{ report.content.thread.title }}
+                            </p>
+                        </div>
+                        <div class="container cardSectionInnerItem">
+                            <!-- <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p> -->
+                            <p class="meta">Time changed</p>
+                            <p class="text">{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
                         </div>
                     </a>
 
@@ -90,7 +101,7 @@
                             <p class="meta">Rejected by</p>
                         {% endif %}
                         <div class="wrapper themeCardProfileCon">
-                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.closed_by.profile.profile_picture }}" alt="">
                             <p class="text">{{ report.closed_by }}</p>
                         </div>
                     </a>
