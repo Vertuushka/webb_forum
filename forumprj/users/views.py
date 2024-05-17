@@ -88,7 +88,10 @@ def profile_toggle_ban(request, id):
     except:
         return render(request, 'error.html')
     account.profile.is_banned = False if account.profile.is_banned else True
-    account.profile.banned_by = request.user
+    if request.method == "POST":
+        account.profile.banned_by = request.user
+        account.profile.ban_reason = request.POST.get('reason')
+        account.profile.ban_time = datetime.now()
     account.profile.save()
     return redirect('profile_view', account.id)
 

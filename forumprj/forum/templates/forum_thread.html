@@ -239,8 +239,9 @@
     </div>
 </div>
 
-    
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
+    {% if perms.forum.change_message %}
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
+    {% endif %}
     <div style="display: none;">
     
         <!-- warning form  -->

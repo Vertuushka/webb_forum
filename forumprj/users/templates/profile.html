@@ -22,13 +22,11 @@
             
             {% if perms.user.change_user and not request.user == account %}
                 <div class="headerLine"></div>
-                <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
-                    {% if account.profile.is_banned %}
-                        Unban
-                    {% else %}
-                        Ban
-                    {% endif %}
-                </a>
+                {% if account.profile.is_banned %}
+                <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
+                {% else %}
+                <p class="headerBtn banBtn" id="{{ account.id }}">Ban</p>
+                {% endif %}
             {% endif %}
         {% else %}
             {% if warnings_history %}
@@ -40,13 +38,11 @@
 
                 {% if perms.user.change_user and not request.user == account %}
                     <div class="headerLine"></div>
-                    <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
-                        {% if account.profile.is_banned %}
-                            Unban
-                        {% else %}
-                            Ban
-                        {% endif %}
-                    </a>
+                    {% if account.profile.is_banned %}
+                        <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
+                    {% else %}
+                        <p class="headerBtn banBtn" id="{{ account.id }}">Ban</p>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <a class="headerBtn headerBtnFocus" href="{% url 'profile_view' account.id %}">Profile</a>
@@ -57,13 +53,11 @@
 
                 {% if perms.user.change_user and not request.user == account %}
                     <div class="headerLine"></div>
-                    <a class="headerBtn" href="{% url 'profile_toggle_ban' account.id %}">
-                        {% if account.profile.is_banned %}
-                            Unban
-                        {% else %}
-                            Ban
-                        {% endif %}
-                    </a>
+                    {% if account.profile.is_banned %}
+                        <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
+                    {% else %}
+                        <p class="headerBtn banBtn" id="{{ account.id }}">Ban</p>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endif %}
@@ -90,7 +84,7 @@
         <div class="wrapper profileContainer">
             <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
             <div class="container">
-                <h2 class="title">{{ account.username }}</h2>
+                <h2 class="title" id="username">{{ account.username }}</h2>
                 <p class="meta">{{ account.profile.title }}</p>
             </div>
         </div>
@@ -257,26 +251,18 @@
         {% endfor %}
     </div>
     {% endif %}
+</div>
 
-    <!-- should not be visible until user clicks delete button -->
-    <form class="popup" style="display: none;" action="">
-        {% csrf_token %}
+{% if perms.users.change_profile %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
+{% endif %}
+<div style="display: none;">
+    <form action="">
+        <label for="reason">Reason: </label>
         <input type="text" name="reason" id="">
-        <input type="checkbox" name="is_notified" id="">
-        <input type="text" name="notification" id="">
-        <input type="submit" value="Delete">
+        <label for="confirm_box">You sure you want to ban {{ account.username }}? User will not be able to use the forum on this account.</label>
+        <input type="checkbox" name="confirm_box" id="confirm_box">
+        <input type="submit" value="" disabled>
     </form>
-
-    {% if perms.users.create_warnings_history %}
-        <!-- should not be visible until user clicks warn button -->
-        <form style="display: none;" action="">
-            {% csrf_token %}
-            <input type="text" name="warning (reason/etc)" id="">
-            <input type="hidden" name="message" id="" value="{{ msg.id }}">
-            <input type="submit" value="Warn">
-            <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
-            <input type="text" name="deleting_reason" id="">
-        </form>
-    {% endif %}
 </div>
 {% endblock %}

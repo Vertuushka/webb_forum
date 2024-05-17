@@ -6,8 +6,6 @@ $(document).ready(function() {
     
     onWindowResize();
     window.addEventListener('resize', onWindowResize);
-    
-    
 
     // warning btn
     $(".warnBtn").each(function(index, button){
@@ -103,15 +101,11 @@ $(document).ready(function() {
     $(".viewBtn").each(function(index, button){
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
-            if($(`#msg_${id}`).attr("style"))
-            {
-                this.innerHTML = "Hide message"
-                $(`#msg_${id}`).removeAttr("style")
-            }
-            else{
-                this.innerHTML = "View message"
-                $(`#msg_${id}`).attr("style", "display: none;")
-            }
+            $(`#msg_${id}`).slideToggle("slow");
+            if(this.innerHTML == "View message")
+                this.innerHTML = "Hide message";
+            else this.innerHTML = "View message";
+              
         })
     })
 
@@ -140,6 +134,31 @@ $(document).ready(function() {
             });
         });
     });
+
+    //ban btn
+    $(".banBtn").each(function(index, button){
+        let userId = this.getAttribute("id")
+        this.addEventListener('click', function(){
+            $("body").append(`
+            <form action="/profile/${userId}/ban/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                <label for="reason">Reason: </label>
+                <input type="text" name="reason" id="">
+                <label for="confirm_box">You sure you want to ban ${$("#username").text()}? User will not be able to use the forum on this account.</label>
+                <input type="checkbox" name="confirm_box" id="_confirm_box">
+                <input type="submit" value="Ban" id="banBtn" disabled>
+            </form>
+            `)
+            $("#_confirm_box").click(function(){
+                console.log(this)
+                if(this.checked){
+                    $("#banBtn").removeAttr("disabled")
+                }
+                else{$("#banBtn").attr("disabled", true) }
+            })
+            
+        })
+    })
 });
 
 function GetCsrfToken()
