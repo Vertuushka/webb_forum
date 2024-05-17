@@ -16,4 +16,5 @@ urlpatterns = [
     path('message/<int:msg_id>/delete/', toggle_msg_visibility, name="toggle_msg_visibility"),
     path('message/<int:msg_id>/edit/', change_message, name="change_message"),
     path('message/<int:msg_id>/warn/', warn_user, name="warn_user"),
+    path('message/<int:msg_id>/solution/', mark_solution, name="mark_solution")
 ]

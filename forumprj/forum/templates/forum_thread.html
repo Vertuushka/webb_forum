@@ -116,12 +116,16 @@
                                         <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
     
                                         {% if msg.is_solution %}
-                                            <p class="forumMessageControllBtn">This post is marked as solution</p>
+                                            {% if msg.user == request.user or perms.forum.change_message %}
+                                                <a class="forumMessageControllBtn" href="{%  url 'mark_solution' msg.id %}">This post is marked as solution</a>
+                                            {% else %}
+                                                <p class="forumMessageControllBtn">This post is marked as solution</p>
+                                            {% endif %}
                                         {% endif %}
     
                                         {% if request.user == msg.thread.user or perms.forum.change_message %}
-                                            {%  if not msg.is_start %}
-                                                <a class="forumMessageControllBtn" href="">Mark as solution</a>
+                                            {%  if not msg.is_start and not msg.is_solution %}
+                                                <a class="forumMessageControllBtn" href="{% url 'mark_solution' msg.id %}">Mark as solution</a>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
@@ -171,7 +175,7 @@
                             <div class="container forumMessageBody">
                                 <div class="wrapper forumMessageMetaWrapper">
                                     <div class="wrapper forumMessageUserMeta">
-                                        {% if msg.user.profile.is_banned and perms.view_profile %}
+                                        {% if msg.user.profile.is_banned and perms.users.view_profile %}
                                             <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}"><del>{{ msg.user.username }}</del></a>
                                         {% else %}
                                             <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
@@ -185,7 +189,11 @@
                                         <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
                                         <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
                                             {% if msg.is_solution %}
-                                                <p class="forumMessageControllBtn">This post is marked as solution</p>
+                                                {% if msg.user == request.user or perms.forum.change_message %}
+                                                    <a class="forumMessageControllBtn" href="{%  url 'mark_solution' msg.id %}">This post is marked as solution</a>
+                                                {% else %}
+                                                    <p class="forumMessageControllBtn">This post is marked as solution</p>
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
                                         {% if perms.forum.change_message %}

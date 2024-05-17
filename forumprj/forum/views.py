@@ -94,10 +94,15 @@ def thread(request, section, thread, thread_id):
         _thread.msg_amount += 1
         _thread.save()
         return redirect('msg_redirect', _thread.node.slug, _thread.slug, _thread.id, message.id)
-    msgs = Message.objects.filter(thread=_thread).order_by('id')
+    msgs_usual = list(Message.objects.filter(thread=_thread, is_solution=False).order_by('id'))
+    try:
+        msg_solution = Message.objects.get(thread=_thread, is_solution=True)
+        msgs_usual.insert(1, msg_solution)
+    except:
+        pass        
     context = {
         'thread':_thread,
-        'messages': msgs
+        'messages': msgs_usual
     }
     return render(request, 'forum_thread.html', context)
 
@@ -282,4 +287,21 @@ def warn_user(request, msg_id):
                 return render(request, 'error.html')
         if message.is_start:
             return redirect('section', message.thread.node.slug)
+    return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
+
+def mark_solution(request, msg_id):
+    try:
+        message = Message.objects.get(id=msg_id)
+    except:
+        return render(request, 'error.html')
+    try:
+        solution = Message.objects.get(thread=message.thread, is_solution=True)
+        if solution != message:
+            solution.is_solution = False
+            solution.save()
+    except:
+        pass
+    message.is_solution = False if message.is_solution else True
+    message.save()
+    # message.is_solution = False if message.is_solution else True
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
