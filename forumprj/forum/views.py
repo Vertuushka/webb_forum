@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Max
-from django.contrib.auth.decorators import permission_required
-from django.http import JsonResponse
+from django.contrib.auth.decorators import permission_required, login_required
+from django.urls import reverse
 from . models import *
 from moderation.models import Report
 from datetime import datetime
@@ -73,7 +73,7 @@ def thread(request, section, thread, thread_id):
         _thread = Thread.objects.get(id=thread_id)
         if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
             return render(request, 'error.html')
-        if _thread.node.type_private and (request.user != _thread.user or not request.user.has_perm('forum.view_thread')):
+        if (_thread.node.type_private and (request.user != _thread.user or not request.user.has_perm('forum.view_thread'))):
             return redirect('section', _thread.node.slug)
     except: 
         return render(request, 'error.html')
@@ -95,11 +95,11 @@ def thread(request, section, thread, thread_id):
         _thread.save()
         return redirect('msg_redirect', _thread.node.slug, _thread.slug, _thread.id, message.id)
     msgs_usual = list(Message.objects.filter(thread=_thread, is_solution=False).order_by('id'))
-    try:
+    try: # if there is a message marked as solution
         msg_solution = Message.objects.get(thread=_thread, is_solution=True)
         msgs_usual.insert(1, msg_solution)
-    except:
-        pass        
+    except: # if there is not solution - do nothing 
+        pass       
     context = {
         'thread':_thread,
         'messages': msgs_usual
@@ -109,6 +109,7 @@ def thread(request, section, thread, thread_id):
 def main_redirecter(request):
     return redirect('forum_main')
 
+@login_required()
 def create_thread(request, section, section_id):
     try:
         node = Node.objects.get(id=section_id)
@@ -131,29 +132,19 @@ def create_thread(request, section, section_id):
     return render(request, 'new_thread.html', context)
 
 def msg_redirect(request, section, thread, thread_id, msg_id):
-    section = section.replace('-', ' ')
-    thread = thread.replace('-', ' ')
     try:
-        _thread = Thread.objects.get(id=thread_id)
-        if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
-            return render(request, 'error.html')
-    except: 
-        return render(request, 'error.html')
-    try: 
-        _section = Node.objects.get(name__iexact=section)
-        _magic = Thread.objects.get(title__iexact=thread)
+        message = Message.objects.get(id=msg_id)
     except:
-        return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
-    else:
-        if _thread.node != _section or not _magic:
-            return redirect('thread', _thread.node.slug, _thread.slug, thread_id)
-    msgs = Message.objects.filter(thread=_thread).order_by('time_created')
-    context = {
-        'thread':_thread,
-        'messages': msgs
-    }
-    return render(request, 'forum_thread.html', context)
+        return render(request, 'error.html')
+    if (not message.thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
+        return render(request, 'error.html')
+    if (message.thread.node.type_private and (request.user != message.thread.user or not request.user.has_perm('forum.view_thread'))):
+        return redirect('section', message.thread.node.slug)
+    url = reverse('thread', kwargs={'section': message.thread.node.slug, 'thread': message.thread.slug, 'thread_id': message.thread.id})
+    anchor_url = f'{url}#{msg_id}'
+    return redirect(anchor_url)
 
+@login_required()
 def report_msg(request, msg_id):
     try:
         msg = Message.objects.get(id=msg_id)
@@ -169,6 +160,7 @@ def report_msg(request, msg_id):
         return redirect('thread', msg.thread.node.slug, msg.thread.slug, msg.thread.id)
     return render(request, 'error.html')
 
+@permission_required('forum.change_thread', raise_exception=False)
 def toggle_close_thread(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
@@ -178,6 +170,7 @@ def toggle_close_thread(request, thread_id):
     thread.save()   
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
+@permission_required('forum.change_thread', raise_exception=False)
 def toggle_thread_visibility(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
@@ -201,6 +194,7 @@ def toggle_thread_visibility(request, thread_id):
             thread.save()
         return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
+@permission_required('forum.change_thread', raise_exception=False)
 def toggle_thread_pin(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
@@ -210,6 +204,7 @@ def toggle_thread_pin(request, thread_id):
     thread.save()
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
 
+@permission_required('forum.change_message', raise_exception=False)
 def toggle_msg_visibility(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
@@ -259,6 +254,7 @@ def change_message(request, msg_id):
         message.save()
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
 
+@permission_required('users.create_warnings_history', raise_exception=False)
 def warn_user(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
@@ -292,6 +288,8 @@ def warn_user(request, msg_id):
 def mark_solution(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
+        if message.user != request.user and not request.user.has_perm('forum.change_message'):
+            return redirect('msg_redirect', message.thread.node.slug, message.thread.slug, message.thread.id, message.id)
     except:
         return render(request, 'error.html')
     try:
@@ -303,5 +301,4 @@ def mark_solution(request, msg_id):
         pass
     message.is_solution = False if message.is_solution else True
     message.save()
-    # message.is_solution = False if message.is_solution else True
-    return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
+    return redirect('msg_redirect', message.thread.node.slug, message.thread.slug, message.thread.id, message.id)

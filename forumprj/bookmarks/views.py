@@ -3,8 +3,9 @@ from .models import *
 from forum.models import Message
 from django.utils.text import slugify
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required()
 def bookmarks_main(request):
     user = request.user
     context = {}
@@ -15,6 +16,7 @@ def bookmarks_main(request):
         context["bookmarks"] = False
     return render(request, 'bookmarks.html', context)
 
+@login_required()
 def add_msg_bookmark(request, id):
     try:
         msg = Message.objects.get(id=id)
@@ -24,14 +26,16 @@ def add_msg_bookmark(request, id):
         return render(request, 'error.html')
     try:
         exists = Bookmark.objects.get(user=request.user, forum_msg=msg)
+        return redirect('msg_redirect', msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id)
     except:
         bookmark = Bookmark.objects.create(user=request.user, forum_msg=msg)
         bookmark.save()
     # url = reverse('msg_redirect', args=(msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id))
     # print(url)
+    # return redirect(url)
     return redirect('msg_redirect', msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id)
 
-
+@login_required()
 def del_bookmark(request, id):
     try:
         bookmark = Bookmark.objects.get(user=request.user, id=id).delete()
