@@ -9,7 +9,7 @@ def bookmarks_main(request):
     user = request.user
     context = {}
     try:
-        bookmarks = Bookmark.objects.filter(user=user)
+        bookmarks = Bookmark.objects.filter(user=user).order_by('-id')
         context["bookmarks"] = bookmarks
     except:
         context["bookmarks"] = False

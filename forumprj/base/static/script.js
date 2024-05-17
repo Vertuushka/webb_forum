@@ -178,6 +178,14 @@ $(document).ready(function() {
             
         })
     })
+
+    //report details form input stuff
+    $("#is_notified").click(function(){
+        if(this.checked){
+            $("#notification").removeAttr("readonly")
+        }
+        else{$("#notification").attr("readonly", true) }
+    })
 });
 
 function GetCsrfToken()
