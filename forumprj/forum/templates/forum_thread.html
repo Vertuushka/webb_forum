@@ -245,7 +245,9 @@
     
         <!-- warning form  -->
         <!-- should not be visible until user clicks warn button -->
-        <form action="{% url 'warn_user' 5 %}" >
+
+        <!-- <form action="/forum/message/${id}/warn/" method="post" id="warnForm">
+            <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
             <label for="warn_reason">Warning reason:</label>
             <input type="text" name="warn_reason" id="">
             <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
@@ -253,35 +255,50 @@
             <input type="text" name="deleting_reason" id="">
             <input type="submit" value="Warn">
         </form>
+        <button id="closeFormFrame">Close form</button> -->
 
 
         <!-- edit form  -->
         <!-- should not be visible until user clicks edit button -->
-        <form action="">
-            {% csrf_token %}
+
+        <!-- <form action="/forum/message/${id}/edit/" id="editForm" method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
             <label for="new_msg">Edit message: </label>
-            <textarea name="new_msg" id="" cols="30" rows="5">{{ msg.message }}</textarea>
+            <textarea name="new_msg" id="" cols="30" rows="5">${msg}</textarea>
             <label for="is_notified">Notify user:</label>
             <input type="checkbox" name="is_notified" id="">
             <label for="notification">Notification: </label>
             <input type="text" name="notification" id="">
             <input type="submit" value="Save">
         </form>
+        <button id="closeFormFrame">Close form</button> -->
 
 
         <!-- delete form -->
         <!-- should not be visible until user clicks delete button -->
-        <form action="" method="post">
-            {% csrf_token %}
+
+        <!-- <form action="/forum/message/${id}/delete/" method="post" id="deleteForm">
+            <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
             <label for="reason">Reason:</label>
             <input type="text" name="reason" id="">
             <label for="is_notified">Notify user</label>
-            <input type="checkbox" name="is_notified" id="">
+            <input type="checkbox" name="is_notified" id="is_deleted">
             <label for="notification">Notification:</label>
-            <input type="text" name="notification" id="">
+            <input type="text" name="notification" id="deleting_reason" readonly>
             <input type="submit" value="Delete">
-        </form>
+            <button id="closeFormFrame">Close form</button>
+        </form> -->
 
     </div>
 
+    <!-- <div id="warning_info_frame">
+        <p>Warning info:</p>
+        <a href="/forum/${data.message.node_slug}/${data.message.thread_slug}.${data.message.thread_id}/#${data.message.id}">Message in ${data.message.thread_title}</a>
+        <img src="/${data.warned_by.profile_picture}" alt="">
+        <p>Warned by: <a href="/profile/${data.warned_by.id}/">${data.warned_by.username}</a></p>
+        <p>${data.details}</p>
+        <p>${data.time_warned}</p>
+        <button id="closeFormFrame">Close</button>
+    </div> -->
+    
 {% endblock %}

@@ -7,7 +7,7 @@ $(document).ready(function() {
     onWindowResize();
     window.addEventListener('resize', onWindowResize);
     
-    var baseUrl = window.location.protocol + "//" + window.location.host;
+    
 
     // warning btn
     $(".warnBtn").each(function(index, button){
@@ -116,14 +116,30 @@ $(document).ready(function() {
     })
 
     //view warn btn
-    $(".viewWarn").each(function(index, button){
+    $(".viewWarn").each(function(index, button) {
+        let baseUrl = window.location.protocol + "//" + window.location.host;
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
-        this.addEventListener('click', function(){
-            warning_info = $.get(`${baseUrl}/api.msg_warning/${id}/`), function(data){
-                console.log(data)
-            }
-        })
-    })
+        this.addEventListener('click', function() {
+            $.get(`${baseUrl}/api.msg_warning/${id}/`, function(data) {
+                console.log(data);
+                $("body").append(`
+                <div id="warning_info_frame">
+                    <p>Warning info:</p>
+                    <a href="/forum/${data.message.node_slug}/${data.message.thread_slug}.${data.message.thread_id}/#${data.message.id}">Message in ${data.message.thread_title}</a>
+                    <img src="/${data.warned_by.profile_picture}" alt="">
+                    <p>Warned by: <a href="/profile/${data.warned_by.id}/">${data.warned_by.username}</a></p>
+                    <p>${data.details}</p>
+                    <p>${data.time_warned}</p>
+                    <button id="closeFormFrame">Close</button>
+                </div>
+                `)
+                $("#closeFormFrame").click(function(){
+                    $("#warning_info_frame").remove()
+                    $("#warning_info_frame").remove()
+                })
+            });
+        });
+    });
 });
 
 function GetCsrfToken()
