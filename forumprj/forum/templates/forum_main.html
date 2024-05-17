@@ -13,8 +13,8 @@
             {% csrf_token %}
             <img src="{% static 'assets/icon_20_search.svg' %}" alt="">
             <input class="headerSearchInput" placeholder="Search" type="text" name="search" id="">
-            <input type="checkbox" name="content_type" id="" value="threads">
-            <input type="checkbox" name="content_type" id="" value="members">
+            <input type="checkbox" name="content_type" id="threads_checkbox" value="threads">
+            <input type="checkbox" name="content_type" id="members_checkbox" value="members">
         </form>
     </header>
 

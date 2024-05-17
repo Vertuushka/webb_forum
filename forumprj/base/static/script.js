@@ -186,6 +186,18 @@ $(document).ready(function() {
         }
         else{$("#notification").attr("readonly", true) }
     })
+    
+    $("#threads_checkbox").click(function(){
+        if(this.checked && $("#members_checkbox").prop("checked")){
+            $("#members_checkbox").prop("checked", false)
+        }
+    })
+
+    $("#members_checkbox").click(function(){
+        if(this.checked && $("#threads_checkbox").prop("checked")){
+            $("#threads_checkbox").prop("checked", false)
+        }
+    })
 });
 
 function GetCsrfToken()
