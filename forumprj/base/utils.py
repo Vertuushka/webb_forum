@@ -23,3 +23,7 @@ def notify_user(user, notification_type, reason, notification):
     notif.save()
     user.profile.active_notifications += 1
     user.profile.save()
+
+error_strings = {
+    
+}

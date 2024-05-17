@@ -5,6 +5,9 @@
 {% block content %}
 <header class="container">
     <h2 class="title">Something has gone wrong!</h2>
+    {% if error_str %}
+    <p class="meta">{{ error_str }}</p>
+    {% endif %}
     <p class="meta">Please try again or navigate to somewhere else.</p>
 </header>
 {% endblock %}

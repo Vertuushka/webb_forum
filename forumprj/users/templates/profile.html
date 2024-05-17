@@ -210,7 +210,7 @@
     <!-- chat -->
     <!-- chat -->
     <!-- chat -->
-    {% if private_messages %}
+    {% if not account == request.user %}
     <div class="container chatView">
         {% if account.preference.private_messages == 0 or perms.private_messages.add_private_message %}
         <form class="wrapper chatForm" action="{% url 'send_private_message' account.id %}" method="post">

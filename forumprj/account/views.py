@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from . forms import *
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from users.models import Profile
+from users.models import Profile, Preference
 
 def login_user(request):
     # if user authenticated - send him to his profile page
@@ -46,6 +46,8 @@ def create_user(request):
             newuser = User.objects.get(username=username)
             newProfile = Profile.objects.create(user=newuser)
             newProfile.save()
+            newPreferences = Preference.objects.create(user=newuser)
+            newPreferences.save()
             return redirect('login_user')
     else:
         # get - render SignUp page
