@@ -23,7 +23,8 @@ def send_private_message(request, id):
             try:
                 dialog = Dialog.objects.get(user_1=request.user, user_2=receiver)
             except:
-                return redirect('profile_view', id)
+                dialog = Dialog.objects.create(user_1=request.user, user_2=receiver)
+                dialog.save()
         try:
             new_msg = Private_Message.objects.create(
                 sender=request.user,
