@@ -228,10 +228,6 @@
                 <div class="container messageContainer senderMessageContainer">
                     <div class="wrapper messageMetaContainer senderMessageMetaContainer">
                         <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
-                        {% if perms.private_message.change_private_message %}
-                            <span class="meta">•</span>
-                            <button class="messageMetaBtn">Delete</button>
-                        {% endif %}
                     </div>
                     <p class="message senderMessage">{{ msg.content }}</p>
                 </div>
@@ -240,10 +236,6 @@
                 <div class="container messageContainer receiverMessageContainer">
                     <div class="wrapper messageMetaContainer">
                         <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
-                        {% if perms.users.create_warnings_history %}
-                            <span class="meta">•</span>
-                            <button class="messageMetaBtn">Warn</button>
-                        {% endif %}
                     </div>
                     <p class="message receiverMessage">{{ msg.content }}</p>
                 </div>

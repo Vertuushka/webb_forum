@@ -32,6 +32,11 @@ def profile_edit(request, id):
         form = UpdateUserInfo(request.POST, instance=eUser)
         if form.is_valid():
             image_file = request.FILES.get('image')
+            if request.POST.get('remove_picture') == "on":
+                eUser.profile.profile_picture = None
+                eUser.profile.save()
+                form.save()
+                return redirect("profile_view", eUser.id)
             if image_file:
                 # print(eUser)
                 file_extension = os.path.splitext(image_file.name)[1]
