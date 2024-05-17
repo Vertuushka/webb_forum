@@ -135,6 +135,25 @@ $(document).ready(function() {
         });
     });
 
+    //report form
+    $(".reportBtn").each(function(index, button){
+        let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+        this.addEventListener('click', function(){
+            $("body").append(`
+            <form action="/forum/message/${id}/report/" id="report_frame" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                <input type="text" name="reason" id="" required>
+                <input type="submit" value="Report">
+            </form>
+            <button id="closeFormFrame">Cancel</button>
+            `)
+            $("#closeFormFrame").click(function(){
+                $("#report_frame").remove()
+                this.remove()
+            })
+        })
+    })
+
     //ban btn
     $(".banBtn").each(function(index, button){
         let userId = this.getAttribute("id")

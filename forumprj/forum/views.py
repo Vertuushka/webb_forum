@@ -154,16 +154,14 @@ def report_msg(request, msg_id):
         msg = Message.objects.get(id=msg_id)
     except:
         return render(request, 'error.html')
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            reason = request.POST.get('reason')
-            new_report = Report.objects.create(
-                content=msg, 
-                user=request.user, 
-                reason=reason,
-                time_changed=datetime.now())
-            new_report.save()
-            return redirect('thread', msg.thread.node.slug, msg.thread.slug, msg.thread.id)
+    if request.method == "POST":
+        reason = request.POST.get('reason')
+        new_report = Report.objects.create(
+            content=msg, 
+            user=request.user, 
+            reason=reason)
+        new_report.save()
+        return redirect('thread', msg.thread.node.slug, msg.thread.slug, msg.thread.id)
     return render(request, 'error.html')
 
 def toggle_close_thread(request, thread_id):
