@@ -10,7 +10,18 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 import os
 
 from django.core.asgi import get_asgi_application
+from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'forumprj.settings')
+from channels.routing import ProtocolTypeRouter, URLRouter
+from profile_messages import routing
 
-application = get_asgi_application()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'movie.settings')
+
+django_asgi_app = get_asgi_application()
+
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    "websocket": URLRouter(
+        routing.websocket_urlpatterns
+    )
+})

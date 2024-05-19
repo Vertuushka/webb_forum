@@ -15,6 +15,7 @@ def profile_processor(request):
                     Q(sender=request.user, receiver=account) | Q(sender=account, receiver=request.user)
                 ).order_by('-id')
                 chat_data["private_messages"] = private_messages
+                chat_data["dialog"] = private_messages[0].dialog
             except:
                 chat_data["private_messages"] = False
     return chat_data
