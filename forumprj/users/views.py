@@ -17,7 +17,13 @@ def profile_view(request, id):
     except:
         return render(request, 'error.html')
     if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0 or (account.preference.account_visibility == 1 and request.user.is_authenticated):
-        
+        try:
+            unread_msgs = Private_Message.objects.filter(receiver=request.user, sender=account, is_read=False)
+            for msg in unread_msgs:
+                msg.is_read = True
+                msg.save()
+        except:
+            pass
         return render(request, "profile.html", dictionary)
     else:
         return render(request, 'error.html')

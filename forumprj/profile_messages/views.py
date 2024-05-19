@@ -61,6 +61,10 @@ def messages_dialog(request, id):
         Q(user_1=user) |
         Q(user_2=user)
     ).annotate(latest_msg=Max('private_message__id')).order_by('-latest_msg')
+    unread_msg = Private_Message.objects.filter(receiver=user, is_read=False)
+    for msg in unread_msg:
+        msg.is_read = True
+        msg.save()
     context = {
         'messages':messages,
         'dialogs': dialogs
