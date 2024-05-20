@@ -1,0 +1,41 @@
+.avalibleMessagesContainer {
+    flex: .3;
+
+    padding: 12px;
+    border-radius: 12px 0px 0px 12px;
+
+    background-color: var(--primary);
+
+    gap: 8px;
+}
+
+.avalibleMessageCard {
+    padding: 8px;
+    border-radius: 8px;
+
+    align-items: center;
+    gap: 12px;
+}
+
+.avalibleMessageCard:hover {
+    cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.avalibleMessageCardProfilePicture {
+    aspect-ratio: 1/1;
+    width: 32px;
+
+    border-radius: 32px;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+.messageView {
+    flex: .7;
+
+    padding: 12px;
+    border-radius: 0px 12px 12px 0px;
+    border: 1px dashed var(--border_dark);
+}

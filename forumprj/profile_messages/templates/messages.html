@@ -1,31 +1,61 @@
 {% extends 'base.html' %}
-{% block title %}
-<title>Messages</title>
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'messages.css' %}">
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
-{% block content %}
-
+{% block title %}
+    <title>Messages</title>
+{% endblock %}
+{% block header %}
     <header class="">
         <h2 class="title">Messages</h2>
     </header>
+{% endblock %}
+{% block content %}
+    <div class="wrapper">
+        <div class="container avalibleMessagesContainer">
+            <div class="cardHeader">
+                <h2 class="cardTitle">Active messages</h2>
+            </div>
+            <div class="cardLine"></div>
 
-    {% for dialog in dialogs %}
-    {{ dialog.id }}
-        <p>
+            {% for dialog in dialogs %}
+                <a class="wrapper avalibleMessageCard" href="{% url 'messages_dialog' dialog.id %}">
+                    {% if request.user == dialog.user_1 %}
+                        <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_2.profile.profile_picture}}" alt="">
+                        <span class="text">{{dialog.user_2}}</span>
+                        {% else %}
+                        <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_1.profile.profile_picture}}" alt="">
+                        <span class="text">{{dialog.user_1}}</span>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="container messageView">
+            <div>
+                {% if messages %}
+                    {% for msg in messages %}
+                    <p>{{msg}}</p>
+                    {% endfor %}
+                {% else %}
+                    <p>Select one of your dialogs to view messages</p>
+                {% endif %}
+            </div>
+
             {% if request.user == dialog.user_1 %}
-                {{dialog.user_2}}
+                <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_2.id %}" method="post" id="message_form">
             {% else %}
-                {{dialog.user_1}}
+                <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_1.id %}" method="post" id="message_form">
             {% endif %}
-        </p>
-    {% endfor %}
+            {% csrf_token %}
+            <input placeholder="Write a message" class="chatInput" type="text" name="content" id="msg">
+            <button class="wrapper chatBtn" type="submit">
+                <img src="{% static 'assets/icon_send.svg' %}" alt="">
+            </button>
+        </form>
 
-    {% if messages %}
-    
-        {% for msg in messages %}
-        <p>{{msg.id}} - {{ msg }}</p>
-        {% endfor %}
-    {% else %}
-        <p>Select one of your dialogs to view messages</p>
-    {% endif %}
-
+        </div>
+    </div>
 {% endblock %}
