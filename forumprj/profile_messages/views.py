@@ -50,7 +50,13 @@ def messages_main(request):
 def messages_dialog(request, id):
     user = request.user
     try:
-        account = User.objects.get(id=id)
+        dialog = Dialog.objects.get(id=id)
+        if dialog.user_1 == user:
+            account = dialog.user_2
+        elif dialog.user_2 == user:
+            account = dialog.user_1 
+        else:
+            return render(request, 'error.html')
     except:
         return render (request, 'error.html')
     messages = Private_Message.objects.filter(

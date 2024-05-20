@@ -290,9 +290,9 @@
     });
 
     socket.addEventListener("message", (event) => {
-        console.log("got something")
+        // console.log("got something")
         const messageData = JSON.parse(event.data)['message'];
-        console.log(messageData);
+        // console.log(messageData);
 
         var sender = messageData['sender'];
         var message = messageData['message'];

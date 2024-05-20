@@ -9,6 +9,7 @@
     </header>
 
     {% for dialog in dialogs %}
+    {{ dialog.id }}
         <p>
             {% if request.user == dialog.user_1 %}
                 {{dialog.user_2}}
@@ -19,8 +20,9 @@
     {% endfor %}
 
     {% if messages %}
+    
         {% for msg in messages %}
-        <p>{{msg}}</p>
+        <p>{{msg.id}} - {{ msg }}</p>
         {% endfor %}
     {% else %}
         <p>Select one of your dialogs to view messages</p>
