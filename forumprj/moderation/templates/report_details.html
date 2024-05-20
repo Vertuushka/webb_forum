@@ -1,38 +1,91 @@
 {% extends 'base.html' %}
 {% block title %}
-<title>Report in {{ report.content.thread.title }}</title>
+    <title>Report in {{ report.content.thread.title }}</title>
+{% endblock %}
+{% block header %}
+    <header>
+        <h2 class="title">Report</h2>
+    </header>
 {% endblock %}
 {% block content %}
 
-    <p>Post in thread '{{ report.content.thread.title }}'</p>
-    {% if report.content.user.profile.is_banned and perms.users.view_profile %}
-        <a href="{% url 'profile_view' report.content.user.id %}"><del>{{ report.content.user.username }}</del></a>
-    {% else %}
-        <a href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
-    {% endif %}
-    {% if report.content.user.profile.title %}
-    <p>{{ report.content.user.profile.title }}</p>
-    {% endif %}
-    <img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
-    <p>{{ report.content.message }}</p>
-    <a href="{% url 'thread' report.content.thread.node.slug report.content.thread.slug report.content.thread.id %}#{{report.content.id}}">Go to content</a>
-    <p>Reported by  <a href="{% url 'profile_view' report.user.id %}">{{ report.user }}</a> </p>
-    <img src="{{ media_url }}{{ report.user.profile.profile_picture }}" alt="">
-    <p>Reason: {{ report.reason }}</p>
-    <p>Created: {{ report.time_created|date:"d/m/Y - H:i" }}</p>
-    <p>Status: 
-    {% if report.is_closed %}
-    {% if report.is_resolved %}
-    resolved (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
-    {% else %}
-    rejected (<a href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
-    {% endif %}
-    {% endif %}
-    </p>
-    {% if report.is_notified %}
-    <p>The follow notification was sent:</p>
-    <p>{{ report.notification }}</p>
-    {% endif %}
+    <div class="container" style="gap: 12px;">
+        <div class="card">
+            <div class="wrapper cardHeader">
+                <h2 class="cardTitle">Thread details</h2>
+            </div>
+    
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Thread</p>
+                <a class="text" href="">{{ report.content.thread.title }}</a>
+            </div>
+    
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Author</p>
+                {% if report.content.user.profile.is_banned and perms.users.view_profile %}
+                    <a class="text" href="{% url 'profile_view' report.content.user.id %}"><del>{{ report.content.user.username }}</del></a>
+                {% else %}
+                    <a class="text" href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
+                {% endif %}
+            </div>
+
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Message</p>
+                <a class="text" href="{% url 'thread' report.content.thread.node.slug report.content.thread.slug report.content.thread.id %}#{{report.content.id}}">{{ report.content.message }}</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="wrapper cardHeader">
+                <h2 class="cardTitle">Report details</h2>
+            </div>
+
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Created</p>
+                <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
+            </div>
+    
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Report by</p>
+                <a class="text" href="{% url 'profile_view' report.user.id %}">{{ report.user }}</a>
+            </div>
+
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Reason</p>
+                <p class="text">{{ report.reason }}</p>
+            </div>
+
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Status</p>
+                <p class="text">
+                    {% if report.is_closed %}
+                        {% if report.is_resolved %}
+                            resolved (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+                        {% else %}
+                            rejected (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="cardLine"></div>
+            <div class="container cardSection">
+                <p class="meta">Notification</p>
+                {% if report.is_notified %}
+                    <p class="text">{{ report.notification }}</p>
+                {% else %}
+                    <p class="text">No notification was sent</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
     {% if not report.is_closed %}
     <form action="{% url 'report_details' report.id %}" method="post">
