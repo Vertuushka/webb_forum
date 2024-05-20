@@ -13,7 +13,7 @@
     </header>
 {% endblock %}
 {% block content %}
-    <div class="wrapper">
+    <div class="wrapper mainMessageView">
         <div class="container avalibleMessagesContainer">
             <div class="cardHeader">
                 <h2 class="cardTitle">Active messages</h2>
@@ -32,12 +32,27 @@
                 </a>
             {% endfor %}
         </div>
-
+        {% if current_dialog %}
         <div class="container messageView">
-            <div>
+            <div class="container messageLoop">
                 {% if messages %}
                     {% for msg in messages %}
-                    <p>{{msg}}</p>
+
+                        {% if msg.sender == request.user %}
+                            <div class="container messageContainer senderMessageContainer">
+                                <div class="wrapper messageMetaContainer senderMessageMetaContainer">
+                                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                </div>
+                                <p class="message senderMessage">{{ msg.content }}</p>
+                            </div>
+                        {% else %}
+                            <div class="container messageContainer receiverMessageContainer">
+                                <div class="wrapper messageMetaContainer">
+                                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                </div>
+                                <p class="message receiverMessage">{{ msg.content }}</p>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     <p>Select one of your dialogs to view messages</p>
@@ -57,5 +72,6 @@
         </form>
 
         </div>
+        {% endif %}
     </div>
 {% endblock %}

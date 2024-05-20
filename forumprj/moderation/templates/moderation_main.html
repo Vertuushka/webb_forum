@@ -7,106 +7,108 @@
     <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'moderation.css' %}">
 {% endblock %}
-{% block content %}
-
+{% block header %}
     <header class="wapper">
         <h2 class="title">Reports</h2>
-    </header>    
-
-    {% if active_reports %}
-        <div class="container card">
-            <div class="wapper cardHeader">
-                <p class="cardTitle">Active reports</p>
-            </div>
-
-            {% for report in active_reports %}
-                <div class="cardLine"></div>
-                <div class="wrapper cardSectionMultiple">
-                    <a class="wrapper cardSectionItem" href="{% url 'report_details' report.id %}">
-                        <div class="container cardSectionInnerItem">
-                            <p class="meta">Content</p>
-                            <p class="text">{{ report.content.thread.title }}</p>
-                        </div>
-                        <div class="container cardSectionInnerItem">
-                            <p class="meta">Created</p>
-                            <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
-                        </div>
-                    </a>
+    </header>
+{% endblock %}
+{% block content %}
+    <div class="container" style="gap: 12px;">
+        {% if active_reports %}
+            <div class="container card">
+                <div class="wapper cardHeader">
+                    <p class="cardTitle">Active reports</p>
+                </div>
     
-                    {% if report.assigned_to %}
-                        <a class="container cardSectionAutherItem" href="">
-                            <p class="meta">Assigned to</p>
-                            <div class="wrapper">
-                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.assigned_to.profile.profile_picture }}" alt="">
-                                <p class="text">{{ report.assigned_to.username }}</p>
+                {% for report in active_reports %}
+                    <div class="cardLine"></div>
+                    <div class="wrapper cardSectionMultiple">
+                        <a class="wrapper cardSectionItem" href="{% url 'report_details' report.id %}">
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">Content</p>
+                                <p class="text">{{ report.content.thread.title }}</p>
+                            </div>
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">Created</p>
+                                <p class="text">{{ report.time_created|date:"d/m/Y - H:i" }}</p>
                             </div>
                         </a>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-
-    {% else %}
-
-        <div class="banner">
-            <h2 class="title">No active reports</h2>
-            <p class="text">There are no active reports requiring your attention</p>
-        </div>
-
-    {% endif %}
-    {% if closed_reports %}
-
-        <div class="container card">
-            <div class="wapper cardHeader">
-                <p class="cardTitle">Closed reports</p>
-            </div>
-
-            {% for report in closed_reports %}
-                <div class="cardLine"></div>
-                <div class="wrapper cardSectionSquad">
-
-                    <a class="container cardSectionAutherItem" href="">
-                        <p class="meta">Author</p>
-                        <div class="wrapper themeCardProfileCon">
-                            <!-- user content -->
-                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
-                            <p class="text">
-                                {% if report.content.user.profile.id_banned and perms.users.view_profile %}
-                                    <del>{{ report.content.user.username }}</del>
-                                {% else %}
-                                    {{ report.content.user.username }}
-                                {% endif %}
-                            </p>
-                        </div>
-                    </a>
-
-                    <a class="wrapper cardSectionSquadItem" href="{% url 'report_details' report.id %}">
-                        <div class="container cardSectionInnerItem">
-                            <p class="meta">Content</p>
-                            <p class="text">
-                                {{ report.content.thread.title }}
-                            </p>
-                        </div>
-                        <div class="container cardSectionInnerItem">
-                            <!-- <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p> -->
-                            <p class="meta">Time changed</p>
-                            <p class="text">{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
-                        </div>
-                    </a>
-
-                    <a class="container cardSectionAutherItem" href="">
-                        {% if report.is_resolved %}
-                            <p class="meta">Resolved by</p>
-                        {% else %}
-                            <p class="meta">Rejected by</p>
+        
+                        {% if report.assigned_to %}
+                            <a class="container cardSectionAutherItem" href="">
+                                <p class="meta">Assigned to</p>
+                                <div class="wrapper">
+                                    <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.assigned_to.profile.profile_picture }}" alt="">
+                                    <p class="text">{{ report.assigned_to.username }}</p>
+                                </div>
+                            </a>
                         {% endif %}
-                        <div class="wrapper themeCardProfileCon">
-                            <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.closed_by.profile.profile_picture }}" alt="">
-                            <p class="text">{{ report.closed_by }}</p>
-                        </div>
-                    </a>
+                    </div>
+                {% endfor %}
+            </div>
+    
+        {% else %}
+    
+            <div class="banner">
+                <h2 class="title">No active reports</h2>
+                <p class="text">There are no active reports requiring your attention</p>
+            </div>
+    
+        {% endif %}
+        {% if closed_reports %}
+    
+            <div class="container card">
+                <div class="wapper cardHeader">
+                    <p class="cardTitle">Closed reports</p>
                 </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    
+                {% for report in closed_reports %}
+                    <div class="cardLine"></div>
+                    <div class="wrapper cardSectionSquad">
+    
+                        <a class="container cardSectionAutherItem" href="">
+                            <p class="meta">Author</p>
+                            <div class="wrapper themeCardProfileCon">
+                                <!-- user content -->
+                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+                                <p class="text">
+                                    {% if report.content.user.profile.id_banned and perms.users.view_profile %}
+                                        <del>{{ report.content.user.username }}</del>
+                                    {% else %}
+                                        {{ report.content.user.username }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+    
+                        <a class="wrapper cardSectionSquadItem" href="{% url 'report_details' report.id %}">
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">Content</p>
+                                <p class="text">
+                                    {{ report.content.thread.title }}
+                                </p>
+                            </div>
+                            <div class="container cardSectionInnerItem">
+                                <!-- <p>Time created: {{ report.time_created|date:"d/m/Y - H:i" }}</p> -->
+                                <p class="meta">Time changed</p>
+                                <p class="text">{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
+                            </div>
+                        </a>
+    
+                        <a class="container cardSectionAutherItem" href="">
+                            {% if report.is_resolved %}
+                                <p class="meta">Resolved by</p>
+                            {% else %}
+                                <p class="meta">Rejected by</p>
+                            {% endif %}
+                            <div class="wrapper themeCardProfileCon">
+                                <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.closed_by.profile.profile_picture }}" alt="">
+                                <p class="text">{{ report.closed_by }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

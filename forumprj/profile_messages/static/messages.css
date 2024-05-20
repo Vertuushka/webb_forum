@@ -2,11 +2,15 @@
     flex: .3;
 
     padding: 12px;
-    border-radius: 12px 0px 0px 12px;
+    border-radius: 12px;
 
     background-color: var(--primary);
 
     gap: 8px;
+}
+
+.mainMessageView {
+    gap: 12px;
 }
 
 .avalibleMessageCard {
@@ -34,8 +38,25 @@
 
 .messageView {
     flex: .7;
+    padding: 12px 0px 12px 12px;
 
-    padding: 12px;
-    border-radius: 0px 12px 12px 0px;
+    border-radius: 12px;
     border: 1px dashed var(--border_dark);
+
+    gap: 12px;
+}
+
+.messageLoop {
+    height: 540px;
+    padding-right: 12px;
+
+    overflow-y: scroll;
+
+    flex-grow: 1;
+    flex-direction: column-reverse;
+    gap: 12px;
+}
+
+.chatForm {
+    padding-right: 12px;
 }

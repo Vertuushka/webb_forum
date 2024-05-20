@@ -180,6 +180,9 @@
 }
 
 .forumMessageContent {
+    overflow-wrap: break-word;
+    word-break: break-all;
+
     font-size: 14px;
     color: var(--text);
 }

@@ -104,7 +104,15 @@
                                     {% else %}
                                         <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
                                     {% endif %}
-                                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                    {% if msg.time_changed %}
+                                        <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited
+                                            {% if perms.view_message %}
+                                            by {{msg.changer}}
+                                            {% endif %})
+                                        </p>
+                                    {% else %}
+                                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                    {% endif %}
                                 </div>
     
                                 <div class="wrapper forumMessageControllWrapper">
@@ -146,13 +154,6 @@
                                             <p class="forumMessageControllBtn warnBtn">Warn</p>
                                         {% endif %}
                                     {% endif %}
-                                    {% if msg.time_changed %}
-                                    <p>Changed {{ msg.time_changed|date:"d/m/Y - H:i" }}
-                                        {% if perms.view_message %}
-                                        by {{ msg.changer }}
-                                        {% endif %}
-                                    </p>
-                                    {% endif %}
                                 </div>
     
                                 <!-- report form  -->
@@ -180,7 +181,15 @@
                                         {% else %}
                                             <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
                                         {% endif %}
-                                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                        {% if msg.time_changed %}
+                                            <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited 
+                                                {% if perms.view_message %}
+                                                by {{msg.changer}}
+                                                {% endif %})
+                                            </p>
+                                        {% else %}
+                                            <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                        {% endif %}
                                     </div>
     
                                     <div class="wrapper forumMessageControllWrapper">
@@ -213,19 +222,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <!-- popup -->
-                                        <!-- popup -->
-                                            <!-- popup -->
-                                {% if msg.time_changed %}
-                                    <p>Changed {{ msg.time_changed|date:"d/m/Y - H:i" }}
-                                        {% if perms.view_message %}
-                                        by {{ msg.changer }}
-                                        {% endif %}
-                                    </p>
-                                {% endif %}
-                                        <!-- popup -->
-                                    <!-- popup -->
-                                <!-- popup -->
+                                
                                 <p class="forumMessageContent">Deleted by {{  msg.deleted_by }}. Reason: {{ msg.invis_reason }}</p>
                                 <p class="forumMessageContent" style="display: none;" id="msg_{{ msg.id }}">{{ msg.message }}</p>
                             </div>
