@@ -73,6 +73,7 @@ def messages_dialog(request, id):
         msg.save()
     context = {
         'messages':messages,
-        'dialogs': dialogs
+        'dialogs': dialogs,
+        'current_dialog': dialog
     }
     return render(request, 'messages.html', context)
