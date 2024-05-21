@@ -22,15 +22,27 @@
             <div class="cardLine"></div>
 
             {% for dialog in dialogs %}
-                <a class="wrapper avalibleMessageCard" href="{% url 'messages_dialog' dialog.id %}">
-                    {% if request.user == dialog.user_1 %}
-                        <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_2.profile.profile_picture}}" alt="">
-                        <span class="text">{{dialog.user_2}}</span>
-                        {% else %}
-                        <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_1.profile.profile_picture}}" alt="">
-                        <span class="text">{{dialog.user_1}}</span>
+                {% if dialog.user_1 == request.user %}
+                    <a class="wrapper avalibleMessageCard" href="{% url 'messages_dialog' dialog.user_2.id %}">
+                        {% if request.user == dialog.user_1 %}
+                            <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_2.profile.profile_picture}}" alt="">
+                            <span class="text">{{dialog.user_2}}</span>
+                            {% else %}
+                            <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_1.profile.profile_picture}}" alt="">
+                            <span class="text">{{dialog.user_1}}</span>
+                        {% endif %}
+                    </a>
+                    {% else %}
+                    <a class="wrapper avalibleMessageCard" href="{% url 'messages_dialog' dialog.user_1.id %}">
+                        {% if request.user == dialog.user_1 %}
+                            <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_2.profile.profile_picture}}" alt="">
+                            <span class="text">{{dialog.user_2}}</span>
+                            {% else %}
+                            <img class="avalibleMessageCardProfilePicture" src="{{ media_url }}{{dialog.user_1.profile.profile_picture}}" alt="">
+                            <span class="text">{{dialog.user_1}}</span>
+                        {% endif %}
+                    </a>
                     {% endif %}
-                </a>
             {% endfor %}
         </div>
 
@@ -81,4 +93,82 @@
             </div>
         {% endif %}
     </div>
+
+{% if current_dialog %}
+
+<script>
+    const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/dialog/{{ current_dialog.id }}/`;
+    console.log(wsEndpoint)
+
+    const socket = new WebSocket(wsEndpoint);
+
+    socket.onopen = (event) => {
+        console.log("WebSocket connection opened!");
+    };
+
+    socket.onclose = (event) => {
+        console.log("WebSocket connection closed!");
+    };
+
+    document.querySelector('.chatForm').addEventListener('submit', function(event){
+        event.preventDefault();
+        let msg_input = document.querySelector('.chatInput');
+        let message = msg_input.value;
+
+        socket.send(
+            JSON.stringify({
+                'message': message,
+                'dialog_id': '{{ current_dialog.id }}',
+                'sender': '{{ request.user.id }}',
+                'receiver': '{{ account.id }}'
+            })
+        );
+    });
+
+    socket.addEventListener("message", (event) => {
+        console.log("got something")
+        const messageData = JSON.parse(event.data)['message'];
+        // console.log(messageData);
+
+        var sender = messageData['sender'];
+        var message = messageData['message'];
+        var time = messageData['time']
+
+        if (sender == '{{ request.user.id }}'){
+            document.querySelector('.chatInput').value = '';
+        }
+
+
+        var messageDiv = document.querySelector('.chatView');
+        if (sender == '{{ request.user.id }}') {
+        let newSenderMsgElement = $(`
+            <div class="container messageContainer senderMessageContainer">
+                <div class="wrapper messageMetaContainer senderMessageMetaContainer">
+                    <p class="meta">${time}</p>
+                </div>
+                <p class="message senderMessage">${message}</p>
+            </div>
+        `)
+        let target = $(".messageLoop")
+        target.prepend(newSenderMsgElement)
+        } else {
+            let newSenderMsgElement = $(`
+                <div class="container messageContainer receiverMessageContainer">
+                    <div class="wrapper messageMetaContainer">
+                        <p class="meta">${time}</p>
+                    </div>
+                    <p class="message receiverMessage">${message}</p>
+                </div>
+        `)
+        let target = $(".messageLoop")
+        target.prepend(newSenderMsgElement)
+        }
+    });
+
+
+</script>
+
+{% endif %}
+    
 {% endblock %}
