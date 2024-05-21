@@ -30,9 +30,66 @@
 {% block content %}
 <div class="container content">
     {% if forum_search %}
-        {% for result in results %}
-            {{ result }}
-        {% endfor %}
+
+        <div class="container card">
+            <div class="cardHeader">
+                <h2 class="cardTitle">Search results</h2>
+            </div>
+
+            {% for result in results %}
+                {% if type == 'posts' %}
+                    <div class="cardLine"></div>
+                    <div class="cardSectionMultiple">
+                        <a class="wrapper cardSectionItem" href="">
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
+                                <p class="text nowrap">{{ result.message }}</p>
+                            </div>
+                        </a>
+                        <a class="container cardSectionAutherItem" href="">
+                            <p class="meta">Created by</p>
+                            <div class="wrapper cardSectionAutherItemMetaContainer">
+                                <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
+                                {% if perms.users.view_profile and thread.user.profile.is_banned %}
+                                    <p class="text"><del>{{ result.user.username }}</del></p>
+                                {% else %}
+                                    <p class="text">{{ result.user.username }}</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if type == 'threads' %}
+                    <div class="cardLine"></div>
+                    <div class="cardSectionMultiple">
+                        <a class="wrapper cardSectionItem" href="">
+                            <div class="container cardSectionInnerItem">
+                                <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
+                                <p class="text nowrap">{{ result.title }}</p>
+                            </div>
+                        </a>
+                        <a class="container cardSectionAutherItem" href="">
+                            <p class="meta">Created by</p>
+                            <div class="wrapper cardSectionAutherItemMetaContainer">
+                                <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
+                                {% if perms.users.view_profile and thread.user.profile.is_banned %}
+                                    <p class="text"><del>{{ result.user.username }}</del></p>
+                                {% else %}
+                                    <p class="text">{{ result.user.username }}</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if type == 'members' %}
+                    <div class="cardLine"></div>
+                    <div class="wrapper forumSearchResultAccount" style="gap: 12px;">
+                        <img class="forumSearchResultAccountProfilePicture" src="{{media_url}}{{result.profile.profile_picture}}" alt="">
+                        <p class="text">{{ result.username }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
     
     {% for item in tree %}

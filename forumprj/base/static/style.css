@@ -51,6 +51,20 @@ a {
     font-size: 14px;
 }
 
+.nowrap {
+    width: min-content;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis; 
+}
+
 .meta {
     color: var(--text-muted);
     font-size: 12px;
@@ -265,6 +279,7 @@ header {
 
 /* card */
 .card {
+    box-sizing: border-box;
     padding: 12px;
     border-radius: 12px;
     background-color: var(--primary);
@@ -314,6 +329,9 @@ header {
 }
 
 .cardSectionItem {
+    box-sizing: border-box;
+    width: 100%;
+
     padding: 12px;
     border-radius: 12px;
     display: grid;
@@ -342,7 +360,9 @@ header {
     background-color: var(--isClickable);
 }
 
-.cardSectionInnerItem {    
+.cardSectionInnerItem { 
+    box-sizing: border-box; 
+    width: 100%;
     gap: 8px;
 }
 

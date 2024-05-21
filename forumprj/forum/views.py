@@ -15,14 +15,18 @@ def forum_main(request):
         context['forum_search'] = True
         content_type = request.POST.get("content_type")
         searched = request.POST.get("search")
+        context['type'] = 'posts'
         if content_type:
             if content_type == "threads":
                 results = Thread.objects.filter(title__icontains=searched)
+                context['type'] = 'threads'
             if content_type == "members":
                 results = User.objects.filter(username__icontains=searched)
+                context['type'] = 'members'
         else:
             results = Message.objects.filter(message__icontains=searched)
         context['results'] = results
+        
     else:
         nodes = Node.objects.all()
         tree = build_nodes_tree(nodes)

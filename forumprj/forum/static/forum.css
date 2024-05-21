@@ -248,3 +248,24 @@
     height: 100%;
     border-left: 1px solid var(--border_dark);
 }
+
+.forumSearchResultAccount {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: var(--primary);
+    align-items: center;
+    gap: 12px;
+}
+
+.forumSearchResultAccount:hover {
+    background-color: var(--isClickable);
+}
+
+.forumSearchResultAccountProfilePicture {
+    aspect-ratio: 1/1;
+    width: 32px;
+    border-radius: 32px;
+
+    object-fit: cover;
+    object-position: center;
+}
