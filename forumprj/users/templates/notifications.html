@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
+{% endblock %}
 {% block title %}
 <title>Notification</title>
 {% endblock %}
@@ -8,61 +12,68 @@
         <h2 class="title">Notifications</h2>
     </header>
 
-    {% for notif in notifications %}
-        <!-- models.py > class Notification -->
-        {% if notif.notification_type == 0 %}
-            {% if not notif.warning.forum_msg.is_start %}
-            <p>You were given a warning as a message in the topic <a href="{% url 'thread' notif.warning.forum_msg.thread.node.slug notif.warning.forum_msg.thread.slug notif.warning.forum_msg.thread.id %}">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
-            {% else %}
-            <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
-            {% endif %}
-        {% endif %}
-
-        {% if notif.notification_type == 2 %}
-            <p>Your report was 
-                {% if notif.report.is_resolved %}
-                    resolved
+    {% if notifications %}
+        {% for notif in notifications %}
+            <!-- models.py > class Notification -->
+            {% if notif.notification_type == 0 %}
+                {% if not notif.warning.forum_msg.is_start %}
+                <p>You were given a warning as a message in the topic <a href="{% url 'thread' notif.warning.forum_msg.thread.node.slug notif.warning.forum_msg.thread.slug notif.warning.forum_msg.thread.id %}">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
                 {% else %}
-                    rejected
+                <p>You were given a warning as a message in the topic <a href="">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
                 {% endif %}
-                with following alert: {{ notif.report.notification }}
-            </p>
-        {% endif %}
+            {% endif %}
 
-        {% if notif.notification_type == 3 %}
-            <p>Your message in 
-                <a href="{% url 'thread' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id %}">{{ notif.message.thread.title }}</a> 
-                was deleted. Reason: {{ notif.notification }}
-            </p>
-        {% endif %}
+            {% if notif.notification_type == 2 %}
+                <p>Your report was 
+                    {% if notif.report.is_resolved %}
+                        resolved
+                    {% else %}
+                        rejected
+                    {% endif %}
+                    with following alert: {{ notif.report.notification }}
+                </p>
+            {% endif %}
 
-        {% if notif.notification_type == 4 %}
-            <p>Your message in 
-                <!-- difference between this section and section above in link modification. I'll do it later -->
-                <a href="{% url 'msg_redirect' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id notif.message.id %}">{{ notif.message.thread.title }}</a> 
-                was edited. Reason: {{ notif.notification }}
-            </p>
-        {% endif %}
-        {% if notif.notification_type == 5 %}
-            <p>Your profile information was edited. Reason: {{ notif.notification }}</p>
-        {% endif %}
+            {% if notif.notification_type == 3 %}
+                <p>Your message in 
+                    <a href="{% url 'thread' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id %}">{{ notif.message.thread.title }}</a> 
+                    was deleted. Reason: {{ notif.notification }}
+                </p>
+            {% endif %}
 
-        {% if notif.notification_type == 6 %}
-            <p>You thread in 
-                <a href="{% url 'section' notif.thread.node.slug %}">{{ notif.thread.node.name }}</a>
-                was deleted. Reason: {{ notif.notification }}
-            </p>
-        {% endif %}
+            {% if notif.notification_type == 4 %}
+                <p>Your message in 
+                    <!-- difference between this section and section above in link modification. I'll do it later -->
+                    <a href="{% url 'msg_redirect' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id notif.message.id %}">{{ notif.message.thread.title }}</a> 
+                    was edited. Reason: {{ notif.notification }}
+                </p>
+            {% endif %}
+            {% if notif.notification_type == 5 %}
+                <p>Your profile information was edited. Reason: {{ notif.notification }}</p>
+            {% endif %}
 
-        {% if notif.notification_type == 7 %}
-            <p>You thread in 
-                <a href="{% url 'section' notif.thread.node.slug %}">{{ notif.thread.node.name }}</a>
-                was changed. Reason: {{ notif.notification }}
-            </p>
-        {% endif %}
-        
+            {% if notif.notification_type == 6 %}
+                <p>You thread in 
+                    <a href="{% url 'section' notif.thread.node.slug %}">{{ notif.thread.node.name }}</a>
+                    was deleted. Reason: {{ notif.notification }}
+                </p>
+            {% endif %}
 
-        <p>{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
-    {% endfor %}
+            {% if notif.notification_type == 7 %}
+                <p>You thread in 
+                    <a href="{% url 'section' notif.thread.node.slug %}">{{ notif.thread.node.name }}</a>
+                    was changed. Reason: {{ notif.notification }}
+                </p>
+            {% endif %}
+            
+
+            <p>{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
+        {% endfor %}
+    {% else %}
+        <div class="container NoContentBanner">
+            <h2 class="title">No notifications</h2>
+            <p class="text">Notifications you recive will show up here.</p>
+        </div>
+    {% endif %}
 
 {% endblock %}
