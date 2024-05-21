@@ -106,8 +106,23 @@
                                 {% if msg.thread.node.type_private %}
                                     {% if request.user == msg.thread.user or perms.forum.view_thread %}
                                         <div class="cardLine"></div>
-                                        <div class="container cardSection">
-                                            <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
+                                        <a class="container cardSectionItem" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">
+                                            <div class="cardSectionInnerItem container">
+                                                <p class="meta">Theme</p>
+                                                <p class="text">
+                                                    {% if not msg.is_visible or not msg.thread.is_visible %}
+                                                        <del>{{ msg.thread }}</del>
+                                                    {% else %}
+                                                        {{ msg.thread }}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="cardLine"></div>
+                                    <a class="container cardSectionItem" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">
+                                        <div class="cardSectionInnerItem container">
                                             <p class="meta">Theme</p>
                                             <p class="text">
                                                 {% if not msg.is_visible or not msg.thread.is_visible %}
@@ -117,20 +132,7 @@
                                                 {% endif %}
                                             </p>
                                         </div>
-                                    {% endif %}
-                                {% else %}
-                                    <div class="cardLine"></div>
-                                    <div class="container cardSection">
-                                        <a class="meta" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">link</a>
-                                        <p class="meta">Theme</p>
-                                        <p class="text">
-                                            {% if not msg.is_visible or not msg.thread.is_visible %}
-                                                <del>{{ msg.thread }}</del>
-                                            {% else %}
-                                                {{ msg.thread }}
-                                            {% endif %}
-                                        </p>
-                                    </div>
+                                    </a>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -149,14 +151,11 @@
                         <div class="wrapper cardHeader">
                             <h2 class="cardTitle">Warnings</h2>
                         </div>
-
                         {% for warn in warnings %}
                         {% if warn.forum_msg %}
                             <div class="cardLine"></div>
                             <div class="container cardSection">
-                            
-                            <a class="meta" href="{% url 'thread' warn.forum_msg.thread.node.name|slugify  warn.forum_msg.thread.title|slugify warn.forum_msg.thread.id %}#{{ warn.forum_msg.id }}">link</a>
-                                <p class="meta">Warned by: <span class="meta_action">{{ warn.warned_by }}</span> in <span class="meta_action">{{ warn.forum_msg.thread.title }}</span></p>
+                                <p class="meta">Warned by: <span class="meta_action"><a href="{% url 'profile_view' warn.warned_by.id %}" class="forumUserLink">{{ warn.warned_by }}</a></span> in "<span class="meta_action"><a href="{% url 'thread' warn.forum_msg.thread.node.name|slugify  warn.forum_msg.thread.title|slugify warn.forum_msg.thread.id %}#{{ warn.forum_msg.id }}" class="meta">{{ warn.forum_msg.thread.title }}</a></span>"</p>
                                 <p class="meta">{{ warn.time_warned|date:"d/m/Y - H:i" }}</p>
                                 <p class="text">{{ warn.details }}</p>
                             </div>

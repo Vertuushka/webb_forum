@@ -12,15 +12,14 @@
 </header>
 {% endblock %}
 {% block content %}
-
     <div class="container">
         <div class="container card" >
             <div class="cardHeader wrapper">
                 <p class="cardTitle">Your notifications:</p>
-            </div> 
+            </div>
             {% for notif in notifications %}
             <div class="cardLine"></div>
-            <div class="cardSectionMultiple wrapper">
+            <div class="container">
                 <a href="" class="wrapper cardSectionItem">
                     <div class="cardSectionInnerItem container">
                         {% if notif.notification_type == 0 %}
@@ -68,16 +67,13 @@
                             <p class="text">You thread in "{{ notif.thread.node.name }}"" was changed. Reason: {{ notif.notification }}</p>
                         {% endif %} 
                     </div>
-                </a>
-                <a class="cardSectionAutherItem container" href="">
                     <div class="cardSectionInnerItem container">
                         <p class="meta">Time</p>
                         <p class="text">{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
                     </div>
-                 </a>
+                </a>
             </div>
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}
