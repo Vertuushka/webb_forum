@@ -22,7 +22,24 @@
             {% for notif in notifications %}
             <div class="cardLine"></div>
             <div class="container">
-                <a href="" class="wrapper cardSectionItem">
+                {% if notif.notification_type == 0 or notif.notification_type == 2 %}
+                    <div class="wrapper cardSectionItem">
+                {% endif %}
+                {% if notif.notification_type == 3 %}
+                    <a href="{% url 'thread' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id %}" class="wrapper cardSectionItem">
+                {% endif %}
+                {% if notif.notification_type == 4 %}
+                    <a href="{% url 'msg_redirect' notif.message.thread.node.slug notif.message.thread.slug notif.message.thread.id notif.message.id %}" class="wrapper cardSectionItem">
+                {% endif %}
+                {% if notif.notification_type == 5 %}
+                    <a href="{% url 'profile_view' request.user.id %}" class="wrapper cardSectionItem">
+                {% endif %}
+                {% if notif.notification_type == 6 %}
+                    <a href="{% url 'section' notif.thread.node.slug %}" class="wrapper cardSectionItem">
+                {% endif %}
+                {% if notif.notification_type == 7 %}
+                    <a href="{% url 'thread' notif.thread.node.slug notif.thread.slug notif.thread.id %}" class="wrapper cardSectionItem">
+                {% endif %}
                     <div class="cardSectionInnerItem container">
                         {% if notif.notification_type == 0 %}
                             <p class="meta">Warning</p>
@@ -71,7 +88,11 @@
                         <p class="meta">Time</p>
                         <p class="text">{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
                     </div>
+            {% if notif.notification_type == 0 or notif.notification_type == 2 %}
+                </div>
+            {% else %}
                 </a>
+            {% endif %}
             </div>
             {% endfor %}
         </div>
