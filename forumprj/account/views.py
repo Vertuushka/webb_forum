@@ -16,11 +16,7 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            # return to page where user came from (after login)
-            # works but not used (06-05-2024)
-            next_page = request.GET.get('next')
-            if next_page:
-                return redirect(next_page)
+
             # When user logged in, redirect to APP:forum to profile_view
             return redirect('profile_view', user.id)
     else:

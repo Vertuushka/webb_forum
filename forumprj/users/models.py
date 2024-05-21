@@ -17,6 +17,11 @@ class Profile(models.Model):
     ban_reason = models.TextField(null=True, blank=True)
     ban_time = models.DateTimeField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        if self.user.is_staff:
+            self.title = "Staff member"
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.user.username
         

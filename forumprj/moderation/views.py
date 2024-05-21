@@ -4,8 +4,10 @@ from django.contrib.auth.models import User, Permission
 from django.db.models import Q
 from datetime import datetime
 from base.utils import notify_user
+from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
+@permission_required('moderation.view_report', raise_exception=False)
 def moderation_main(request):
     try:
         active_reports = Report.objects.filter(is_closed=False).order_by('-id')
@@ -21,6 +23,7 @@ def moderation_main(request):
     }
     return render(request, 'moderation_main.html', context)
 
+@permission_required('moderation.view_report', raise_exception=False)
 def report_details(request, id):
     try:
         report = Report.objects.get(id=id)

@@ -285,6 +285,7 @@ def warn_user(request, msg_id):
             return redirect('section', message.thread.node.slug)
     return redirect('thread', message.thread.node.slug, message.thread.slug, message.thread.id)
 
+@login_required
 def mark_solution(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import permission_required
 import os
 from . forms import *
 from . models import *
@@ -93,6 +93,7 @@ def profile_warnings(request, id):
     }
     return render(request, 'profile.html', context)
 
+@permission_required('users.change_profile', raise_exception=False)
 def profile_toggle_ban(request, id):
     try:
         account = User.objects.get(id=id)
@@ -137,6 +138,7 @@ def notifications(request):
     request.user.profile.save()
     return render(request, 'notifications.html', context)
 
+@permission_required('users.create_warnings_history')
 def warn(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
