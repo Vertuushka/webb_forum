@@ -69,20 +69,20 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <p>Select one of your dialogs to view messages</p>
+                    <div class="container NoContentBanner">
+                        <h2 class="title">No chat history</h2>
+                        <p class="text">Start new conversation with {{ account.username }}</p>
+                    </div>
                     {% endif %}
                 </div>
-
-                {% if request.user == dialog.user_1 %}
-                    <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_2.id %}" method="post" id="message_form">
-                {% else %}
-                    <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_1.id %}" method="post" id="message_form">
-                {% endif %}
+                {% if account.preference.private_messages == 0 or perms.private_messages.add_private_message %}
+                <form class="wrapper chatForm" action="{% url 'send_private_message' account.id %}" method="post" id="message_form">
                 {% csrf_token %}
                 <input placeholder="Write a message" class="chatInput" type="text" name="content" id="msg">
                 <button class="wrapper chatBtn" type="submit">
                     <img src="{% static 'assets/icon_send.svg' %}" alt="">
                 </button>
+                {% endif %}
             </form>
             </div>
 
@@ -94,7 +94,7 @@
         {% endif %}
     </div>
 
-{% if current_dialog %}
+{% if messages %}
 
 <script>
     const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
