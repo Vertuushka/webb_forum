@@ -93,6 +93,8 @@
     width: 20px;
     aspect-ratio: 1/1;
     border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .forumCardProfilePicture {
