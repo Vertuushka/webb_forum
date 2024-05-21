@@ -107,8 +107,8 @@
                                     {% if msg.time_changed %}
                                         <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited
                                             {% if perms.view_message %}
-                                            by {{msg.changer}}
-                                            {% endif %})
+                                            by {{msg.changer}})
+                                            {% endif %}
                                         </p>
                                     {% else %}
                                         <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
@@ -181,8 +181,8 @@
                                         {% if msg.time_changed %}
                                             <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited 
                                                 {% if perms.view_message %}
-                                                by {{msg.changer}}
-                                                {% endif %})
+                                                by {{msg.changer}})
+                                                {% endif %}
                                             </p>
                                         {% else %}
                                             <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
