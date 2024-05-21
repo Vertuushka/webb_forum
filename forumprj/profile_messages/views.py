@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from . models import *
 from django.db.models import Q, Max
+from django.contrib.auth.decorators import permission_required, login_required
 
 # Create your views here.
-
+@login_required
 def send_private_message(request, id):
     # add to dialog on new dialog start
     if request.method == "POST":
@@ -37,6 +38,7 @@ def send_private_message(request, id):
             return redirect('profile_view', id)
     return redirect('profile_view', id)
 
+@login_required
 def messages_main(request):
     user = request.user
     context = {}
@@ -47,6 +49,7 @@ def messages_main(request):
     context["dialogs"] = dialogs
     return render(request, 'messages.html', context)
 
+@login_required
 def messages_dialog(request, id):
     user = request.user
     try:
