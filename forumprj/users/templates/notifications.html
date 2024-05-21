@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
-{% block title %}
-<title>Notification</title>
-{% endblock %}
 {% block style %}
     {% load static %}
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
 {% endblock %}
+{% block title %}
+    <title>Notification</title>
+{% endblock %}
 {% block header %}
-<header class="wrapper">
-    <h2 class="title">Notifications</h2>
-</header>
+    <header class="wrapper">
+        <h2 class="title">Notifications</h2>
+    </header>
 {% endblock %}
 {% block content %}
     <div class="container">
+        {% if notifications %}
         <div class="container card" >
             <div class="cardHeader wrapper">
                 <p class="cardTitle">Your notifications:</p>
@@ -36,32 +38,30 @@
                             <p class="text">Your report was 
                                 {% if notif.report.is_resolved %}
                                     resolved
-                                {% else %}
-                                    rejected
-                                {% endif %}
-                                with following alert: {{ notif.report.notification }}</p>
-                        {% endif %}
+                                    {% else %}
+                                        rejected
+                                    {% endif %}
+                                    with following alert: {{ notif.report.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 3 %}
-                            <p class="meta">Message</p>
-                            <p class="text">Your message in "{{ notif.message.thread.title }}" was deleted. Reason: {{ notif.notification }}</p>
-                        {% endif %}
+                            {% if notif.notification_type == 3 %}
+                                <p class="meta">Message</p>
+                                <p class="text">Your message in "{{ notif.message.thread.title }}" was deleted. Reason: {{ notif.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 4 %}
-                            <p class="meta">Message</p>
-                            <p class="text">Your message in "{{ notif.message.thread.title }}" was edited. Reason: {{ notif.notification }}</p>
-                        {% endif %}
+                            {% if notif.notification_type == 4 %}
+                                <p class="meta">Message</p>
+                                <p class="text">Your message in "{{ notif.message.thread.title }}" was edited. Reason: {{ notif.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 5 %}
-                            <p class="meta">Profile</p>
-                            <p class="text">Your profile information was edited. Reason: {{ notif.notification }}</p>
-                        {% endif %}
-
-                        {% if notif.notification_type == 6 or notif.notification_type == 7 %}
-                            <p class="meta">Thread</p>
-                            <p class="text">You thread in "{{ notif.thread.node.name }}" was deleted. Reason: {{ notif.notification }}</p>
-                        {% endif %}     
-
+                            {% if notif.notification_type == 5 %}
+                                <p class="meta">Profile</p>
+                                <p class="text">Your profile information was edited. Reason: {{ notif.notification }}</p>
+                            {% endif %}
+                            {% if notif.notification_type == 6 %}
+                                <p class="meta">Thread</p>
+                                <p class="text">You thread in "{{ notif.thread.node.name }}"" was deleted. Reason: {{ notif.notification }}</p>
+                            {% endif %} 
                         {% if notif.notification_type == 7 %}
                             <p class="meta">Thread</p>
                             <p class="text">You thread in "{{ notif.thread.node.name }}"" was changed. Reason: {{ notif.notification }}</p>
@@ -76,4 +76,12 @@
             {% endfor %}
         </div>
     </div>
+    {% else %}
+
+        <div class="container NoContentBanner">
+            <h2 class="title">No notifications</h2>
+            <p class="text">Notifications you recive will show up here.</p>
+        </div>
+    {% endif %}
+
 {% endblock %}
