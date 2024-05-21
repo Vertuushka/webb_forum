@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'moderation.css' %}">
+{% endblock %}
 {% block title %}
     <title>Report in {{ report.content.thread.title }}</title>
 {% endblock %}
@@ -88,28 +92,62 @@
     </div>
 
     {% if not report.is_closed %}
-    <form action="{% url 'report_details' report.id %}" method="post">
-    {% csrf_token %}
-    <label for=""><input type="radio" name="status" id="" value="open" checked> Open</label> <br>
-    <label for=""><input type="radio" name="status" id="" value="resolve">Resolve</label> <br>
-    <label for=""><input type="radio" name="status" id="" value="reject">Reject</label> <br>
-    Assign to:
-    <select name="assigned_to" id="">
-    <option value="">---</option>
-    {% for moderator in moderators %}
-    {% if report.assigned_to and report.assigned_to == moderator %}
-    <option value="{{ moderator.username }}" selected>{{ moderator.username }}</option>
-    {% else %}
-    <option value="{{ moderator.username }}">{{ moderator.username }}</option>
-    {% endif %}
-    {% endfor %}
-    </select> <br>
-    <!-- if is_notified is checked then notification input should be unlocked by deleting readonly attribute. It means is_notified should toggle readonly attribute for the input below -->
-    <label for=""><input type="checkbox" name="is_notified" id="is_notified">Send notification:</label> <br>
-    <label for="">Notification: <input type="text" name="notification" id="notification" readonly></label>
+        <form class="container" action="{% url 'report_details' report.id %}" method="post" style="gap: 12px;">
+            <div class="container reportDetailsForm">
+                <div class="cardHeader">
+                    <h2 class="cardTitle">Solutionns</h2>
+                </div>
+                <div class="cardLine"></div>
+    
+                {% csrf_token %}
+                <div class="cardLine"></div>
+                <div class="container cardSection" style="gap: 12px;">
+                    <div class="wrapper" style="gap: 12px;">
+                        <input type="radio" name="status" id="" value="open" checked>
+                        <label class="text" for="">Open</label>
+                    </div>
+                
+                    <div class="wrapper" style="gap: 12px;">
+                        <input type="radio" name="status" id="" value="resolve">
+                        <label class="text" for="">Resolve</label> <br>
+                    </div>
+               
+                    <div class="wrapper" style="gap: 12px;">
+                        <input type="radio" name="status" id="" value="reject">
+                        <label class="text" for="">Reject</label>
+                    </div>
+                </div>
+    
+                <div class="cardLine"></div>
+                <div class="container cardSection">
+                    <label class="meta" for="">Assign to</label>
+                    <select class="moderationSelect" name="assigned_to" id="">
+                        <option value="">---</option>
+                        {% for moderator in moderators %}
+                            {% if report.assigned_to and report.assigned_to == moderator %}
+                                <option value="{{ moderator.username }}" selected>{{ moderator.username }}</option>
+                            {% else %}
+                                <option value="{{ moderator.username }}">{{ moderator.username }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <div class="cardLine"></div>
+                <div class="wrapper cardSection">
+                    <!-- if is_notified is checked then notification input should be unlocked by deleting readonly attribute. It means is_notified should toggle readonly attribute for the input below -->
+                    <input type="checkbox" name="is_notified" id="is_notified">
+                    <label class="text" for="">Send notification:</label>
+                </div>
+    
+                <div class="container cardSection">
+                    <label class="meta" for="">Notification:</label>
+                    <input class="moderationInput" type="text" name="notification" id="notification" placeholder="Enter the message for the notification" readonly>
+                </div>
+            </div>
 
-    <input type="submit" value="Save">
-    </form>
+            <button class="largeBtn" type="submit">Save</button>
+        </form>
     {% endif %}
 
     <p>Updated: {{ report.time_changed|date:"d/m/Y - H:i" }}</p>

@@ -1,3 +1,7 @@
+.main {
+    overflow-y: scroll;
+}
+
 .cardSectionSquad {
     display: grid;
     grid-template-columns: 0.5fr 1fr 0.5fr;
@@ -15,5 +19,31 @@
 
 .cardSectionSquadItem:hover {
     cursor: pointer;
+    background-color: var(--isClickable);
+}
+
+.reportDetailsForm {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: var(--primary);
+}
+
+.moderationSelect {
+    padding: 12px;
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    color: var(--text);
+    background-color: var(--isClickable);
+}
+
+.moderationInput {
+    padding: 12px;
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    color: var(--text);
     background-color: var(--isClickable);
 }
