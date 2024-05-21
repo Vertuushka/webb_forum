@@ -38,55 +38,63 @@
 
             {% for result in results %}
                 {% if type == 'posts' %}
-                    <div class="cardLine"></div>
-                    <div class="cardSectionMultiple">
-                        <a class="wrapper cardSectionItem" href="">
-                            <div class="container cardSectionInnerItem">
-                                <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
-                                <p class="text nowrap">{{ result.message }}</p>
+                    {% if result.is_visible and result.thread.is_visible or perms.forum.view_thread %}
+                        {% if result.thread.node.type_private and request.user == result.thread.user or perms.forum.view_thread or not result.thread.node.type_private %}
+                            <div class="cardLine"></div>
+                            <div class="cardSectionMultiple">
+                                <a class="wrapper cardSectionItem" href="{% url 'msg_redirect' result.thread.node.slug result.thread.slug result.thread.id result.id %}">
+                                    <div class="container cardSectionInnerItem">
+                                        <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
+                                        <p class="text nowrap textNormalizer">{{ result.message }}</p>
+                                    </div>
+                                </a>
+                                <a class="container cardSectionAutherItem" href="{% url 'profile_view' result.user.id %}">
+                                    <p class="meta">Created by</p>
+                                    <div class="wrapper cardSectionAutherItemMetaContainer">
+                                        <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
+                                        {% if perms.users.view_profile and result.user.profile.is_banned %}
+                                            <p class="text"><del>{{ result.user.username }}</del></p>
+                                        {% else %}
+                                            <p class="text">{{ result.user.username }}</p>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                        <a class="container cardSectionAutherItem" href="">
-                            <p class="meta">Created by</p>
-                            <div class="wrapper cardSectionAutherItemMetaContainer">
-                                <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
-                                {% if perms.users.view_profile and thread.user.profile.is_banned %}
-                                    <p class="text"><del>{{ result.user.username }}</del></p>
-                                {% else %}
-                                    <p class="text">{{ result.user.username }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    </div>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
                 {% if type == 'threads' %}
-                    <div class="cardLine"></div>
-                    <div class="cardSectionMultiple">
-                        <a class="wrapper cardSectionItem" href="">
-                            <div class="container cardSectionInnerItem">
-                                <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
-                                <p class="text nowrap">{{ result.title }}</p>
+                    {% if result.is_visible or perms.forum.view_thread %}
+                        {% if result.node.type_private and request.user == result.user or perms.forum.view_thread or not result.node.type_private %}
+                            <div class="cardLine"></div>
+                            <div class="cardSectionMultiple">
+                                <a class="wrapper cardSectionItem" href="{% url 'thread' result.node.slug result.slug result.id %}">
+                                    <div class="container cardSectionInnerItem">
+                                        <p class="meta">{{ result.time_created|date:"d/m/Y - H:i" }}</p>
+                                        <p class="text nowrap">{{ result.title }}</p>
+                                    </div>
+                                </a>
+                                <a class="container cardSectionAutherItem" href="{% url 'profile_view' result.user.id %}">
+                                    <p class="meta">Created by</p>
+                                    <div class="wrapper cardSectionAutherItemMetaContainer">
+                                        <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
+                                        {% if perms.users.view_profile and result.user.profile.is_banned %}
+                                            <p class="text"><del>{{ result.user.username }}</del></p>
+                                        {% else %}
+                                            <p class="text">{{ result.user.username }}</p>
+                                        {% endif %}
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                        <a class="container cardSectionAutherItem" href="">
-                            <p class="meta">Created by</p>
-                            <div class="wrapper cardSectionAutherItemMetaContainer">
-                                <img class="themeCardSectionProfilePicture" src="{{media_url}}{{result.user.profile.profile_picture}}" alt="">
-                                {% if perms.users.view_profile and thread.user.profile.is_banned %}
-                                    <p class="text"><del>{{ result.user.username }}</del></p>
-                                {% else %}
-                                    <p class="text">{{ result.user.username }}</p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    </div>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
                 {% if type == 'members' %}
                     <div class="cardLine"></div>
-                    <div class="wrapper forumSearchResultAccount" style="gap: 12px;">
+                    <a class="wrapper forumSearchResultAccount" style="gap: 12px;" href="{% url 'profile_view' result.id %}">
                         <img class="forumSearchResultAccountProfilePicture" src="{{media_url}}{{result.profile.profile_picture}}" alt="">
                         <p class="text">{{ result.username }}</p>
-                    </div>
+                    </a>
                 {% endif %}
             {% endfor %}
         </div>
