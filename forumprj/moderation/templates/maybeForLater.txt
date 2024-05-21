@@ -1,0 +1,3 @@
+<img src="{{ media_url }}{{ report.content.user.profile.profile_picture }}" alt="">
+
+<img src="{{ media_url }}{{ report.user.profile.profile_picture }}" alt="">
