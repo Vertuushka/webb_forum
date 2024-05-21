@@ -119,10 +119,7 @@
                                     {% if request.user.is_authenticated %}
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                     {% endif %}
-                                    {% if msg.thread.node.type_question %}
-                                        <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
-                                        <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
-    
+                                    {% if msg.thread.node.type_question %}    
                                         {% if msg.is_solution %}
                                             {% if msg.user == request.user or perms.forum.change_message %}
                                                 <a class="forumMessageControllBtn" href="{%  url 'mark_solution' msg.id %}">This post is marked as solution</a>
@@ -195,8 +192,6 @@
                                     <div class="wrapper forumMessageControllWrapper">
                                         <a class="forumMessageControllBtn" href="{% url 'add_msg_bookmark' msg.id %}">Bookmark</a>
                                         {% if msg.thread.node.type_question %}
-                                        <p class="forumMessageControllBtn">Upvotes: {{ msg.upvotes }}</p>
-                                        <p class="forumMessageControllBtn">Downvotes: {{ msg.downvotes }}</p>
                                             {% if msg.is_solution %}
                                                 {% if msg.user == request.user or perms.forum.change_message %}
                                                     <a class="forumMessageControllBtn" href="{%  url 'mark_solution' msg.id %}">This post is marked as solution</a>
