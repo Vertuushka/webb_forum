@@ -1,91 +1,87 @@
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
 {% endblock %}
 {% block title %}
-<title>Notification</title>
-{% endblock %}
-{% block style %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
+    <title>Notification</title>
 {% endblock %}
 {% block header %}
-<header class="wrapper">
-    <h2 class="title">Notifications</h2>
-</header>
+    <header class="wrapper">
+        <h2 class="title">Notifications</h2>
+    </header>
 {% endblock %}
 {% block content %}
 
     {% if notifications %}
-    <div class="container">
-        <div class="container card" >
+        <div class="container card">
             <div class="cardHeader wrapper">
                 <p class="cardTitle">Your notifications:</p>
             </div> 
-        {% for notif in notifications %}
-            <div class="cardLine"></div>
-            <div class="cardSectionMultiple wrapper">
-                <a href="" class="wrapper cardSectionItem">
-                    <div class="cardSectionInnerItem container">
-                        {% if notif.notification_type == 0 %}
-                            <p class="meta">Warning</p>
-                            {% if not notif.warning.forum_msg.is_start %}
-                                <p class="text">You were given a warning as a message in the topic "{{ notif.warning.forum_msg.thread.title }}". Reason: {{ notif.warning.details }}</p>
-                            {% else %}
-                                <p class="text">You were given a warning as a message in the topic <a href="">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
-                            {% endif %}
-                        {% endif %}
 
-                        {% if notif.notification_type == 2 %}
-                            <p class="meta">Report</p>
-                            <p class="text">Your report was 
-                                {% if notif.report.is_resolved %}
-                                    resolved
+            {% for notif in notifications %}
+                <div class="cardLine"></div>
+                <div class="cardSectionMultiple wrapper">
+                    <a href="" class="wrapper cardSectionItem">
+                        <div class="cardSectionInnerItem container">
+                            {% if notif.notification_type == 0 %}
+                                <p class="meta">Warning</p>
+                                {% if not notif.warning.forum_msg.is_start %}
+                                    <p class="text">You were given a warning as a message in the topic "{{ notif.warning.forum_msg.thread.title }}". Reason: {{ notif.warning.details }}</p>
                                 {% else %}
-                                    rejected
+                                    <p class="text">You were given a warning as a message in the topic <a href="">{{ notif.warning.forum_msg.thread.title }}</a>. Reason: {{ notif.warning.details }}</p>
                                 {% endif %}
-                                with following alert: {{ notif.report.notification }}</p>
-                        {% endif %}
+                            {% endif %}
 
-                        {% if notif.notification_type == 3 %}
-                            <p class="meta">Message</p>
-                            <p class="text">Your message in "{{ notif.message.thread.title }}" was deleted. Reason: {{ notif.notification }}</p>
-                        {% endif %}
+                            {% if notif.notification_type == 2 %}
+                                <p class="meta">Report</p>
+                                <p class="text">Your report was 
+                                    {% if notif.report.is_resolved %}
+                                        resolved
+                                    {% else %}
+                                        rejected
+                                    {% endif %}
+                                    with following alert: {{ notif.report.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 4 %}
-                            <p class="meta">Message</p>
-                            <p class="text">Your message in "{{ notif.message.thread.title }}" was edited. Reason: {{ notif.notification }}</p>
-                        {% endif %}
+                            {% if notif.notification_type == 3 %}
+                                <p class="meta">Message</p>
+                                <p class="text">Your message in "{{ notif.message.thread.title }}" was deleted. Reason: {{ notif.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 5 %}
-                            <p class="meta">Profile</p>
-                            <p class="text">Your profile information was edited. Reason: {{ notif.notification }}</p>
-                        {% endif %}
+                            {% if notif.notification_type == 4 %}
+                                <p class="meta">Message</p>
+                                <p class="text">Your message in "{{ notif.message.thread.title }}" was edited. Reason: {{ notif.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 6 or notif.notification_type == 7 %}
-                            <p class="meta">Thread</p>
-                            <p class="text">You thread in "{{ notif.thread.node.name }}" was deleted. Reason: {{ notif.notification }}</p>
-                        {% endif %}     
+                            {% if notif.notification_type == 5 %}
+                                <p class="meta">Profile</p>
+                                <p class="text">Your profile information was edited. Reason: {{ notif.notification }}</p>
+                            {% endif %}
 
-                        {% if notif.notification_type == 7 %}
-                            <p class="meta">Thread</p>
-                            <p class="text">You thread in "{{ notif.thread.node.name }}"" was changed. Reason: {{ notif.notification }}</p>
-                        {% endif %} 
-                    </div>
-                </a>
-                <a class="cardSectionAutherItem container" href="">
-                    <div class="cardSectionInnerItem container">
-                        <p class="meta">Time</p>
-                        <p class="text">{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
-                    </div>
-                 </a>
-            </div>
+                            {% if notif.notification_type == 6 or notif.notification_type == 7 %}
+                                <p class="meta">Thread</p>
+                                <p class="text">You thread in "{{ notif.thread.node.name }}" was deleted. Reason: {{ notif.notification }}</p>
+                            {% endif %}     
+
+                            {% if notif.notification_type == 7 %}
+                                <p class="meta">Thread</p>
+                                <p class="text">You thread in "{{ notif.thread.node.name }}"" was changed. Reason: {{ notif.notification }}</p>
+                            {% endif %} 
+                        </div>
+                    </a>
+                    <a class="cardSectionAutherItem container" href="">
+                        <div class="cardSectionInnerItem container">
+                            <p class="meta">Time</p>
+                            <p class="text">{{ notif.time_created|date:"d/m/Y - H:i" }}</p>
+                        </div>
+                    </a>
+                </div>
             {% endfor %}
         </div>
-    </div>
-    
     {% else %}
+
         <div class="container NoContentBanner">
             <h2 class="title">No notifications</h2>
             <p class="text">Notifications you recive will show up here.</p>
