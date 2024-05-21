@@ -3,6 +3,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'messages.css' %}">
     <link rel="stylesheet" href="{% static 'profile.css' %}">
+    <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
 {% endblock %}
 {% block title %}
     <title>Messages</title>
@@ -32,46 +33,52 @@
                 </a>
             {% endfor %}
         </div>
-        {% if current_dialog %}
-        <div class="container messageView">
-            <div class="container messageLoop">
-                {% if messages %}
-                    {% for msg in messages %}
 
-                        {% if msg.sender == request.user %}
-                            <div class="container messageContainer senderMessageContainer">
-                                <div class="wrapper messageMetaContainer senderMessageMetaContainer">
-                                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+        {% if current_dialog %}
+            <div class="container messageView">
+                <div class="container messageLoop">
+                    {% if messages %}
+                        {% for msg in messages %}
+
+                            {% if msg.sender == request.user %}
+                                <div class="container messageContainer senderMessageContainer">
+                                    <div class="wrapper messageMetaContainer senderMessageMetaContainer">
+                                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                    </div>
+                                    <p class="message senderMessage">{{ msg.content }}</p>
                                 </div>
-                                <p class="message senderMessage">{{ msg.content }}</p>
-                            </div>
-                        {% else %}
-                            <div class="container messageContainer receiverMessageContainer">
-                                <div class="wrapper messageMetaContainer">
-                                    <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                            {% else %}
+                                <div class="container messageContainer receiverMessageContainer">
+                                    <div class="wrapper messageMetaContainer">
+                                        <p class="meta">{{ msg.time_created|date:"d/m/Y - H:i" }}</p>
+                                    </div>
+                                    <p class="message receiverMessage">{{ msg.content }}</p>
                                 </div>
-                                <p class="message receiverMessage">{{ msg.content }}</p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>Select one of your dialogs to view messages</p>
+                    {% endif %}
+                </div>
+
+                {% if request.user == dialog.user_1 %}
+                    <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_2.id %}" method="post" id="message_form">
                 {% else %}
-                    <p>Select one of your dialogs to view messages</p>
+                    <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_1.id %}" method="post" id="message_form">
                 {% endif %}
+                {% csrf_token %}
+                <input placeholder="Write a message" class="chatInput" type="text" name="content" id="msg">
+                <button class="wrapper chatBtn" type="submit">
+                    <img src="{% static 'assets/icon_send.svg' %}" alt="">
+                </button>
+            </form>
             </div>
 
-            {% if request.user == dialog.user_1 %}
-                <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_2.id %}" method="post" id="message_form">
             {% else %}
-                <form class="wrapper chatForm" action="{% url 'send_private_message' current_dialog.user_1.id %}" method="post" id="message_form">
-            {% endif %}
-            {% csrf_token %}
-            <input placeholder="Write a message" class="chatInput" type="text" name="content" id="msg">
-            <button class="wrapper chatBtn" type="submit">
-                <img src="{% static 'assets/icon_send.svg' %}" alt="">
-            </button>
-        </form>
-
-        </div>
+            <div class="container NoContentBanner">
+                <h2 class="title">No active dialogs</h2>
+                <p class="text">Select one of your dialogs to view messages</p>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

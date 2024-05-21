@@ -226,3 +226,25 @@
 .headerSearchInput:focus {
     outline: none;
 }
+
+.forumSearchFilterBtn {
+    align-items: center;
+    gap: 8px;
+}
+
+.forumSearchFilterText {
+    color: var(--text);
+    font-size: 12px;
+}
+
+.forumSearchFilterContainer {
+    padding: 8px 12px;
+    border-radius: 32px;
+    background-color: var(--primary);
+    gap: 12px;
+}
+
+.forumSearchFilterLine {
+    height: 100%;
+    border-left: 1px solid var(--border_dark);
+}

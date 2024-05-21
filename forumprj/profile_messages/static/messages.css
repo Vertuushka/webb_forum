@@ -10,6 +10,8 @@
 }
 
 .mainMessageView {
+    display: grid;
+    grid-template-columns: minmax(256px, 300px) minmax(256px, 1fr);
     gap: 12px;
 }
 
