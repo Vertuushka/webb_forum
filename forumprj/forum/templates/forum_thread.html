@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'thread.css' %}">
     <link rel="stylesheet" href="{% static 'popup.css' %}">
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
 {% block header %}
     <header class="wrapper">
@@ -27,11 +28,12 @@
     <div class="container card">
         <div class="wrapper forumCardHeader space">
             {% if thread.is_visible %}
-                <h2 class="forumCardTitle">{{ thread.title }}</h2>
+                <h2 class="forumCardTitle thread_title" id="{{thread.id}}">{{ thread.title }}</h2>
             {% endif %}
     
             {% if not thread.is_visible and perms.view_thread %}
-                <h2 class="forumCardTitle">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
+                <h2 class="forumCardTitle thread_title" id="{{thread.id}}">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
+                <input type="hidden" name="thread_title" value="{{thread.title}}" id="original_title">
             {% endif %}
 
             <div class="wrapper modToolsContainer">
@@ -56,8 +58,8 @@
                                 <img class="modToolsBtnIcon" src="{% static 'assets/icon_pin.svg' %}" alt="">
                             </a>
                         {% endif %}
-            
-                        <button class="modToolsBtn">
+                        
+                        <button class="modToolsBtn delete_thread_btn" id="{{ thread.id }}">
                             <img class="modToolsBtnIcon" src="{% static 'assets/icon_bin.svg' %}" alt="">
                         </button>
         
@@ -70,14 +72,14 @@
                             <input type="submit" value="Delete">
                         </form>
                     {% else %}
-                        <a class="modToolsBtn" href="{% url 'toggle_thread_visibility' thread.id %}">
+                        <button class="modToolsBtn recycle" id="{{ thread.id }}">
                             <img class="modToolsBtnIcon" src="{% static 'assets/icon_recycle.svg' %}" alt="">
-                        </a>
+                        </button>
                     {% endif %}
                 {% endif %}
             
                 {% if perms.forum.change_thread %}
-                    <button class="modToolsBtn">
+                    <button class="modToolsBtn editThreadBtn">
                         <img class="modToolsBtnIcon" src="{% static 'assets/icon_edit.svg' %}" alt="">
                     </button>
         
@@ -237,7 +239,9 @@
             <form class="wrapper forumMessageWrapper" action="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" method="post">
                 {% csrf_token %}
                 <input class="forumMessageInput"  name="msg" id="" placeholder="Write a message"></textarea>
-                <input class="forumMessageSubmitBtn" type="submit" value="Send">
+                <button class="wrapper chatBtn" type="submit">
+                    <img src="{% static 'assets/icon_send.svg' %}" alt="">
+                </button>
             </form>
         {% endif %}
     </div>
@@ -309,5 +313,21 @@
         <input type="submit" value="Report">
     </form>
     <button id="closeFormFrame">Cancel</button> -->
-    
+<!--     
+    <form action="{% url 'toggle_thread_visibility' thread.id %}" method="post" id="thread_del_frame">
+        {% csrf_token %}
+        <input type="text" name="reason" id="">
+        <input type="checkbox" name="is_notified" id="">
+        <input type="text" name="notification" id="">
+        <input type="submit" value="delete">
+    </form> -->
+<!-- 
+    <form action="" method="post">
+        <input type="text" name="title" id="title">
+        <label for="is_notified">Notify user:</label>
+        <input type="checkbox" name="is_notified" id="is_notified">
+        <input type="text" name="notification" id="notification">
+        <input type="submit" value="Change">
+    </form> -->
+
 {% endblock %}

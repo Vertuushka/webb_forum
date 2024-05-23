@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from base import base_strings
 from . models import *
 from django.db.models import Q, Max
 from django.contrib.auth.decorators import permission_required, login_required
@@ -14,7 +15,6 @@ def send_private_message(request, id):
             return redirect('profile_view', id)
         try:
             receiver = User.objects.get(id=id)
-
         except:
             return redirect('profile_view', id)
         content = request.POST.get('content')
@@ -56,7 +56,7 @@ def messages_dialog(request, id):
         try:
             account = User.objects.get(id=id)
         except:
-            return render (request, 'error.html')
+            return render (request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
         dialogs = Dialog.objects.filter(
             Q(user_1=user) |
             Q(user_2=user)

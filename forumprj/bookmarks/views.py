@@ -4,6 +4,7 @@ from forum.models import Message
 from django.utils.text import slugify
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from base import base_strings
 # Create your views here.
 @login_required()
 def bookmarks_main(request):
@@ -23,7 +24,7 @@ def add_msg_bookmark(request, id):
         if msg.thread.node.type_private and (request.user != msg.thread.user or not request.user.has_perm('forum.view_thread')):
             return redirect('section', msg.thread.node.slug)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str': base_strings.ERRORS['msg_not_found']})
     try:
         exists = Bookmark.objects.get(user=request.user, forum_msg=msg)
         return redirect('msg_redirect', msg.thread.node.slug, msg.thread.slug, msg.thread.id, msg.id)

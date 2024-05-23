@@ -16,8 +16,7 @@ class Node(models.Model):
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -38,8 +37,7 @@ class Thread(models.Model):
     time_changed = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):

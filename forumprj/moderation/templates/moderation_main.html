@@ -35,7 +35,7 @@
                         </a>
         
                         {% if report.assigned_to %}
-                            <a class="container cardSectionAutherItem" href="">
+                            <a class="container cardSectionAutherItem" href="{% url 'profile_view' report.assigned_to.id %}">
                                 <p class="meta">Assigned to</p>
                                 <div class="wrapper themeCardProfileCon">
                                     <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.assigned_to.profile.profile_picture }}" alt="">
@@ -66,7 +66,7 @@
                     <div class="cardLine"></div>
                     <div class="wrapper cardSectionSquad">
     
-                        <a class="container cardSectionAutherItem" href="">
+                        <a class="container cardSectionAutherItem" href="{% url 'profile_view' report.content.user.id %}">
                             <p class="meta">Author</p>
                             <div class="wrapper themeCardProfileCon">
                                 <!-- user content -->
@@ -95,7 +95,7 @@
                             </div>
                         </a>
     
-                        <a class="container cardSectionAutherItem" href="">
+                        <a class="container cardSectionAutherItem" href="{% url 'profile_view' report.closed_by.id %}">
                             {% if report.is_resolved %}
                                 <p class="meta">Resolved by</p>
                             {% else %}

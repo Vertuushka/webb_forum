@@ -9,7 +9,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=True, blank=True, default="Member")
     info = models.CharField(max_length=200, null=True, blank=True)
-    profile_picture = models.CharField(max_length=225, null=True, blank=True)
+    profile_picture = models.CharField(max_length=225, null=True, blank=True, default="default.svg")
     warnings = models.SmallIntegerField(default=0)
     active_notifications = models.IntegerField(default=0)
     is_banned = models.BooleanField(default=False)
@@ -19,6 +19,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    def save(self, *args, **kwargs):
+        if not self.profile_picture or self.profile_picture == "":
+            self.profile_picture = "default.svg"
+        super(Profile, self).save(*args, **kwargs)
         
 class Warnings_history(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
