@@ -1,0 +1,30 @@
+.themeCardWrapper {
+    margin: 12px 12px 12px 0px;
+    border-radius: 12px;
+}
+
+.themeCardInput {
+    margin: 12px 12px 12px 0px;
+}
+
+.themeCardColorWrapper {
+    flex: 1;
+    padding: 8px;
+}
+
+.themeCardContainer {
+    flex: 1;
+    gap: 4px;
+}
+
+.themeCardColor {
+    flex: 1;
+}
+
+.themeCardColor:first-child {
+    border-radius: 8px 0px 0px 8px;
+}
+
+.themeCardColor:last-child {
+    border-radius: 0px 8px 8px 0px;
+}

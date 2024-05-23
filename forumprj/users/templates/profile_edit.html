@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'profile.css' %}">
     <link rel="stylesheet" href="{% static 'popup.css' %}">
+    <link rel="stylesheet" href="{% static 'themeCards.css' %}">
 {% endblock %}
 {% block title %}
     <title>Edit - {{ account.username }}</title>
@@ -91,7 +92,7 @@
         {% if account == request.user %}
             <div class="card container">
                 <div class="wrapper cardHeader">
-                    <h2 class="cardTitle">Preferences</h2>
+                    <h2 class="cardTitle">Privacy & Preferences</h2>
                 </div>
                 <div class="cardLine"></div>
                 <div class="cardSection container">
@@ -129,24 +130,76 @@
                         {% endif %}
                     </select>
                 </div>
+            </div>
+
+            <div class="container card">
+                <div class="cardHeader">
+                    <h2 class="cardTitle">Theme</h2>
+                </div>
+
+                <div class="cardLine"></div>
                 <div class="cardSection container">
                     <p class="meta">Color theme</p>
-                    <select name="color_theme" id="color_theme" class="popupInput">
-                        {% if account.preference.color_theme == 0 %}
-                            <option value="0" selected>Color theme 0</option>
-                        {% else %}
-                            <option value="0">Color theme 0</option>
-                        {% endif %}
-                    </select>
+                    {% if account.preference.color_theme == 0 %}
+                        <label class="wrapper themeCardWrapper" for="">
+                            <input class="themeCardInput" name="color_theme" type="radio" value="0">
+                            <div class="container themeCardContainer">
+                                <p class="meta">Theme</p>
+                                <p class="text">Default</p>
+                            </div>
+                            <div class="wrapper themeCardColorWrapper">
+                                <div class="themeCardColor" style="background-color: #1E1F22;"></div>
+                                <div class="themeCardColor" style="background-color: #2B2D31;"></div>
+                                <div class="themeCardColor" style="background-color: #B4FF1F;"></div>
+                            </div>
+                        </label>
+                        <label class="wrapper themeCardWrapper" for="">
+                            <input class="themeCardInput" name="color_theme" type="radio" value="1">
+                            <div class="container themeCardContainer">
+                                <p class="meta">Theme</p>
+                                <p class="text">Industrial</p>
+                            </div>
+                            <div class="wrapper themeCardColorWrapper">
+                                <div class="themeCardColor" style="background-color: #141319;"></div>
+                                <div class="themeCardColor" style="background-color: #27272F;"></div>
+                                <div class="themeCardColor" style="background-color: #4B77FB;"></div>
+                            </div>
+                        </label>
+                    {% else %}
+                    <label class="wrapper themeCardWrapper" for="">
+                        <input class="themeCardInput" name="color_theme" type="radio" value="0">
+                        <div class="container themeCardContainer">
+                            <p class="meta">Theme</p>
+                            <p class="text">Default</p>
+                        </div>
+                        <div class="wrapper themeCardColorWrapper">
+                            <div class="themeCardColor" style="background-color: #1E1F22;"></div>
+                            <div class="themeCardColor" style="background-color: #2B2D31;"></div>
+                            <div class="themeCardColor" style="background-color: #B4FF1F;"></div>
+                        </div>
+                    </label>
+                    <label class="wrapper themeCardWrapper" for="">
+                        <input class="themeCardInput" name="color_theme" type="radio" value="1">
+                        <div class="container themeCardContainer">
+                            <p class="meta">Theme</p>
+                            <p class="text">Industrial</p>
+                        </div>
+                        <div class="wrapper themeCardColorWrapper">
+                            <div class="themeCardColor" style="background-color: #141319;"></div>
+                            <div class="themeCardColor" style="background-color: #27272F;"></div>
+                            <div class="themeCardColor" style="background-color: #4B77FB;"></div>
+                        </div>
+                    </label>
+                    {% endif %}
                 </div>
             </div>
+            </div>
         {% endif %}
-    </div>
 </div>
 </form>
 <script>
     document.getElementById('fileInput').addEventListener('change', function() {
-        const fileName = this.files[0] ? this.files[0].name : 'Файл не выбран';
+        const fileName = this.files[0] ? this.files[0].name : 'No file has been selected';
     document.getElementById('fileName').textContent = fileName;
     });
 </script>

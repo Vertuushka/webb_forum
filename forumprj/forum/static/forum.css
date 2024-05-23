@@ -214,6 +214,7 @@
 
 .headerSearch {
     flex-grow: 1;
+    align-items: center;
     gap: 12px;
 }
 
