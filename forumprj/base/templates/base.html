@@ -93,7 +93,7 @@
             <div class="navLine"></div>
 
             <div class="container navBtnContainer" id="navConOptions">
-                <a class="wrapper navBtn {% if current_tab == 'settings' %}focus{% endif %}" href="{% url 'profile_settings' request.user.id %}">
+                <a class="wrapper navBtn" href="{% url 'profile_edit' request.user.id %}">
                     <img class="navBtnIcon" src="{% static 'assets/icon_settings.svg' %}" alt="">
                     <span class="text">Settings</span>
                 </a>

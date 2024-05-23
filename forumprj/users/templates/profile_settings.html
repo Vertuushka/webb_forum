@@ -11,49 +11,5 @@
     <h2 class="title">Profile</h2>
 </header>
 
-<div class="container">
 
-    <div class="wrapper profileContainer">
-        <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
-        <div class="container">
-            <h2 class="title">
-                {% if account.profile.is_banned and perms.users.view_profile %}
-                    <del>{{ account.username }} </del>
-                {% else %}
-                    {{ account.username }} 
-                {% endif %}
-                {% if perms.users.view_profile %}
-                ({{ account.profile.warnings }} warnings)
-                {% endif %}
-            </h2>
-            <p class="meta">{{ account.last_name }}</p>
-        </div>
-    </div>
-    <div class="wrapper profileInfoContainer">
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Username:</p>
-            <p class="text">{{ account.username }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Forum title:</p>
-            <p class="text">{{ account.last_name }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Joined:</p>
-            <p class="text">{{ account.date_joined|date:"d/m/Y" }}</p>
-        </div>
-
-        <div class="container profileInfoContainerItem profileInfoContainerEmail">
-            <p class="meta">e-mail:</p>
-            <p class="text">{{ account.email }}</p>
-        </div>
-    </div>
-    <form action="{% url 'profile_settings' request.user.id %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="save">
-    </form>
-</div>
 {% endblock %}

@@ -31,6 +31,6 @@ def menuProcessor(request):
         shared_data["current_tab"] = 'notifications'
     if request.path.startswith('/bookmarks/'):
         shared_data["current_tab"] = 'bookmarks'
-    if request.path.startswith('/settings/'):
-        shared_data["current_tab"] = 'settings'
+    # if request.path.startswith('/settings/'):
+    #     shared_data["current_tab"] = 'settings'
     return shared_data

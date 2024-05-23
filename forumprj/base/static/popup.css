@@ -69,3 +69,38 @@
     color: var(--text);
     background-color: var(--isClickable);
 }
+
+.fileInput{
+    display: none;
+}
+
+.formImage {
+    width: 30px;
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.fileInputLabel {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text);
+    background-color: var(--isClickable);
+}
+
+.fileInputLabel:hover{
+    cursor: pointer;
+    background-color: var(--focus);
+}
+
+.centerY{
+    align-items: center;
+}
+
+.selectInput {
+    border-radius: 4px;
+    padding: 8px 12px;
+    
+}

@@ -26,13 +26,13 @@ $(document).ready(function() {
 
                     <div class="cardLine"></div>
                     <div class="wrapper cardSection">
-                        <input type="checkbox" name="is_deleted" id="">
+                        <input type="checkbox" name="is_deleted" id="is_deleted">
                         <label class="meta" for="">Delete message on warn</label>
                     </div>
 
                     <div class="container cardSection">
                         <label class="meta" for="deleting_reason">Reason:</label>
-                        <input class="popupInput" type="text" name="deleting_reason" id="">
+                        <input class="popupInput" type="text" name="deleting_reason" id="deleting_reason" readonly>
                     </div>
 
                     <div class="wrapper popupBtnWrapper">

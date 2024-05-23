@@ -20,7 +20,7 @@
                 <a class="headerBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
             {% endif %}
             
-            {% if perms.user.change_user and not request.user == account %}
+            {% if perms.user.change_user and not request.user == account and not account.is_staff %}
                 <div class="headerLine"></div>
                 {% if account.profile.is_banned %}
                 <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
@@ -36,7 +36,7 @@
                     <a class="headerBtn headerBtnFocus" href="{% url 'profile_warnings' account.id %}">Warnings</a>
                 {% endif %}
 
-                {% if perms.user.change_user and not request.user == account %}
+                {% if perms.user.change_user and not request.user == account and not account.is_staff %}
                     <div class="headerLine"></div>
                     {% if account.profile.is_banned %}
                         <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
@@ -51,7 +51,7 @@
                     <a class="headerBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
                 {% endif %}
 
-                {% if perms.user.change_user and not request.user == account %}
+                {% if perms.user.change_user and not request.user == account and not account.is_staff %}
                     <div class="headerLine"></div>
                     {% if account.profile.is_banned %}
                         <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>

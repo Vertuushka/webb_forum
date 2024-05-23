@@ -37,32 +37,40 @@ def profile_edit(request, id):
     if not request.user.has_perm('users.change_profile') and eUser != request.user:
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     if request.method == "POST":
-        form = UpdateUserInfo(request.POST, instance=eUser)
-        if form.is_valid():
-            image_file = request.FILES.get('image')
-            if request.POST.get('remove_picture') == "on":
-                eUser.profile.profile_picture = None
-                eUser.profile.save()
-                form.save()
-                return redirect("profile_view", eUser.id)
-            if image_file:
-                # print(eUser)
-                file_extension = os.path.splitext(image_file.name)[1]
-                new_filename = f'{eUser.id}{file_extension}' 
-                image_file.name = new_filename
-                file_path = os.path.join(settings.MEDIA_ROOT, new_filename)
-                eUser.profile.profile_picture = new_filename
-                eUser.profile.save()
-                with open(file_path, 'wb+') as destination:
-                    #  chunk() instead of using read() ensures that large files don’t overwhelm your system’s memory.
-                    for chunk in image_file.chunks():
-                        destination.write(chunk)
-            form.save()
+        image_file = request.FILES.get('image')
+        print(image_file)
+        if image_file:
+            # print(eUser)
+            file_extension = os.path.splitext(image_file.name)[1]
+            new_filename = f'{eUser.id}{file_extension}' 
+            image_file.name = new_filename
+            file_path = os.path.join(settings.MEDIA_ROOT, new_filename)
+            eUser.profile.profile_picture = new_filename
+            eUser.profile.save()
+            with open(file_path, 'wb+') as destination:
+                #  chunk() instead of using read() ensures that large files don’t overwhelm your system’s memory.
+                for chunk in image_file.chunks():
+                    destination.write(chunk)
+        if request.POST.get('remove_picture') == "on":
+            print('removepicture')
+            eUser.profile.profile_picture = None
+            eUser.profile.save()
+            title = request.POST.get('title')
+            email = request.POST.get('email')
+            eUser.profile.title = title
+            eUser.email = email
+            eUser.profile.save()
+            eUser.save()
+        if eUser == request.user:
+            account_visibility = request.POST.get('account_visibility')
+            private_messages = request.POST.get('private_messages')
+            color_theme = request.POST.get('color_theme')
+            eUser.preference.account_visibility = account_visibility
+            eUser.preference.private_messages = private_messages
+            eUser.preference.color_theme = color_theme  
+            eUser.preference.save()
             return redirect("profile_view", eUser.id)
-    else:
-        form = UpdateUserInfo(instance=eUser)
     dictionary = {
-        "form": form,
         "account": eUser
     }
     return render(request, "profile_edit.html", dictionary)

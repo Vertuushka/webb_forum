@@ -1,45 +1,154 @@
 {% extends 'base.html' %}
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'form.css' %}">
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'profile.css' %}">
+    <link rel="stylesheet" href="{% static 'popup.css' %}">
 {% endblock %}
 {% block title %}
     <title>Edit - {{ account.username }}</title>
 {% endblock %}
 {% block content %}
-<header class="container">
+
+<header class="wrapper">
     <h2 class="title">Edit profile</h2>
 
-    <div class="wrapper miniNav">
-        <a class="miniNavBtn" href="">Content</a>
-        <a class="miniNavBtn" href="">Ban history</a>
-        <a class="miniNavBtn" href="">Ban</a>
-        <a class="miniNavBtn" href="">Start chat</a>
+    <div class="wrapper headerNav">
+        <div class="headerLine"></div>
+
+        <a class="headerBtn" href="{% url 'profile_view' account.id %}">Profile</a>
+        <a class="headerBtn" href="{% url 'profile_content' account.id %}">Content</a>
+        <a class="headerBtn" href="{% url 'profile_warnings' account.id %}">Warnings</a>
+        {% if perms.user.change_profile and not account.is_staff %}
+            <div class="headerLine"></div>
+            {% if account.profile.is_banned %}
+                <a class="headerBtn banBtn" href="{% url 'profile_toggle_ban' account.id %}">Unban</a>
+            {% else %}
+                <p class="headerBtn banBtn" id="{{ account.id }}">Ban</p>
+            {% endif %}
+        {% endif %}
     </div>
 </header>
-
- <!--enctype for sending images to server -->
-<form class="container canvas" action="{% url 'profile_edit' account.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="wrapper profileInfoContainer">
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Forum title:</p>
-            <p class="text">{{ form.last_name }}</p>
+<form action="{% url 'profile_edit' account.id %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="mainContentWrapper">
+    <div class="container profileView">
+        {% if perms.users.view_profile %}
+            {% if account.profile.is_banned %}
+                <div class="container dangerBanner">
+                    <h2 class="dangerBannerTitle">BANNED</h2>
+                    <p class="dangerBannerText">This user has been banned by {{ account.profile.banned_by }} - {{ account.profile.ban_reason }}</p>
+                </div>
+            {% endif %}
+            {% if account.profile.warnings %}
+                <div class="container warningBanner">
+                    <h2 class="warningBannerTitle">{{ account.profile.warnings }} WARNINGS</h2>
+                    <p class="warningBannerText">This user has recived {{ account.profile.warnings }} warnings</p>
+                </div>
+            {% endif %}
+        {% endif %}
+        <div class="wrapper profileContainer">
+            <img class="avatar" src="{{ media_url }}{{ account.profile.profile_picture }}" alt="">
+            <div class="container">
+                <h2 class="title" id="username">{{ account.username }}</h2>
+                <p class="meta">{{ account.profile.title }}</p>
+            </div>
         </div>
+        {% if request.user.id == account.id or perms.users.change_profile %}
+        <input type="submit" class="largeBtn" value="Save">
+        {% endif %}
 
-        <div class="container profileInfoContainerItem">
-            <p class="meta">e-mail:</p>
-            <p class="text">{{ form.email }}</p>
+        <div class="container card">
+            <div class="wrapper cardHeader">
+                <h2 class="cardTitle">Information</h2>
+            </div>
+            <div class="cardLine"></div>
+
+            <div class="container cardSection">
+                <p class="meta">Title:</p>
+                <input type="text" name="title" id="" class="popupInput" value="{{ account.profile.title }}">
+            </div>
+            <div class="container cardSection">
+                <p class="meta">E-mail:</p>
+                <input type="text" name="email" id="" class="popupInput" value="{{ account.email }}">
+            </div>
+            <div class="conatiner cardSection">
+                <p class="meta">Profile picture:</p>
+                <div class="wrapper centerY" style="margin-top: 8px; gap: 8px;">
+                    <img src="{{media_url}}{{account.profile.profile_picture}}" alt="" class="formImage">
+                    <input type="file" name="image" id="fileInput" class="fileInput">
+                    <label for="fileInput" class="fileInputLabel">New picture</label>
+                    <p id="fileName" class="text"></p>
+                </div>
+            </div>
+            <div class="cardSection">
+                <div class="wrapper" style="gap: 8px;">
+                    <input type="checkbox" name="remove_picture" id="remove_picture">
+                    <label for="remove_picture" class="text">Remove profile picture</label>
+                </div>
+            </div>
         </div>
-
-        <div class="container profileInfoContainerItem">
-            <p class="meta">Profile picture</p>
-            <input type="file" name="image">
-            <label for=""><input type="checkbox" name="remove_picture" id="">Remove profile picture</label>
+        <div class="cardline"></div>
+        <div class="card container">
+            {% if account == request.user %}
+                <div class="wrapper cardHeader">
+                    <h2 class="cardTitle">Preferences</h2>
+                </div>
+                <div class="cardLine"></div>
+                <div class="cardSection container">
+                     <p class="meta">Profile visibility</p>
+                   <select name="account_visibility" id="account_visibility" class="popupInput">
+                        {% if account.preference.account_visibility == 0 %}
+                            <option value="0" selected>Everyone can see profile</option>
+                        {% else %}
+                            <option value="0">Everyone can see profile</option>
+                        {% endif %}
+                        {% if account.preference.account_visibility == 1 %}
+                            <option value="1" selected>Only forum members can see profile</option>
+                        {% else %}
+                            <option value="1">Only forum members can see profile</option>
+                        {% endif %}
+                        {% if account.preference.account_visibility == 2 %}
+                            <option value="2" selected>Nobody can see profile (beside administrators/moderators)</option>
+                        {% else %}
+                            <option value="2">Nobody can see profile (beside administrators/moderators)</option>
+                        {% endif %}
+                   </select>
+                </div>
+                <div class="cardSection container">
+                    <p class="meta">Private messages</p>
+                    <select name="private_messages" id="private_messages" class="popupInput">
+                        {% if account.preference.private_messages == 0 %}
+                            <option value="0" selected>Everyone can send private messages</option>
+                        {% else %}
+                            <option value="0">Everyone can send private messages</option>
+                        {% endif %}
+                        {% if account.preference.private_messages == 1 %}
+                            <option value="1" selected>Only administrators can send private messages</option>
+                        {% else %}
+                            <option value="1">Only administrators can send private messages</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="cardSection container">
+                    <p class="meta">Color theme</p>
+                    <select name="color_theme" id="color_theme" class="popupInput">
+                        {% if account.preference.color_theme == 0 %}
+                            <option value="0" selected>Color theme 0</option>
+                        {% else %}
+                            <option value="0">Color theme 0</option>
+                        {% endif %}
+                    </select>
+                </div>
+            {% endif %}
         </div>
     </div>
-
-    <button class="btn actionBtn" type="submit">Save</button>
+</div>
 </form>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : 'Файл не выбран';
+    document.getElementById('fileName').textContent = fileName;
+    });
+</script>
 {% endblock %}
