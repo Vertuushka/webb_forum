@@ -88,9 +88,8 @@
                 </div>
             </div>
         </div>
-        <div class="cardline"></div>
-        <div class="card container">
-            {% if account == request.user %}
+        {% if account == request.user %}
+            <div class="card container">
                 <div class="wrapper cardHeader">
                     <h2 class="cardTitle">Preferences</h2>
                 </div>
@@ -140,8 +139,8 @@
                         {% endif %}
                     </select>
                 </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 </form>
