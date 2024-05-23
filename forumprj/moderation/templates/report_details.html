@@ -86,12 +86,17 @@
                                 rejected (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
                             {% endif %}
                     </p>
-                    {% else %}
+                </div>
+                {% else %}
+                {% if report.assigned_to %}
+                <a class="text" href="{% url 'profile_view' report.assigned_to.id %}">Assigned to {{ report.assigned_to.username }}</a>
+                {% else %}
                     <p class="text">
                         Opened
                     </p>
-                    {% endif %}
-                </div>
+                {% endif %}
+                {% endif %}
+                
             </div>
             {% if report.is_closed %}
             <div class="cardLine"></div>
@@ -109,7 +114,7 @@
                 <p class="meta">Updated</p>
                 <p class="text">{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
             </div>
-            {% endif %}
+            {% endif %} 
         </div>
     </div>
 
