@@ -93,7 +93,11 @@
                     <div class="cardLine"></div>
                     <a class="wrapper forumSearchResultAccount" style="gap: 12px;" href="{% url 'profile_view' result.id %}">
                         <img class="forumSearchResultAccountProfilePicture" src="{{media_url}}{{result.profile.profile_picture}}" alt="">
-                        <p class="text">{{ result.username }}</p>
+                        {% if perms.users.view_profile and result.user.profile.is_banned %}
+                            <p class="text"><del>{{ result.user.username }}</del></p>
+                        {% else %}
+                            <p class="text">{{ result.user.username }}</p>
+                        {% endif %}
                     </a>
                 {% endif %}
             {% endfor %}

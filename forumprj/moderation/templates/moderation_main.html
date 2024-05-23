@@ -39,7 +39,11 @@
                                 <p class="meta">Assigned to</p>
                                 <div class="wrapper themeCardProfileCon">
                                     <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ report.assigned_to.profile.profile_picture }}" alt="">
-                                    <p class="text">{{ report.assigned_to.username }}</p>
+                                    {% if perms.users.view_profile and report.assigned_to.profile.is_banned %}
+                                        <p class="text"><del>{{ report.assigned_to.username }}</del></p>
+                                    {% else %}
+                                        <p class="text">{{ report.assigned_to.username }}</p>
+                                    {% endif %}
                                 </div>
                             </a>
                         {% endif %}

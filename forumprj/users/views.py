@@ -38,7 +38,6 @@ def profile_edit(request, id):
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     if request.method == "POST":
         image_file = request.FILES.get('image')
-        print(image_file)
         if image_file:
             # print(eUser)
             file_extension = os.path.splitext(image_file.name)[1]
@@ -52,7 +51,6 @@ def profile_edit(request, id):
                 for chunk in image_file.chunks():
                     destination.write(chunk)
         if request.POST.get('remove_picture') == "on":
-            print('removepicture')
             eUser.profile.profile_picture = None
             eUser.profile.save()
             title = request.POST.get('title')
