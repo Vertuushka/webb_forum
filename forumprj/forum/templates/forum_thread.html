@@ -26,11 +26,12 @@
     <div class="container card">
         <div class="wrapper forumCardHeader space">
             {% if thread.is_visible %}
-                <h2 class="forumCardTitle">{{ thread.title }}</h2>
+                <h2 class="forumCardTitle thread_title" id="{{thread.id}}">{{ thread.title }}</h2>
             {% endif %}
     
             {% if not thread.is_visible and perms.view_thread %}
-                <h2 class="forumCardTitle">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
+                <h2 class="forumCardTitle thread_title" id="{{thread.id}}">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
+                <input type="hidden" name="thread_title" value="{{thread.title}}" id="original_title">
             {% endif %}
 
             <div class="wrapper modToolsContainer">
@@ -76,7 +77,7 @@
                 {% endif %}
             
                 {% if perms.forum.change_thread %}
-                    <button class="modToolsBtn">
+                    <button class="modToolsBtn editThreadBtn">
                         <img class="modToolsBtnIcon" src="{% static 'assets/icon_edit.svg' %}" alt="">
                     </button>
         
@@ -313,11 +314,13 @@
         <input type="text" name="notification" id="">
         <input type="submit" value="delete">
     </form> -->
-
-    <div>
-        <p>You sure you want to restore this thread?</p>
-        <a href="">Yes, restore</a>
-        <button>Cancel</button>
-    </div>
+<!-- 
+    <form action="" method="post">
+        <input type="text" name="title" id="title">
+        <label for="is_notified">Notify user:</label>
+        <input type="checkbox" name="is_notified" id="is_notified">
+        <input type="text" name="notification" id="notification">
+        <input type="submit" value="Change">
+    </form> -->
 
 {% endblock %}

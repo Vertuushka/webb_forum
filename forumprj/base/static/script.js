@@ -179,6 +179,7 @@ $(document).ready(function() {
         })
     })
 
+    //thread del form
     $(".delete_thread_btn").each(function(index, button){
         let id = this.getAttribute("id");
         this.addEventListener('click', function(){
@@ -223,6 +224,44 @@ $(document).ready(function() {
         })
     })
 
+    //change thread form
+    $(".editThreadBtn").each(function(index, button){
+        let id_el = $(".thread_title");
+        let id = id_el.attr("id");
+        let is_delete = ($("#original_title").length > 0)
+        if (is_delete) {
+            console.log(true)
+            var title_name = $("#original_title").attr("id");
+        } 
+        else {
+            console.log(false)
+            var title_name = document.querySelector(".thread_title").innerHTML;
+        }
+        this.addEventListener('click', function(){
+            $("body").append(`
+            <form action="/forum/thread/${id}/change/" method="post" id="change_thread_frame">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                <input type="text" name="title" id="title" value="${title_name}">
+                <label for="is_notified">Notify user:</label>
+                <input type="checkbox" name="is_notified" id="is_notified">
+                <input type="text" name="notification" id="notification" readonly>
+                <input type="submit" value="Change">
+            </form>
+            <button id="closeFormFrame">Cancel</button>
+            `)
+            $("#closeFormFrame").click(function(){
+                $("#change_thread_frame").remove()
+                this.remove()
+            })
+            $("#is_notified").click(function(){
+                if(this.checked){
+                    $("#notification").removeAttr("readonly")
+                }
+                else{$("#notification").attr("readonly", true) }
+            })
+        })
+    })
+
     //report details form input stuff
     $("#is_notified").click(function(){
         if(this.checked){
@@ -243,7 +282,6 @@ $(document).ready(function() {
         }
     })
 
-    //thread del form
 
 });
 

@@ -307,3 +307,20 @@ def mark_solution(request, msg_id):
     message.is_solution = False if message.is_solution else True
     message.save()
     return redirect('msg_redirect', message.thread.node.slug, message.thread.slug, message.thread.id, message.id)
+
+@permission_required('forum.change_thread')
+def change_thread(request, thread_id):
+    try:
+        thread = Thread.objects.get(id=thread_id)
+    except:
+        return render(request, 'error.html')
+    if request.method == "POST":
+        new_thread_name = request.POST['title']
+        thread.title = new_thread_name
+        thread.save()
+        if request.POST['is_notified'] == "on":
+            notify_user(user=thread.user,
+                        notification_type="thread_change",
+                        reason=thread,
+                        notification=request.POST['notification'])
+    return redirect('thread', thread.node.slug, thread.slug, thread.id)

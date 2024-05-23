@@ -138,11 +138,11 @@ def notifications(request):
     request.user.profile.save()
     return render(request, 'notifications.html', context)
 
-@permission_required('users.create_warnings_history')
-def warn(request, msg_id):
-    try:
-        message = Message.objects.get(id=msg_id)
-    except:
-        return render(request, 'error.html')
-    if request.method == "POST":
-        pass
+# @permission_required('users.create_warnings_history')
+# def warn(request, msg_id):
+#     try:
+#         message = Message.objects.get(id=msg_id)
+#     except:
+#         return render(request, 'error.html')
+#     if request.method == "POST":
+#         pass
