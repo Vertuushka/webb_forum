@@ -6,6 +6,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'thread.css' %}">
+    <link rel="stylesheet" href="{% static 'popup.css' %}">
 {% endblock %}
 {% block header %}
     <header class="wrapper">
@@ -155,10 +156,13 @@
     
                                 <!-- report form  -->
                                 <!-- should not be visible until user clicks report button -->
-                                <form style="display: none;" action="{% url 'report_msg' msg.id %}" method="post">
+                                <form class="popupContainer" style="display: none;" action="{% url 'report_msg' msg.id %}" method="post">
+
                                     {% csrf_token %}
-                                    <input type="text" name="reason" id="">
-                                    <input type="submit" value="Report">
+                                    <div class="popup">
+                                        <input type="text" name="reason" id="">
+                                        <input type="submit" value="Report">
+                                    </div>
                                 </form>
                             </div>
     

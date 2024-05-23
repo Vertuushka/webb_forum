@@ -13,16 +13,34 @@ $(document).ready(function() {
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/message/${id}/warn/" method="post" id="warnForm">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <label for="warn_reason">Warning reason:</label>
-                <input type="text" name="warn_reason" id="">
-                <label for=""><input type="checkbox" name="is_deleted" id="">Delete message on warn</label>
-                <label for="deleting_reason">Reason:</label>
-                <input type="text" name="deleting_reason" id="">
-                <input type="submit" value="Warn">
+            <form class="popupContainer" action="/forum/message/${id}/warn/" method="post" id="warnForm">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Create warning</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+
+                    <div class="container cardSection">
+                        <label class="meta" for="warn_reason">Warning reason:</label>
+                        <input class="popupInput" type="text" name="warn_reason" id="">
+                    </div>
+
+                    <div class="cardLine"></div>
+                    <div class="wrapper cardSection">
+                        <input type="checkbox" name="is_deleted" id="">
+                        <label class="meta" for="">Delete message on warn</label>
+                    </div>
+
+                    <div class="container cardSection">
+                        <label class="meta" for="deleting_reason">Reason:</label>
+                        <input class="popupInput" type="text" name="deleting_reason" id="">
+                    </div>
+
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Close form</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Warn</button>
+                    </div>
+                </div>
             </form>
-            <button id="closeFormFrame">Close form</button>
             `)
 
         $("#is_deleted").click(function(){
