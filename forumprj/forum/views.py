@@ -8,6 +8,7 @@ from datetime import datetime
 from base.utils import notify_user
 from .utils import *
 from users.models import Warnings_history
+from base import base_strings
 
 def forum_main(request):
     context = {}
@@ -48,7 +49,7 @@ def section(request, section):
     try:
         node = Node.objects.get(slug__iexact = section)
     except: 
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['node_not_found']})
     try:
         child_nodes = Node.objects.filter(parent=node)
         context["child_nodes"] = child_nodes
@@ -76,11 +77,11 @@ def thread(request, section, thread, thread_id):
     try:
         _thread = Thread.objects.get(id=thread_id)
         if (not _thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
-            return render(request, 'error.html')
-        if (_thread.node.type_private and (request.user != _thread.user or not request.user.has_perm('forum.view_thread'))):
+            return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
+        if (_thread.node.type_private and (request.user != _thread.user and not request.user.has_perm('forum.view_thread'))):
             return redirect('section', _thread.node.slug)
     except: 
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['thread_not_found']})
     try: 
         _section = Node.objects.filter(slug__iexact=section)    
         _magic = Thread.objects.filter(slug__iexact=thread)
@@ -118,9 +119,9 @@ def create_thread(request, section, section_id):
     try:
         node = Node.objects.get(id=section_id)
         if (node.staff_only and not request.user.is_staff) or (not node.staff_only and not request.user.is_authenticated):
-            return render(request, 'error.html')
+            return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['node_not_found']})
     if request.method == "POST":
         title = request.POST.get('title')
         text = request.POST.get('msg')
@@ -139,9 +140,9 @@ def msg_redirect(request, section, thread, thread_id, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     if (not message.thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     if (message.thread.node.type_private and (request.user != message.thread.user or not request.user.has_perm('forum.view_thread'))):
         return redirect('section', message.thread.node.slug)
     url = reverse('thread', kwargs={'section': message.thread.node.slug, 'thread': message.thread.slug, 'thread_id': message.thread.id})
@@ -153,7 +154,7 @@ def report_msg(request, msg_id):
     try:
         msg = Message.objects.get(id=msg_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     if request.method == "POST":
         reason = request.POST.get('reason')
         new_report = Report.objects.create(
@@ -169,7 +170,7 @@ def toggle_close_thread(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['thread_not_found']})
     thread.is_closed = False if thread.is_closed else True
     thread.save()   
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
@@ -179,7 +180,7 @@ def toggle_thread_visibility(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['thread_not_found']})
     if request.method == "POST":
         deleting_form = get_reason_input(request)
         delete_thread(request, thread, deleting_form["reason"])
@@ -203,7 +204,7 @@ def toggle_thread_pin(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['thread_not_found']})
     thread.is_pinned = False if thread.is_pinned else True
     thread.save()
     return redirect('thread', thread.node.slug, thread.slug, thread.id)
@@ -213,7 +214,7 @@ def toggle_msg_visibility(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     if request.method == "POST":
         deleting_form = get_reason_input(request)
         delete_message(request, message, deleting_form["reason"])
@@ -263,7 +264,7 @@ def warn_user(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     if request.method == "POST":
         details = request.POST.get("warn_reason")
         warning = Warnings_history.objects.create(user=message.user, 
@@ -296,7 +297,7 @@ def mark_solution(request, msg_id):
         if message.user != request.user and not request.user.has_perm('forum.change_message'):
             return redirect('msg_redirect', message.thread.node.slug, message.thread.slug, message.thread.id, message.id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     try:
         solution = Message.objects.get(thread=message.thread, is_solution=True)
         if solution != message:
@@ -313,7 +314,7 @@ def change_thread(request, thread_id):
     try:
         thread = Thread.objects.get(id=thread_id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['thread_not_found']})
     if request.method == "POST":
         new_thread_name = request.POST['title']
         thread.title = new_thread_name

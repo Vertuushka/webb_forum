@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
+    <link rel="stylesheet" href="{% static 'bookmarks.css' %}">
+{% endblock %}
 {% block title %}
 <title>Oops!</title>
 {% endblock %}
 {% block content %}
-<header class="container">
-    <h2 class="title">Something has gone wrong!</h2>
-    {% if error_str %}
-    <p class="meta">{{ error_str }}</p>
-    {% endif %}
-    <p class="meta">Please try again or navigate to somewhere else.</p>
+<header class="wrapper">
+    <h2 class="title">Oops!</h2>
 </header>
+<div class="container content">
+    <div class="container NoContentBanner">
+        <h2 class="title">Something has gone wrong!</h2>
+        {% if error_str %}
+            <p class="text">{{ error_str }}</p>
+        {% endif %}
+            <p class="text">Please try again or navigate to somewhere else.</p>
+    </div>
+</div>
 {% endblock %}

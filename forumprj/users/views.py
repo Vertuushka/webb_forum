@@ -7,6 +7,7 @@ from . forms import *
 from . models import *
 from profile_messages.models import Private_Message
 from forum.models import *
+from base import base_strings
 
 def profile_view(request, id):
     try:
@@ -15,7 +16,7 @@ def profile_view(request, id):
         "account": account
         }
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
     if request.user == account or request.user.has_perm('users.view_profile') or account.preference.account_visibility == 0 or (account.preference.account_visibility == 1 and request.user.is_authenticated):
         try:
             unread_msgs = Private_Message.objects.filter(receiver=request.user, sender=account, is_read=False)
@@ -26,14 +27,15 @@ def profile_view(request, id):
             pass
         return render(request, "profile.html", dictionary)
     else:
-        return render(request, 'error.html')
-    
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_visibility_hidden']})
 
 def profile_edit(request, id):
     try:
         eUser = User.objects.get(id=id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
+    if not request.user.has_perm('users.change_profile') and eUser != request.user:
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     if request.method == "POST":
         form = UpdateUserInfo(request.POST, instance=eUser)
         if form.is_valid():
@@ -59,19 +61,19 @@ def profile_edit(request, id):
             return redirect("profile_view", eUser.id)
     else:
         form = UpdateUserInfo(instance=eUser)
-
     dictionary = {
         "form": form,
         "account": eUser
     }
-    
     return render(request, "profile_edit.html", dictionary)
 
 def profile_content(request, id):
     try:
         account = User.objects.get(id=id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
+    if not request.user.has_perm('users.view_profile') and request.user != account:
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_visibility_hidden']})
     content = Message.objects.filter(user=account).order_by('-id')
     context = {
         'account':account,
@@ -84,7 +86,9 @@ def profile_warnings(request, id):
     try:
         account = User.objects.get(id=id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html' , {'error_str':base_strings.ERRORS['user_not_found']})
+    if request.user != account and not request.user.has_perm('users.view_profile'):
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     warnings = Warnings_history.objects.filter(user=account).order_by('-id')
     context = {
         'account': account,
@@ -98,7 +102,7 @@ def profile_toggle_ban(request, id):
     try:
         account = User.objects.get(id=id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
     account.profile.is_banned = False if account.profile.is_banned else True
     if request.method == "POST":
         account.profile.banned_by = request.user
@@ -111,9 +115,9 @@ def profile_settings(request, id):
     try:
         account = User.objects.get(id=id)
     except:
-        return render(request, 'error.html')
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
     if request.user != account:
-        return render(request, 'error.html')
+        return render(request, 'error.html' , {'error_str':base_strings.ERRORS['perms_required']})
     if request.method == "POST":
         form = UserPreferences(request.POST, instance=account.preference)
         if form.is_valid():
@@ -130,7 +134,7 @@ def notifications(request):
     try:
         notifs = Notification.objects.filter(user=request.user).order_by('-id')
     except:
-        return render(request, 'error.html')
+        notifs = False
     context = {
         "notifications":notifs
     }
