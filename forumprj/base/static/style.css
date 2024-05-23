@@ -328,6 +328,23 @@ header {
     gap: 8px;
 }
 
+.cardSectionTriple  {
+    display: grid;
+    grid-template-columns: .65fr .10fr .25fr;
+    gap: 8px;
+}
+
+.centredItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+}
+
+.centredItem:hover {
+    background-color: var(--isClickable);
+}
+
 .cardSectionItem {
     box-sizing: border-box;
     width: 100%;

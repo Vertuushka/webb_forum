@@ -22,9 +22,9 @@
 
             {% for bookmark in bookmarks %}
                 <div class="cardLine"></div>
-                <div class="cardSectionMultiple">
+                <div class="cardSectionTriple">
 
-                    <div class="wrapper cardSectionItem">
+                    <a class="wrapper cardSectionItem" href="{% url 'msg_redirect' bookmark.forum_msg.thread.node.slug bookmark.forum_msg.thread.slug bookmark.forum_msg.thread.id bookmark.forum_msg.id %}">
                         <div class="container cardSectionInnerItem">
                             <div class="wrapper">
                                 <p class="meta">Theme</p>
@@ -33,19 +33,17 @@
 
                             <p class="text">{{ bookmark.forum_msg.message }}</p>
                         </div>
+                    </a>
 
-                        <div class="container cardSectionInnerItem">
-                            <a class="" href="{% url 'del_bookmark' bookmark.id %}">Delete</a>
-                        </div>
-                    </div>
+                    <a href="{% url 'del_bookmark' bookmark.id %}" class="centredItem"><img class="modToolsBtnIcon" src="{% static 'assets/icon_bin.svg' %}" alt=""></a>
 
-                    <div class="container cardSectionAutherItem">
+                    <a class="container cardSectionAutherItem" href="{% url 'profile_view' bookmark.forum_msg.user.id %}">
                         <p class="meta">Author</p>
                         <div class="wrapper themeCardProfileCon">
                             <img class="themeCardSectionProfilePicture" src="{{ media_url }}{{ bookmark.forum_msg.user.profile.profile_picture }}" alt="">
                             <p class="text">{{ bookmark.forum_msg.user }}</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>
