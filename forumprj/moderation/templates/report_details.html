@@ -2,6 +2,7 @@
 {% block style %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'moderation.css' %}">
+    <link rel="stylesheet" href="{% static 'forum.css' %}">
 {% endblock %}
 {% block title %}
     <title>Report in {{ report.content.thread.title }}</title>
@@ -16,23 +17,27 @@
     <div class="container" style="gap: 12px;">
         <div class="card">
             <div class="wrapper cardHeader">
-                <h2 class="cardTitle">Thread details</h2>
+                <h2 class="cardTitle">Content details</h2>
             </div>
     
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Thread</p>
-                <a class="text" href="">{{ report.content.thread.title }}</a>
+                <a class="text" href="{% url 'thread' report.content.thread.node.slug report.content.thread.slug report.content.thread.id %}">{{ report.content.thread.title }}</a>
             </div>
     
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Author</p>
-                {% if report.content.user.profile.is_banned and perms.users.view_profile %}
-                    <a class="text" href="{% url 'profile_view' report.content.user.id %}"><del>{{ report.content.user.username }}</del></a>
-                {% else %}
-                    <a class="text" href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
-                {% endif %}
+                <div class="themeCardProfileCon wrapper">
+                    <img src="{{media_url}}{{ report.content.user.profile.profile_picture }}" alt="" class="themeCardSectionProfilePicture">
+                    {% if report.content.user.profile.is_banned and perms.users.view_profile %}
+                        <a class="text" href="{% url 'profile_view' report.content.user.id %}"><del>{{ report.content.user.username }}</del></a>
+                    {% else %}
+                        <a class="text" href="{% url 'profile_view' report.content.user.id %}">{{ report.content.user.username }}</a>
+                    {% endif %}
+                </div>
+                
             </div>
 
             <div class="cardLine"></div>
@@ -56,7 +61,10 @@
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Report by</p>
-                <a class="text" href="{% url 'profile_view' report.user.id %}">{{ report.user }}</a>
+                <div class="themeCardProfileCon wrapper">
+                    <img src="{{media_url}}{{report.user.profile.profile_picture}}" alt="" class="themeCardSectionProfilePicture">
+                    <a class="text" href="{% url 'profile_view' report.user.id %}">{{ report.user }}</a>
+                </div>
             </div>
 
             <div class="cardLine"></div>
@@ -68,15 +76,18 @@
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Status</p>
-                <p class="text">
-                    {% if report.is_closed %}
-                        {% if report.is_resolved %}
-                            resolved (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
-                        {% else %}
-                            rejected (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+                <div class="themeCardProfileCon wrapper">
+                    <img src="{{media_url}}{{report.closed_by.profile.profile_picture}}" alt="" class="themeCardSectionProfilePicture">
+                    <p class="text">
+                        {% if report.is_closed %}
+                            {% if report.is_resolved %}
+                                resolved (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+                            {% else %}
+                                rejected (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </p>
+                    </p>
+                </div>
             </div>
 
             <div class="cardLine"></div>
