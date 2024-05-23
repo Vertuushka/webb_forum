@@ -6,6 +6,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'forum.css' %}">
     <link rel="stylesheet" href="{% static 'thread.css' %}">
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
 {% endblock %}
 {% block header %}
     <header class="wrapper">
@@ -234,7 +235,9 @@
             <form class="wrapper forumMessageWrapper" action="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}" method="post">
                 {% csrf_token %}
                 <input class="forumMessageInput"  name="msg" id="" placeholder="Write a message"></textarea>
-                <input class="forumMessageSubmitBtn" type="submit" value="Send">
+                <button class="wrapper chatBtn" type="submit">
+                    <img src="{% static 'assets/icon_send.svg' %}" alt="">
+                </button>
             </form>
         {% endif %}
     </div>

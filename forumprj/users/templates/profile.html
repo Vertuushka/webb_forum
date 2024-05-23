@@ -108,12 +108,12 @@
                                         <div class="cardLine"></div>
                                         <a class="container cardSectionItem" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">
                                             <div class="cardSectionInnerItem container">
-                                                <p class="meta">Theme</p>
+                                                <p class="meta">{{ msg.thread.title }}</p>
                                                 <p class="text">
                                                     {% if not msg.is_visible or not msg.thread.is_visible %}
-                                                        <del>{{ msg.thread }}</del>
+                                                        <del>{{ msg.message }}</del>
                                                     {% else %}
-                                                        {{ msg.thread }}
+                                                        {{ msg.message }}
                                                     {% endif %}
                                                 </p>
                                             </div>
@@ -123,12 +123,12 @@
                                     <div class="cardLine"></div>
                                     <a class="container cardSectionItem" href="{% url 'thread' msg.thread.node.name|slugify msg.thread.title|slugify msg.thread.id %}#{{msg.id}}">
                                         <div class="cardSectionInnerItem container">
-                                            <p class="meta">Theme</p>
+                                            <p class="meta">{{ msg.thread.title }}</p>
                                             <p class="text">
                                                 {% if not msg.is_visible or not msg.thread.is_visible %}
-                                                    <del>{{ msg.thread }}</del>
+                                                    <del>{{ msg.message }}</del>
                                                 {% else %}
-                                                    {{ msg.thread }}
+                                                    {{ msg.message }}
                                                 {% endif %}
                                             </p>
                                         </div>
