@@ -77,19 +77,23 @@
             <div class="container cardSection">
                 <p class="meta">Status</p>
                 <div class="themeCardProfileCon wrapper">
+                    {% if report.is_closed %}
                     <img src="{{media_url}}{{report.closed_by.profile.profile_picture}}" alt="" class="themeCardSectionProfilePicture">
                     <p class="text">
-                        {% if report.is_closed %}
                             {% if report.is_resolved %}
                                 resolved (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
                             {% else %}
                                 rejected (<a class="text" href="{% url 'profile_view' report.closed_by.id %}">{{ report.closed_by.username }}</a>)
                             {% endif %}
-                        {% endif %}
                     </p>
+                    {% else %}
+                    <p class="text">
+                        Opened
+                    </p>
+                    {% endif %}
                 </div>
             </div>
-
+            {% if report.is_closed %}
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Notification</p>
@@ -99,12 +103,13 @@
                     <p class="text">No notification was sent</p>
                 {% endif %}
             </div>
-
+            
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Updated</p>
                 <p class="text">{{ report.time_changed|date:"d/m/Y - H:i" }}</p>
             </div>
+            {% endif %}
         </div>
     </div>
 
