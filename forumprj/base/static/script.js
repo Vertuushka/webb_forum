@@ -179,6 +179,50 @@ $(document).ready(function() {
         })
     })
 
+    $(".delete_thread_btn").each(function(index, button){
+        let id = this.getAttribute("id");
+        this.addEventListener('click', function(){
+            $("body").append(`
+            <form action="/forum/thread/${id}/delete/" method="post" id="thread_del_frame">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                <input type="text" name="reason" id="">
+                <input type="checkbox" name="is_notified" id="is_notified">
+                <input type="text" name="notification" id="notification" readonly>
+                <input type="submit" value="delete">
+            </form>
+            <button id="closeFormFrame">Cancel</button>
+            `)
+            $("#closeFormFrame").click(function(){
+                $("#thread_del_frame").remove()
+                this.remove()
+            })
+            $("#is_notified").click(function(){
+                if(this.checked){
+                    $("#notification").removeAttr("readonly")
+                }
+                else{$("#notification").attr("readonly", true) }
+            })
+        })
+    })
+
+    //restore thread btn
+    $(".recycle").each(function(index, button){
+        let id = this.getAttribute("id");
+        this.addEventListener("click", function(){
+            $("body").append(`
+            <div id="restore_thread_frame">
+                <p>You sure you want to restore this thread?</p>
+                <a href="/forum/thread/${id}/delete/">Yes, restore</a>
+                <button id="closeFormFrame">Cancel</button>
+            </div>
+            `)
+            $("#closeFormFrame").click(function(){
+                $("#restore_thread_frame").remove()
+                this.remove()
+            })
+        })
+    })
+
     //report details form input stuff
     $("#is_notified").click(function(){
         if(this.checked){
@@ -198,6 +242,9 @@ $(document).ready(function() {
             $("#threads_checkbox").prop("checked", false)
         }
     })
+
+    //thread del form
+
 });
 
 function GetCsrfToken()

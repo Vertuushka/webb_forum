@@ -55,8 +55,8 @@
                                 <img class="modToolsBtnIcon" src="{% static 'assets/icon_pin.svg' %}" alt="">
                             </a>
                         {% endif %}
-            
-                        <button class="modToolsBtn">
+                        
+                        <button class="modToolsBtn delete_thread_btn" id="{{ thread.id }}">
                             <img class="modToolsBtnIcon" src="{% static 'assets/icon_bin.svg' %}" alt="">
                         </button>
         
@@ -69,9 +69,9 @@
                             <input type="submit" value="Delete">
                         </form>
                     {% else %}
-                        <a class="modToolsBtn" href="{% url 'toggle_thread_visibility' thread.id %}">
+                        <button class="modToolsBtn recycle" id="{{ thread.id }}">
                             <img class="modToolsBtnIcon" src="{% static 'assets/icon_recycle.svg' %}" alt="">
-                        </a>
+                        </button>
                     {% endif %}
                 {% endif %}
             
@@ -305,5 +305,19 @@
         <input type="submit" value="Report">
     </form>
     <button id="closeFormFrame">Cancel</button> -->
-    
+<!--     
+    <form action="{% url 'toggle_thread_visibility' thread.id %}" method="post" id="thread_del_frame">
+        {% csrf_token %}
+        <input type="text" name="reason" id="">
+        <input type="checkbox" name="is_notified" id="">
+        <input type="text" name="notification" id="">
+        <input type="submit" value="delete">
+    </form> -->
+
+    <div>
+        <p>You sure you want to restore this thread?</p>
+        <a href="">Yes, restore</a>
+        <button>Cancel</button>
+    </div>
+
 {% endblock %}
