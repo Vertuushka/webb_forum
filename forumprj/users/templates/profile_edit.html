@@ -197,6 +197,7 @@
         {% endif %}
 </div>
 </form>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
 <script>
     document.getElementById('fileInput').addEventListener('change', function() {
         const fileName = this.files[0] ? this.files[0].name : 'No file has been selected';

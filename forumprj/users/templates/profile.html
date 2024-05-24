@@ -259,6 +259,7 @@
         <input type="submit" value="" disabled>
     </form>
 </div>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="token">
 {% if private_messages %}
 <script>
     const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
