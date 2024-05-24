@@ -39,14 +39,12 @@
                 </a>
                 
             </div>
-
             <div class="cardLine"></div>
             <div class="container cardSection">
                 <p class="meta">Message</p>
                 <a class="text" href="{% url 'thread' report.content.thread.node.slug report.content.thread.slug report.content.thread.id %}#{{report.content.id}}">{{ report.content.message }}</a>
             </div>
         </div>
-
         <div class="card">
             <div class="wrapper cardHeader">
                 <h2 class="cardTitle">Report details</h2>

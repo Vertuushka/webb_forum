@@ -141,8 +141,8 @@
                 <div class="cardSection container">
                     <p class="meta">Color theme</p>
                     {% if account.preference.color_theme == 0 %}
-                        <label class="wrapper themeCardWrapper" for="">
-                            <input class="themeCardInput" name="color_theme" type="radio" value="0">
+                        <label class="wrapper themeCardWrapper" for="theme_0">
+                            <input class="themeCardInput" name="color_theme" type="radio" value="0" id="theme_0" checked>
                             <div class="container themeCardContainer">
                                 <p class="meta">Theme</p>
                                 <p class="text">Default</p>
@@ -153,8 +153,8 @@
                                 <div class="themeCardColor" style="background-color: #B4FF1F;"></div>
                             </div>
                         </label>
-                        <label class="wrapper themeCardWrapper" for="">
-                            <input class="themeCardInput" name="color_theme" type="radio" value="1">
+                        <label class="wrapper themeCardWrapper" for="theme_1">
+                            <input class="themeCardInput" name="color_theme" type="radio" value="1" id="theme_1">
                             <div class="container themeCardContainer">
                                 <p class="meta">Theme</p>
                                 <p class="text">Industrial</p>
@@ -166,8 +166,8 @@
                             </div>
                         </label>
                     {% else %}
-                    <label class="wrapper themeCardWrapper" for="">
-                        <input class="themeCardInput" name="color_theme" type="radio" value="0">
+                    <label class="wrapper themeCardWrapper" for="theme_0">
+                        <input class="themeCardInput" name="color_theme" type="radio" value="0" id="theme_0">
                         <div class="container themeCardContainer">
                             <p class="meta">Theme</p>
                             <p class="text">Default</p>
@@ -178,8 +178,8 @@
                             <div class="themeCardColor" style="background-color: #B4FF1F;"></div>
                         </div>
                     </label>
-                    <label class="wrapper themeCardWrapper" for="">
-                        <input class="themeCardInput" name="color_theme" type="radio" value="1">
+                    <label class="wrapper themeCardWrapper" for="theme_1">
+                        <input class="themeCardInput" name="color_theme" type="radio" value="1" id="theme_1" checked>
                         <div class="container themeCardContainer">
                             <p class="meta">Theme</p>
                             <p class="text">Industrial</p>
