@@ -27,7 +27,7 @@ $(document).ready(function() {
                     <div class="cardLine"></div>
                     <div class="wrapper cardSection">
                         <input type="checkbox" name="is_deleted" id="is_deleted">
-                        <label class="meta" for="">Delete message on warn</label>
+                        <label class="text" for="is_deleted">Delete message on warn</label>
                     </div>
 
                     <div class="container cardSection">
@@ -36,7 +36,7 @@ $(document).ready(function() {
                     </div>
 
                     <div class="wrapper popupBtnWrapper">
-                        <button class="popupBtn" id="closeFormFrame">Close form</button>
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
                         <button class="popupBtn popupActionBtn" type="submit">Warn</button>
                     </div>
                 </div>
@@ -62,22 +62,47 @@ $(document).ready(function() {
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/message/${id}/edit/" id="editForm" method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <label for="new_msg">Edit message: </label>
-                <textarea name="new_msg" id="" cols="30" rows="5">${msg}</textarea>
-                <label for="is_notified">Notify user:</label>
-                <input type="checkbox" name="is_notified" id="">
-                <label for="notification">Notification: </label>
-                <input type="text" name="notification" id="">
-                <input type="submit" value="Save">
+            <form action="/forum/message/${id}/edit/" class="popupContainer" id="editForm" method="post">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Edit message</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                
+
+                    <div class="container cardSection">
+                        <label for="new_msg" class="meta">Message</label>
+                        <textarea name="new_msg" id="new_msg" class="popupInput">${msg}</textarea>
+                    </div>
+
+                    <div class="cardLine"></div>
+                    <div class="cardSection wrapper">
+                    <input type="checkbox" name="is_notified" id="is_notified" class="popupInput">
+                        <label for="is_notified" class="text">Notify user</label>
+                    </div>
+
+                    <div class="container cardSection">
+                        <label for="notification" class="meta">Notification</label>
+                        <input type="text" name="notification" id="notification" class="popupInput" readonly>
+                    </div>
+
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Save</button>
+                    </div>
+                </div>
             </form>
-            <button id="closeFormFrame">Close form</button>
             `)
 
             $("#closeFormFrame").click(function(){
                 $("#editForm").remove()
                 this.remove()
+            })
+
+            $("#is_notified").click(function(){
+                if(this.checked){
+                    $("#notification").removeAttr("readonly")
+                }
+                else{$("#notification").attr("readonly", true) }
             })
         })
     })
@@ -89,24 +114,42 @@ $(document).ready(function() {
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/message/${id}/delete/" method="post" id="deleteForm">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <label for="reason">Reason:</label>
-                <input type="text" name="reason" id="">
-                <label for="is_notified">Notify user</label>
-                <input type="checkbox" name="is_notified" id="is_deleted">
-                <label for="notification">Notification:</label>
-                <input type="text" name="notification" id="deleting_reason" readonly>
-                <input type="submit" value="Delete">
-                <button id="closeFormFrame">Close form</button>
+            <form action="/forum/message/${id}/delete/" class="popupContainer" id="deleteForm" method="post">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Delete message</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                
+            
+                    <div class="container cardSection">
+                        <label for="reason" class="meta">Reason</label>
+                        <input type="text" name="reason" id="reason" class="popupInput">
+                    </div>
+            
+                    <div class="cardLine"></div>
+                    <div class="cardSection wrapper">
+                    <input type="checkbox" name="is_notified" id="is_notified" class="popupInput">
+                    <label for="is_notified" class="text">Notify user</label>
+                    </div>
+            
+                    <div class="container cardSection">
+                        <label for="notification" class="meta">Notification</label>
+                        <input type="text" name="notification" id="notification" class="popupInput" readonly>
+                    </div>
+            
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Close form</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Delete</button>
+                    </div>
+                </div>
             </form>
             `)
             
-            $("#is_deleted").click(function(){
+            $("#is_notified").click(function(){
                 if(this.checked){
-                    $("#deleting_reason").removeAttr("readonly")
+                    $("#notification").removeAttr("readonly")
                 }
-                else{$("#deleting_reason").attr("readonly", true) }
+                else{$("#notification").attr("readonly", true) }
             })
             $("#closeFormFrame").click(function(){
                 $("#deleteForm").remove()
@@ -135,14 +178,36 @@ $(document).ready(function() {
             $.get(`${baseUrl}/api.msg_warning/${id}/`, function(data) {
                 console.log(data);
                 $("body").append(`
-                <div id="warning_info_frame">
-                    <p>Warning info:</p>
-                    <a href="/forum/${data.message.node_slug}/${data.message.thread_slug}.${data.message.thread_id}/#${data.message.id}">Message in ${data.message.thread_title}</a>
-                    <img src="/${data.warned_by.profile_picture}" alt="">
-                    <p>Warned by: <a href="/profile/${data.warned_by.id}/">${data.warned_by.username}</a></p>
-                    <p>${data.details}</p>
-                    <p>${data.time_warned}</p>
-                    <button id="closeFormFrame">Close</button>
+                <div class="popupContainer" id="warning_info_frame">
+                    <div class="popup">
+                        <h2 class="popupHeaderTitle">Warning details</h2>
+                        <div class="cardLine"></div>
+                    
+                        <div class="cardSection container">
+                            <p class="meta">Message in "${data.message.thread_title}"</p>
+                            <a href="/forum/${data.message.node_slug}/${data.message.thread_slug}.${data.message.thread_id}/#${data.message.id}" class="text">${data.message.message}</a>
+                        </div>
+                        <div class="cardSection container">
+                            <p class="meta">Warned by</p>
+                            <div class="wrapper cardSectionAutherItemMetaContainer">
+                                <img src="/${data.warned_by.profile_picture}" alt="" class="themeCardSectionProfilePicture">
+                                <a href="/profile/${data.warned_by.id}/" class="text">${data.warned_by.username}</a>
+                            </div>
+                        </div>
+                        <div class="cardSection container">
+                            <p class="meta">Details</p>
+                            <p class="text">${data.details}</p>
+                        </div>
+                
+                        <div class="cardLine"></div>
+                        <div class="cardSection container">
+                            <p class="meta">Time</p>
+                            <p class="text">${data.time_warned}</p>
+                        </div>
+                        <div class="popupBtnWrapper wrapper">
+                            <button id="closeFormFrame" class="popupBtn">Close</button>
+                        </div>
+                    </div>
                 </div>
                 `)
                 $("#closeFormFrame").click(function(){
@@ -158,12 +223,22 @@ $(document).ready(function() {
         let id = this.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/message/${id}/report/" id="report_frame" method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <input type="text" name="reason" id="" required>
-                <input type="submit" value="Report">
+            <form action="/forum/message/${id}/report/" class="popupContainer" id="report_frame" method="post">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Report message</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                
+                    <div class="container cardSection">
+                        <label for="reason" class="meta">Reason</label>
+                        <input type="text" name="reason" id="reason" class="popupInput">
+                    </div>
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Report</button>
+                    </div>
+                </div>
             </form>
-            <button id="closeFormFrame">Cancel</button>
             `)
             $("#closeFormFrame").click(function(){
                 $("#report_frame").remove()
@@ -176,24 +251,47 @@ $(document).ready(function() {
     $(".banBtn").each(function(index, button){
         let userId = this.getAttribute("id")
         this.addEventListener('click', function(){
+            if(this.innerHTML == "Unban") return
             $("body").append(`
-            <form action="/profile/${userId}/ban/" method="post">
+            <form action="/profile/${userId}/ban/" class="popupContainer" id="userBanForm" method="post">
+            <div class="popup">
+                <h2 class="popupHeaderTitle">Ban ${$("#username").text()}</h2>
+                <div class="cardLine"></div>
                 <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <label for="reason">Reason: </label>
-                <input type="text" name="reason" id="">
-                <label for="confirm_box">You sure you want to ban ${$("#username").text()}? User will not be able to use the forum on this account.</label>
-                <input type="checkbox" name="confirm_box" id="_confirm_box">
-                <input type="submit" value="Ban" id="banBtn" disabled>
-            </form>
+            
+        
+                <div class="container cardSection">
+                    <label for="reason" class="meta">Reason</label>
+                    <input type="text" name="reason" id="reason" class="popupInput">
+                </div>
+        
+                <div class="cardLine"></div>
+                <div class="cardSection container">
+                    <p class="meta">Confirmation</p>
+                    <div class="wrapper" style="gap: 8px;">
+                        <input type="checkbox" name="confirm_box" id="confirm_ban_box" class="popupInput">
+                        <label for="confirm_ban_box" class="text">You sure you want to ban ${$("#username").text()}? User will not be able to use the forum on this account.</label>
+                    </div>
+                </div>
+        
+                <div class="wrapper popupBtnWrapper">
+                    <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                    <button class="popupBtn popupActionBtn" type="submit" id="banBtn">Ban</button>
+                </div>
+            </div>
+        </form>
             `)
-            $("#_confirm_box").click(function(){
-                console.log(this)
+            $("#confirm_box").click(function(){
+                // console.log(this)
                 if(this.checked){
                     $("#banBtn").removeAttr("disabled")
                 }
                 else{$("#banBtn").attr("disabled", true) }
             })
-            
+            $("#closeFormFrame").click(function(){
+                $("#userBanForm").remove()
+                this.remove()
+            })
         })
     })
 
@@ -202,14 +300,36 @@ $(document).ready(function() {
         let id = this.getAttribute("id");
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/thread/${id}/delete/" method="post" id="thread_del_frame">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <input type="text" name="reason" id="">
-                <input type="checkbox" name="is_notified" id="is_notified">
-                <input type="text" name="notification" id="notification" readonly>
-                <input type="submit" value="delete">
+            <form action="/forum/thread/${id}/delete/" class="popupContainer" id="thread_del_frame" method="post">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Delete thread</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                
+
+                    <div class="container cardSection">
+                        <label for="reason" class="meta">Reason</label>
+                        <input type="text" name="reason" id="reason" class="popupInput">
+                    </div>
+
+                    <div class="cardLine"></div>
+                    <div class="cardSection wrapper">
+                        <input type="checkbox" name="is_notified" id="is_notified" class="popupInput">
+                        <label for="is_notified" class="text">Notify user</p>
+                    </div>
+
+                    <div class="container cardSection">
+                        <label for="notification" class="meta">Notification</label>
+                        <input type="text" name="notification" id="notification" class="popupInput" readonly>
+                    </div>
+
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Delete</button>
+                    </div>
+                </div>
             </form>
-            <button id="closeFormFrame">Cancel</button>
+
             `)
             $("#closeFormFrame").click(function(){
                 $("#thread_del_frame").remove()
@@ -229,10 +349,21 @@ $(document).ready(function() {
         let id = this.getAttribute("id");
         this.addEventListener("click", function(){
             $("body").append(`
-            <div id="restore_thread_frame">
-                <p>You sure you want to restore this thread?</p>
-                <a href="/forum/thread/${id}/delete/">Yes, restore</a>
-                <button id="closeFormFrame">Cancel</button>
+            <div class="popupContainer" id="restore_thread_frame">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Restore thread</h2>
+                    <div class="cardLine"></div>
+                
+                    <div class="cardSection container">
+                        <p class="meta">Confirmation</p>
+                        <p class="text">You sure you want to restore this thread?</p>
+                    </div>
+
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                        <button class="popupBtn popupActionBtn" type="submit"><a href="/forum/thread/${id}/delete/" class="text">Yes, restore</a></button>
+                    </div>
+                </div>
             </div>
             `)
             $("#closeFormFrame").click(function(){
@@ -257,15 +388,34 @@ $(document).ready(function() {
         }
         this.addEventListener('click', function(){
             $("body").append(`
-            <form action="/forum/thread/${id}/change/" method="post" id="change_thread_frame">
-                <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
-                <input type="text" name="title" id="title" value="${title_name}">
-                <label for="is_notified">Notify user:</label>
-                <input type="checkbox" name="is_notified" id="is_notified">
-                <input type="text" name="notification" id="notification" readonly>
-                <input type="submit" value="Change">
+            <form action="/forum/thread/${id}/change/" class="popupContainer" id="change_thread_frame" method="post">
+                <div class="popup">
+                    <h2 class="popupHeaderTitle">Edit thread</h2>
+                    <div class="cardLine"></div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+                
+                    <div class="cardSection container">
+                        <label for="title" class="meta">Thread title</label>
+                        <input type="text" name="title" id="title" value="${title_name}"  class="popupInput">
+                    </div>
+            
+                    <div class="cardLine"></div>
+                    <div class="cardSection wrapper">
+                        <input type="checkbox" name="is_notified" id="is_notified" class="popupInput">
+                        <label for="is_notified" class="text">Notify user</label>
+                    </div>
+            
+                    <div class="container cardSection">
+                        <label for="notification" class="meta">Notification</label>
+                        <input type="text" name="notification" id="notification" class="popupInput" readonly>
+                    </div>
+            
+                    <div class="wrapper popupBtnWrapper">
+                        <button class="popupBtn" id="closeFormFrame">Cancel</button>
+                        <button class="popupBtn popupActionBtn" type="submit">Change</button>
+                    </div>
+                </div>
             </form>
-            <button id="closeFormFrame">Cancel</button>
             `)
             $("#closeFormFrame").click(function(){
                 $("#change_thread_frame").remove()

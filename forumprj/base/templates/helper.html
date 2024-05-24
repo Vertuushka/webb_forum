@@ -1,0 +1,86 @@
+<form action="/forum/thread/${id}/change/" class="popupContainer" id="change_thread_frame" method="post">
+    <div class="popup">
+        <h2 class="popupHeaderTitle">Edit thread</h2>
+        <div class="cardLine"></div>
+        <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+    
+        <div class="cardSection container">
+            <label for="title" class="meta">Thread title</label>
+            <input type="text" name="title" id="title" value="${title_name}">
+        </div>
+
+        <div class="cardLine"></div>
+        <div class="cardSection wrapper">
+            <label for="is_notified" class="meta">Notify user</p>
+            <input type="checkbox" name="is_notified" id="is_notified" class="popupInput">
+        </div>
+
+        <div class="container cardSection">
+            <label for="notification" class="meta">Notification</label>
+            <input type="text" name="notification" id="notification" class="popupInput" readonly>
+        </div>
+
+        <div class="wrapper popupBtnWrapper">
+            <button class="popupBtn" id="closeFormFrame">Cancel</button>
+            <button class="popupBtn popupActionBtn" type="submit">Change</button>
+        </div>
+    </div>
+</form>
+
+
+<form action="/forum/thread/${id}/change/" method="post" id="change_thread_frame">
+    <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+    <input type="text" name="title" id="title" value="${title_name}">
+    <label for="is_notified">Notify user:</label>
+    <input type="checkbox" name="is_notified" id="is_notified">
+    <input type="text" name="notification" id="notification" readonly>
+    <input type="submit" value="Change">
+</form>
+<button id="closeFormFrame">Cancel</button>
+
+
+<form class="popupContainer" action="/forum/message/${id}/warn/" method="post" id="warnForm">
+    <div class="popup">
+        <h2 class="popupHeaderTitle">Create warning</h2>
+        <div class="cardLine"></div>
+        <input type="hidden" name="csrfmiddlewaretoken" value="${GetCsrfToken()}">
+
+        <div class="container cardSection">
+            <label class="meta" for="warn_reason">Warning reason:</label>
+            <input class="popupInput" type="text" name="warn_reason" id="">
+        </div>
+
+        <div class="cardLine"></div>
+        <div class="wrapper cardSection">
+            <input type="checkbox" name="is_deleted" id="is_deleted">
+            <label class="meta" for="">Delete message on warn</label>
+        </div>
+
+        <div class="container cardSection">
+            <label class="meta" for="deleting_reason">Reason:</label>
+            <input class="popupInput" type="text" name="deleting_reason" id="deleting_reason" readonly>
+        </div>
+
+        <div class="wrapper popupBtnWrapper">
+            <button class="popupBtn" id="closeFormFrame">Close form</button>
+            <button class="popupBtn popupActionBtn" type="submit">Warn</button>
+        </div>
+    </div>
+</form>
+
+<div class="popupContainer" id="restore_thread_frame">
+    <div class="popup">
+        <h2 class="popupHeaderTitle">Restore thread</h2>
+        <div class="cardLine"></div>
+    
+        <div class="cardSection wrapper">
+            <p class="meta">Confirmation</p>
+            <p class="text">You sure you want to restore this thread?</p>
+        </div>
+
+        <div class="wrapper popupBtnWrapper">
+            <button class="popupBtn" id="closeFormFrame">Cancel</button>
+            <button class="popupBtn popupActionBtn" type="submit"><a href="/forum/thread/${id}/delete/" class="text">Yes, restore</a></button>
+        </div>
+    </div>
+</div>

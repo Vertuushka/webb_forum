@@ -143,7 +143,7 @@ def msg_redirect(request, section, thread, thread_id, msg_id):
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     if (not message.thread.is_visible) and (not request.user.has_perm('forum.view_thread')):
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
-    if (message.thread.node.type_private and (request.user != message.thread.user or not request.user.has_perm('forum.view_thread'))):
+    if (message.thread.node.type_private and (request.user != message.thread.user and not request.user.has_perm('forum.view_thread'))):
         return redirect('section', message.thread.node.slug)
     url = reverse('thread', kwargs={'section': message.thread.node.slug, 'thread': message.thread.slug, 'thread_id': message.thread.id})
     anchor_url = f'{url}#{msg_id}'
