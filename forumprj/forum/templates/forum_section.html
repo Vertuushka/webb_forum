@@ -78,17 +78,18 @@
                         <a class="cardSectionItem" href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}">
                             <div class="container cardSectionInnerItem">
                                 <p class="meta">Theme</p>
-                                <p class="text">
-                                    {% if not thread.is_visible %}
-                                        <del>{{thread}}</del>
-                                    {% else %}
-                                        {{thread}}
+                                <div class="wrapper" style="align-items: center; gap: 8px;">
+                                    <p class="text">
+                                        {% if not thread.is_visible %}
+                                            <del>{{thread}}</del>
+                                        {% else %}
+                                            {{thread}}
+                                        {% endif %}
+                                    </p>
+                                    {% if thread.is_pinned %}
+                                        <img class="modToolsBtnIcon" src="{% static 'assets/icon_20_pin.svg' %}" alt="">
                                     {% endif %}
-                                </p>
-                                {% if thread.is_pinned %}
-                                    <p>Pinned thread (icon?)</p>
-                                    <img src="{% static 'asstes/icon_20_pin.svg' %}" alt="">
-                                {% endif %}
+                                </div>  
                             </div>
                             <div class="container cardSectionInnerItem">
                                 <p class="meta">Messages</p>
