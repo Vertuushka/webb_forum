@@ -9,7 +9,7 @@
 {% endblock %}
 {% block header %}
     <header class="wrapper">
-        <h2 class="title">Forum</h2>
+        <h2 class="title"><a href="/" style="color: #fff;">Forum</a></h2>
         <div class="headerLine"></div>
 
         <form class="wrapper headerSearch" action="{% url 'forum_main' %}" method="post">
@@ -52,6 +52,10 @@
                         {% for child in child_nodes %}
                             <a class="forumCardHeaderBtn" href="{% url 'section' child.name|slugify %}">{{ child.name }}</a>
                         {% endfor %}
+                    {% endif %}
+                    {% if node.parent %}
+                        <div class="forumCardHeaderLine"></div>
+                        <a href="{% url 'section' node.parent.slug %}" class="forumCardHeaderBtn">{{ node.parent.name }}</a>
                     {% endif %}
                 </div>
 

@@ -11,7 +11,7 @@
 {% endblock %}
 {% block header %}
     <header class="wrapper">
-        <h2 class="title">Forum</h2>
+        <h2 class="title"><a href="/" style="color: #fff;">Forum</a></h2>
         <div class="headerLine"></div>
 
         <form class="wrapper headerSearch" action="{% url 'forum_main' %}" method="post">
@@ -53,6 +53,10 @@
                 <h2 class="forumCardTitle thread_title" id="{{thread.id}}">{{ thread.title }} (DELETED by {{ thread.deleted_by }}. Reason: {{ thread.invis_reason }})</h2>
                 <input type="hidden" name="thread_title" value="{{thread.title}}" id="original_title">
             {% endif %}
+            <div class="wrapper" style="flex-grow: 1;">
+                <div class="forumCardHeaderLine"></div>
+                <a href="{% url 'section' thread.node.slug %}" class="forumCardHeaderBtn">{{  thread.node.name }}</a>
+            </div>
 
             <div class="wrapper modToolsContainer">
                 {% if perms.forum.change_thread %}
