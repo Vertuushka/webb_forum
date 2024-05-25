@@ -12,7 +12,12 @@
 
     <!-- style -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'themes/theme_' %}{{request.user.preference.color_theme}}.css">
+    {% if request.user.is_authenticated %}
+        <link rel="stylesheet" href="{% static 'themes/theme_' %}{{request.user.preference.color_theme}}.css">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'themes/theme_0.css' %}">
+    {% endif %}
+
     <link rel="stylesheet" href="{% static 'style.css' %}">
     {% block style %}{% endblock %}
     <!-- style -->

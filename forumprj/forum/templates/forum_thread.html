@@ -58,27 +58,62 @@
                 {% if perms.forum.change_thread %}
                     {% if thread.is_closed %}
                         <a class="modToolsBtn" href="{% url 'toggle_close_thread' thread.id %}">
-                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_lock_closed.svg' %}" alt="">
+                            <svg class="modToolsBtnIcon" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_631_7" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                <rect x="0.433838" y="0.281494" width="24" height="24" fill="#D9D9D9"/>
+                                </mask>
+                                <g mask="url(#mask0_631_7)">
+                                <path d="M6.43384 22.2815C5.88384 22.2815 5.413 22.0857 5.02134 21.694C4.62967 21.3023 4.43384 20.8315 4.43384 20.2815V10.2815C4.43384 9.73149 4.62967 9.26066 5.02134 8.86899C5.413 8.47733 5.88384 8.28149 6.43384 8.28149H7.43384V6.28149C7.43384 4.89816 7.92134 3.71899 8.89634 2.74399C9.87134 1.76899 11.0505 1.28149 12.4338 1.28149C13.8172 1.28149 14.9963 1.76899 15.9713 2.74399C16.9463 3.71899 17.4338 4.89816 17.4338 6.28149V8.28149H18.4338C18.9838 8.28149 19.4547 8.47733 19.8463 8.86899C20.238 9.26066 20.4338 9.73149 20.4338 10.2815V20.2815C20.4338 20.8315 20.238 21.3023 19.8463 21.694C19.4547 22.0857 18.9838 22.2815 18.4338 22.2815H6.43384ZM12.4338 17.2815C12.9838 17.2815 13.4547 17.0857 13.8463 16.694C14.238 16.3023 14.4338 15.8315 14.4338 15.2815C14.4338 14.7315 14.238 14.2607 13.8463 13.869C13.4547 13.4773 12.9838 13.2815 12.4338 13.2815C11.8838 13.2815 11.413 13.4773 11.0213 13.869C10.6297 14.2607 10.4338 14.7315 10.4338 15.2815C10.4338 15.8315 10.6297 16.3023 11.0213 16.694C11.413 17.0857 11.8838 17.2815 12.4338 17.2815ZM9.43384 8.28149H15.4338V6.28149C15.4338 5.44816 15.1422 4.73983 14.5588 4.15649C13.9755 3.57316 13.2672 3.28149 12.4338 3.28149C11.6005 3.28149 10.8922 3.57316 10.3088 4.15649C9.7255 4.73983 9.43384 5.44816 9.43384 6.28149V8.28149Z" style="fill: var(--accent);"/>
+                                </g>
+                            </svg>                                
                         </a>
                     {% else %}
                         <a class="modToolsBtn" href="{% url 'toggle_close_thread' thread.id %}">
-                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_lock_open.svg' %}" alt="">
+                            <svg class="modToolsBtnIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_631_13" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9"/>
+                                </mask>
+                                <g mask="url(#mask0_631_13)">
+                                <path d="M12 17C12.55 17 13.0208 16.8042 13.4125 16.4125C13.8042 16.0208 14 15.55 14 15C14 14.45 13.8042 13.9792 13.4125 13.5875C13.0208 13.1958 12.55 13 12 13C11.45 13 10.9792 13.1958 10.5875 13.5875C10.1958 13.9792 10 14.45 10 15C10 15.55 10.1958 16.0208 10.5875 16.4125C10.9792 16.8042 11.45 17 12 17ZM6 22C5.45 22 4.97917 21.8042 4.5875 21.4125C4.19583 21.0208 4 20.55 4 20V10C4 9.45 4.19583 8.97917 4.5875 8.5875C4.97917 8.19583 5.45 8 6 8H13V6C13 4.61667 13.4875 3.4375 14.4625 2.4625C15.4375 1.4875 16.6167 1 18 1C19.3833 1 20.5625 1.4875 21.5375 2.4625C22.5125 3.4375 23 4.61667 23 6H21C21 5.16667 20.7083 4.45833 20.125 3.875C19.5417 3.29167 18.8333 3 18 3C17.1667 3 16.4583 3.29167 15.875 3.875C15.2917 4.45833 15 5.16667 15 6V8H18C18.55 8 19.0208 8.19583 19.4125 8.5875C19.8042 8.97917 20 9.45 20 10V20C20 20.55 19.8042 21.0208 19.4125 21.4125C19.0208 21.8042 18.55 22 18 22H6Z" style="fill: var(--accent);"/>
+                                </g>
+                            </svg>                                
                         </a>
                     {% endif %}
             
                     {% if thread.is_visible %}
                         {% if thread.is_pinned %}
                             <a class="modToolsBtn" href="{% url 'toggle_thread_pin' thread.id %}">
-                                <img class="modToolsBtnIcon" src="{% static 'assets/icon_unpin.svg' %}" alt="">
+                                <svg class="modToolsBtnIcon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_631_19" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                                    <rect width="20" height="20" fill="#D9D9D9"/>
+                                    </mask>
+                                    <g mask="url(#mask0_631_19)">
+                                    <path d="M14.1667 2.50016V4.16683H13.3334V10.9793L5.83335 3.47933V2.50016H14.1667ZM10 19.1668L9.16669 18.3335V13.3335H5.00002V11.6668L6.66669 10.0002V9.04183L1.16669 3.50016L2.33335 2.3335L17.6667 17.6668L16.4584 18.8335L10.9584 13.3335H10.8334V18.3335L10 19.1668Z" style="fill: var(--accent);"/>
+                                    </g>
+                                </svg>      
                             </a>
                         {% else %}
                             <a class="modToolsBtn" href="{% url 'toggle_thread_pin' thread.id %}">
-                                <img class="modToolsBtnIcon" src="{% static 'assets/icon_pin.svg' %}" alt="">
+                                <svg class="modToolsBtnIcon" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_615_17" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
+                                    <rect x="0.0022583" y="0.270508" width="20" height="20" fill="#D9D9D9"/>
+                                    </mask>
+                                    <g mask="url(#mask0_615_17)">
+                                    <path d="M13.3356 10.2705L15.0023 11.9372V13.6038H10.8356V18.6038L10.0023 19.4372L9.16892 18.6038V13.6038H5.00226V11.9372L6.66892 10.2705V4.43717H5.83559V2.77051H14.1689V4.43717H13.3356V10.2705Z" style="fill: var(--accent);"/>
+                                    </g>
+                                </svg>                                    
                             </a>
                         {% endif %}
                         
                         <button class="modToolsBtn delete_thread_btn" id="{{ thread.id }}">
-                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_bin.svg' %}" alt="">
+                            <svg class="modToolsBtnIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_631_37" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9"/>
+                                </mask>
+                                <g mask="url(#mask0_631_37)">
+                                <path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM9 17H11V8H9V17ZM13 17H15V8H13V17Z" style="fill: var(--accent);"/>
+                                </g>
+                            </svg>
                         </button>
         
                         <!-- should not be visible until user clicks restore button -->
@@ -91,14 +126,28 @@
                         </form>
                     {% else %}
                         <button class="modToolsBtn recycle" id="{{ thread.id }}">
-                            <img class="modToolsBtnIcon" src="{% static 'assets/icon_recycle.svg' %}" alt="">
+                            <svg class="modToolsBtnIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_631_55" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9"/>
+                                </mask>
+                                <g mask="url(#mask0_631_55)">
+                                <path d="M9.2 9.2L11.425 5.525L9.95 3.075C9.75 2.74167 9.4625 2.575 9.0875 2.575C8.7125 2.575 8.425 2.74167 8.225 3.075L5.775 7.15L9.2 9.2ZM18.875 16L16.65 12.3L20.125 10.3L21.725 12.975C21.9083 13.2583 22.0083 13.575 22.025 13.925C22.0417 14.275 21.9667 14.6 21.8 14.9C21.6333 15.2333 21.3875 15.5 21.0625 15.7C20.7375 15.9 20.3833 16 20 16H18.875ZM16 23L12 19L16 15V17H20.75L19.3 19.9C19.1167 20.2333 18.8667 20.5 18.55 20.7C18.2333 20.9 17.8833 21 17.5 21H16V23ZM6.325 21C5.99167 21 5.6875 20.9125 5.4125 20.7375C5.1375 20.5625 4.93333 20.3333 4.8 20.05C4.66667 19.7833 4.60417 19.5042 4.6125 19.2125C4.62083 18.9208 4.7 18.65 4.85 18.4L5.7 17H10V21H6.325ZM3.85 18.15L2.225 14.9C2.075 14.6 2.00417 14.2792 2.0125 13.9375C2.02083 13.5958 2.11667 13.275 2.3 12.975L2.7 12.3L1 11.275L6.475 9.9L7.85 15.4L6.125 14.35L3.85 18.15ZM17.35 9.6L11.875 8.225L13.6 7.2L10.475 2H14C14.35 2 14.6792 2.0875 14.9875 2.2625C15.2958 2.4375 15.5417 2.675 15.725 2.975L17.025 5.15L18.725 4.1L17.35 9.6Z" style="fill: var(--accent);"/>
+                                </g>
+                            </svg>                                
                         </button>
                     {% endif %}
                 {% endif %}
             
                 {% if perms.forum.change_thread %}
                     <button class="modToolsBtn editThreadBtn">
-                        <img class="modToolsBtnIcon" src="{% static 'assets/icon_edit.svg' %}" alt="">
+                        <svg class="modToolsBtnIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_631_43" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                            <rect width="24" height="24" fill="#D9D9D9"/>
+                            </mask>
+                            <g mask="url(#mask0_631_43)">
+                            <path d="M3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM17.6 7.8L19 6.4L17.6 5L16.2 6.4L17.6 7.8Z" style="fill: var(--accent);"/>
+                            </g>
+                        </svg>
                     </button>
         
                     <form style="display: none;" action="">
@@ -258,7 +307,14 @@
                 {% csrf_token %}
                 <input class="forumMessageInput"  name="msg" id="" placeholder="Write a message"></textarea>
                 <button class="wrapper chatBtn" type="submit">
-                    <img src="{% static 'assets/icon_send.svg' %}" alt="">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="mask0_466_1014" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                        <rect width="24" height="24" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_466_1014)">
+                        <path d="M3 20V14L11 12L3 10V4L22 12L3 20Z" style="fill: var(--accent);"/>
+                        </g>
+                    </svg>
                 </button>
             </form>
         {% endif %}
