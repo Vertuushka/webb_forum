@@ -179,9 +179,11 @@
                                         <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
                                     {% endif %}
                                     {% if msg.time_changed %}
-                                        <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited
+                                        <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} 
                                             {% if perms.view_message %}
-                                            by {{msg.changer}})
+                                            (edited by {{msg.changer}})
+                                            {% else %}
+                                            (edited)
                                             {% endif %}
                                         </p>
                                     {% else %}
@@ -256,9 +258,11 @@
                                             <a class="forumMessageUsername" href="{% url 'profile_view' msg.user.id %}">{{ msg.user.username }}</a>
                                         {% endif %}
                                         {% if msg.time_changed %}
-                                            <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} (edited 
+                                            <p class="meta">{{ msg.time_changed|date:"d/m/Y - H:i" }} 
                                                 {% if perms.view_message %}
-                                                by {{msg.changer}})
+                                                    (edited by {{msg.changer}})
+                                                {% else %}
+                                                    (edited)
                                                 {% endif %}
                                             </p>
                                         {% else %}
