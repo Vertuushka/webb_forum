@@ -269,7 +269,7 @@ $(document).ready(function() {
                 <div class="cardSection container">
                     <p class="meta">Confirmation</p>
                     <div class="wrapper" style="gap: 8px;">
-                        <input type="checkbox" name="confirm_box" id="confirm_ban_box" class="popupInput">
+                        <input type="checkbox" name="confirm_box" id="confirm_ban_box" class="popupInput" required>
                         <label for="confirm_ban_box" class="text">You sure you want to ban ${$("#username").text()}? User will not be able to use the forum on this account.</label>
                     </div>
                 </div>
