@@ -1,9 +1,15 @@
-.content {
-    overflow-y: scroll;
+.forumThreadContent {
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .forumCard {
     gap: 1px;
+}
+
+.largeCard {
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .forumCardHeader {
@@ -272,3 +278,4 @@
     object-fit: cover;
     object-position: center;
 }
+
