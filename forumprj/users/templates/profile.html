@@ -112,9 +112,9 @@
                                                 <p class="meta">{{ msg.thread.title }}</p>
                                                 <p class="text">
                                                     {% if not msg.is_visible or not msg.thread.is_visible %}
-                                                        <del>{{ msg.message }}</del>
+                                                        <del>{{ msg.message|truncatechars:100 }}</del>
                                                     {% else %}
-                                                        {{ msg.message }}
+                                                        {{ msg.message|truncatechars:100 }}
                                                     {% endif %}
                                                 </p>
                                             </div>
@@ -127,9 +127,9 @@
                                             <p class="meta">{{ msg.thread.title }}</p>
                                             <p class="text">
                                                 {% if not msg.is_visible or not msg.thread.is_visible %}
-                                                    <del>{{ msg.message }}</del>
+                                                    <del>{{ msg.message|truncatechars:100 }}</del>
                                                 {% else %}
-                                                    {{ msg.message }}
+                                                    {{ msg.message|truncatechars:100 }}
                                                 {% endif %}
                                             </p>
                                         </div>

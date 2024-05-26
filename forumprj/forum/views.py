@@ -294,10 +294,10 @@ def warn_user(request, msg_id):
 def mark_solution(request, msg_id):
     try:
         message = Message.objects.get(id=msg_id)
-        if message.user != request.user and not request.user.has_perm('forum.change_message'):
+        if message.thread.user != request.user and not request.user.has_perm('forum.change_message'):
             return redirect('msg_redirect', message.thread.node.slug, message.thread.slug, message.thread.id, message.id)
     except:
-        return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
+        return render(request, 'error.html', {'error_str':base_strings.ERRORS['msg_not_found']})
     try:
         solution = Message.objects.get(thread=message.thread, is_solution=True)
         if solution != message:

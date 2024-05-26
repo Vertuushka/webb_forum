@@ -38,6 +38,10 @@
 }
 
 .cardHeaderDescription {
+    white-space: pre-wrap;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    word-break: break-all;
     padding: 0px 12px 12px 12px;
     font-size: 14px;
     color: var(--text);
@@ -188,9 +192,11 @@
 }
 
 .forumMessageContent {
-    overflow-wrap: break-word;
-    word-break: break-all;
-
+    white-space: pre-wrap;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    word-break: break-all; 
+    max-width: 90%;
     font-size: 14px;
     color: var(--text);
 }

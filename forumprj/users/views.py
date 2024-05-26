@@ -37,6 +37,8 @@ def profile_edit(request, id):
     if not request.user.has_perm('users.change_profile') and eUser != request.user:
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['perms_required']})
     if request.method == "POST":
+        eUser.profile.title = request.POST.get('title')
+        eUser.profile.save()
         image_file = request.FILES.get('image')
         if image_file:
             # print(eUser)
@@ -78,8 +80,6 @@ def profile_content(request, id):
         account = User.objects.get(id=id)
     except:
         return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_not_found']})
-    if not request.user.has_perm('users.view_profile') and request.user != account:
-        return render(request, 'error.html', {'error_str':base_strings.ERRORS['user_visibility_hidden']})
     content = Message.objects.filter(user=account).order_by('-id')
     context = {
         'account':account,

@@ -47,6 +47,9 @@ a {
 }
 
 .text {
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    word-break: break-all; 
     color: var(--text);
     font-size: 14px;
 }

@@ -83,7 +83,7 @@
 
         {% for thread, message in threads %}
             {% if thread.is_visible or perms.view_thread %}
-                {% if not thread.node.type_private or perms.view_node or request.user == message.user %}
+                {% if not thread.node.type_private or perms.view_node or request.user == thread.user %}
                     <div class="cardLine"></div>
                     <div class="cardSectionMultiple">
                         <a class="cardSectionItem" href="{% url 'thread' thread.node.name|slugify thread.title|slugify thread.id %}">
