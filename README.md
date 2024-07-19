@@ -1,5 +1,3 @@
-### Introduction
-
 This project represents a forum template developed with Django, designed for creating and managing online communities. The primary goal of the project is to provide a user-friendly and functional interface for user interaction, opinion exchange, and topic discussions. The project includes features for both regular users and administrators/moderators, ensuring basic flexibility and control over the forum.
 
 ### User Features
