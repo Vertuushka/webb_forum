@@ -33,3 +33,4 @@ This project represents a forum template developed with Django, designed for cre
     - Administrators/moderators can handle reports.
 
 This project provides a solution for creating and managing simple forums, offering the basic tools to maintain order and interaction within the community.
+Inspired by Xenforo
